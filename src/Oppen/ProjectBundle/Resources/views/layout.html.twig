@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset={{ _charset }}"/>
+        <meta name="robots" content="noindex,nofollow" />
+        <title>OPPen Project 
+			{% block title %}{% endblock %}</title>
+		<link rel="icon" sizes="16x16" href="{{ asset('favicon.ico') }}" />  
+
+{% stylesheets  
+	'bundles/framework/css/*.css'
+	'bundles/oppenproject/css/*.css'
+	'jquery/ui/jquery-ui.min.css' 	
+	'fileupload/css/jquery.fileupload.css' 	 		 		 		 	
+	'treegrid/css/jquery.treegrid.css'
+	filter='cssrewrite' output='css/compiled.css' %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+{% endstylesheets %}		      
+{% image '/jquery/ui/images/*' %}{% endimage %}
+
+{% javascripts
+    'jquery/*.min.js'
+    'jquery/ui/jquery-ui.min.js'    
+    'bundles/oppenproject/js/oppen-form.js'
+	'fileupload/js/jquery.iframe-transport.js' 
+	'fileupload/js/jquery.fileupload.js' 
+	output='js/compiled.js'%}
+    <script src="{{ asset_url }}"></script>
+{% endjavascripts %}
+
+<script src="{{ asset('tinymce/tinymce.min.js') }}"></script>
+<!--  'treegrid/js/jquery.treegrid.js'  -->
+
+{% block head %}{% endblock %}
+
+    </head>
+    <body>
+        <div id="content">
+            <div class="header clear-fix">
+                <div class="header-logo">
+					{% image '@OppenProjectBundle/Resources/public/images/logoOPPen.png' %}
+						<img src="{{ asset_url }}" alt="logo" />
+					{% endimage %}
+                </div>
+
+				<div class="top-menu sf-reset">
+					{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+						{{ render(controller('OppenProjectBundle:Settings:menu')) }}
+						{{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
+						<a href="{{ path('fos_user_security_logout') }}">
+							{{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+						</a>
+					{% else %}
+						<a href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
+					{% endif %}
+				</div>		
+
+			</div> <!-- header-->
+			
+			<div style="clear: both"></div>
+
+			<div class="sf-reset">
+				<div class="block">
+				
+					{% for type, messages in app.session.flashbag.all() %}
+						{% for message in messages %}
+							<div class="flash-{{ type }}">
+								{{ message }}
+							</div>
+						{% endfor %}
+					{% endfor %}
+					
+					{% if messages is defined %}
+						{% for k,message in messages %}
+							<div id='message-{{k}}'>{{ message }}</div>
+						{% endfor %}
+					{% endif %} 	
+												
+					{% if errors is defined %}
+						{% for k,error in errors %}
+							<div id='error-{{k}}' class='error'>{{ error }} </div>
+						{% endfor %}
+					{% endif %} 		
+										
+					<div>
+						{% block fos_user_content %}
+						{% endblock fos_user_content %}
+					</div>   
+					<div>
+						{% block content %}
+						{% endblock %}
+					</div>
+					<div id="dialogs" class="h">
+					</div>					
+				</div>
+			</div>
+			
+			<div><small>(C) Michał Janczak, 2014. Ver. 2.1.0</small></div>
+
+			{% if code is defined %}
+				<h2>Code behind this page</h2>
+				<div class="block">
+					<div class="symfony-content">{{ code|raw }}</div>
+				</div>
+			{% endif %}
+			
+		</div> <!-- content-->
+
+		<script type="text/javascript" >		 			
+	
+		{% if app.user is not empty %}
+			var user_id = {{ app.user.id }};
+		{% endif %}
+		
+		form_init(); 
+
+		{% block jquery %}
+		{% endblock %}
+
+		</script>  			
+			        
+    </body>
+</html>
+
+
+

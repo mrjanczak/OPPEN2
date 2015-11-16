@@ -1,0 +1,76 @@
+{% extends "OppenProjectBundle::layout.html.twig" %}
+
+{% block content %}
+{{ form_start(form, {'method': 'post'}) }}
+
+<div class="content-header">
+	<div class='title'> Kartoteki {{subtitle}} 
+		<a href={{ path('oppen_file',{'file_cat_id' : FileCat.id, 'file_id' : 0}) }}> ( + ) </a> 
+	</div> 
+	
+	<div class='toolbar'>
+	{% for button in buttons %}
+		<span>{{ form_widget(form[button]) }}</span>	
+	{% endfor %}			
+	</div>			
+</div>	
+
+{% form_theme form 'OppenProjectBundle:Form:fields_inline.html.twig' %}
+
+<div class='filter' data-url='{{ path("oppen_files_update_filter", {"year_id" : "__year_id__"}) }}'>		
+	<div class="search">{{ form_widget(form.search) }}</div>
+	<div class="fields">
+	{% if return != 'project' %}
+		{{ form_row(form.Year) }}
+	{% endif %} 
+		{{ form_row(form.FileCat) }} 
+		{{ form_row(form.name) }} 		
+	</div>
+</div>
+
+{% if form.Files|length == 0 %}
+
+	Brak pozycji
+
+{% else %}
+	
+<table class="form list"><tbody>
+	<tr> <th></th> <th> Numer </th> <th> Nazwa </th> </tr>
+			
+	{% for FileF in form.Files %}
+	{% set File = FileF.vars.value %}
+	
+	<tr><td>
+		{% if FileList.as_file_select %} 
+			{{ form_widget(FileF.select, {'attr': {'class': 'item'}}) }}
+		{% endif %}
+		</td>		
+		<td> {{ File.__AccNo() }} </td>
+		<td> 
+			<a href={{ path('oppen_file', {'file_cat_id' : FileCat.id, 'file_id' : File.id}) }}> {{ File.name }} </a>
+			{{ File.PESEL }} 
+			{{ File.postOffice }} 
+		</td>
+	</tr>
+	{% endfor %}
+		
+</tbody></table>
+
+	{% if return == 'project' %}
+		{{ form_widget(form.selectFiles) }}
+	{% endif %}
+
+{% endif %}
+			
+{{ form_errors(form) }}
+	
+<div class="h">{{ form_rest(form) }}</div>
+
+{{ form_end(form) }}
+{% endblock %}
+
+{% block jquery %}
+{% include 'OppenProjectBundle:File:list.js.twig' %}
+{% endblock %}
+
+

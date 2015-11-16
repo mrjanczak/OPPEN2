@@ -1,0 +1,51 @@
+{% extends "OppenProjectBundle::layout.html.twig" %}
+
+{% block content %}
+{{ form_start(form, {'method': 'post'}) }}
+
+<div class="content-header">
+	<div class='title'> Obroty na koncie: {{ReportList.accNo}} w roku {{ReportList.Year.name}}</div> 	
+	
+	<div class='toolbar'>
+	{% for button in buttons %}
+		<span>{{ form_widget(form[button]) }}</span>	
+	{% endfor %}			
+	</div>			
+</div>	
+
+<table class="form list"><tbody>
+	<tr> 
+		<th>Okres</th> <th colspan="2"> Z okresu</th> <th colspan="2"> Narastająco</th></tr>
+		<th></th>      <th>Wn</th> <th> Ma</th>       <th>Wn</th> <th> Ma</th>   <th> Saldo</th>  </tr>
+		
+	{% for Item in Items %}
+	
+		{% if Item.data.name == 'SUM'  %}
+		<tr>
+			<td colspan="3"> Saldo na koniec {{ Item.data.name }}: </td>
+			<td > {{ Item.data.CumulSide1|number_format(2, ',', '.') }} </td>
+			<td > {{ Item.data.CumulSide2|number_format(2, ',', '.') }} </td>
+		</tr>	
+		{% else %}
+		<tr>
+			<td > {{ Item.data.name }} </td>
+			<td > {{ Item.data.Side1|number_format(2, ',', '.') }} </td>
+			<td > {{ Item.data.Side2|number_format(2, ',', '.') }} </td>
+			<td > {{ Item.data.CumulSide1|number_format(2, ',', '.') }} </td>
+			<td > {{ Item.data.CumulSide2|number_format(2, ',', '.') }} </td>
+			
+			{% set saldo = Item.data.CumulSide2 - Item.data.CumulSide1 %}
+			
+			<td > {{saldo|number_format(2, ',', '.') }} </td>
+		</tr>
+		{% endif %}
+	
+	{% endfor %}
+
+</tbody></table>	
+
+{{ form_errors(form) }}
+<div class="h">{{ form_rest(form) }}</div>
+{{ form_end(form) }}
+
+{% endblock %}

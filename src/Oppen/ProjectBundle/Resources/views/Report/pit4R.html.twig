@@ -1,0 +1,50 @@
+{% extends "OppenProjectBundle::layout.html.twig" %}
+{% form_theme form 'OppenProjectBundle:Form:fields.html.twig' %}
+
+{% block content %}
+{{ form_start(form, {'method': 'post'}) }}
+
+<div class="content-header">
+	<div class='title'> Pit 4R za {{Report.Year.name}} </div> 		
+</div>	
+
+{% if Report.Items|length == 0 %}
+	Brak pozycji
+{% else %}
+
+<table class="form list"><tbody>
+	<tr> 
+		<th class="col_no">Lp</th><th>Pozycja</th> <th> Wartość</th></tr>
+	{% for Item in Report.Items %}
+	<tr>
+		<td class="item_level_{{ Item.data.level }}"> {% for i in 0..Item.data.level %} &nbsp; {% endfor %} 
+			{{ Item.data.no }} </td>
+		<td class="item_level_{{ Item.data.level }}"> {{ Item.data.name }} </td>
+		<td class="item_level_{{ Item.data.level }}"> {{ Item.data.value }} </td>
+	</tr>
+	{% endfor %}
+	
+	<tr><td colspan="3">
+		<div class="form-row">
+		  <div class="label i"> Złożenie/Korekta deklaracji </div>
+		  <div class="widget i">{{ form_widget(form.objective) }} </div>
+		</div>
+
+		<div class="form-row">  
+			{{ form_widget(form.downloadZIP) }}
+		</div>		
+		
+		</td>
+	</tr>	
+</tbody></table>	
+
+
+
+{% endif %}
+			
+{{ form_errors(form) }}
+	
+<div class="h">{{ form_rest(form) }}</div>
+
+{{ form_end(form) }}
+{% endblock %}

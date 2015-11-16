@@ -1,0 +1,12 @@
+<ul class="menu sf-reset">
+	<li class="i"><a href={{ path('oppen_projects',{'year_id' : Year.id }) }} > {%trans%} modules.projects {%endtrans%}</a> |</li>
+	<li class="i"><a href={{ path('oppen_docs',    {'year_id' : Year.id, 'month_id' : Month.id, 'doc_cat_id' : DocCat.id }) }} >{%trans%} modules.documents {%endtrans%}</a> |</li>
+	<li class="i"><a href={{ path('oppen_files',   {'file_cat_id': FileCat.id }) }} >{%trans%} modules.files {%endtrans%}</a> |</li>
+	<li class="i"><a href={{ path('oppen_reports', {'year_id': Year.id }) }} >{%trans%} modules.reports {%endtrans%}</a> |</li>
+	
+	{% if is_granted('ROLE_ADMIN') %}
+		<li class="i"><a href={{ path('oppen_settings',{'tab_id':settings_tab_id,'year_id': Year.id }) }} >{%trans%} modules.settings {%endtrans%}</a> | </li>
+	{% endif %}
+	
+	<li class="i"><a href={{ asset('bundles/oppenproject/pdf/manual.pdf') }}> {%trans%} modules.help {%endtrans%}</a> | </li>
+</ul>

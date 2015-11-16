@@ -1,0 +1,131 @@
+# Common
+modules:
+  projects: Projekty
+  documents: Dokumenty
+  files:  Kartoteki
+  reports: Raporty
+  settings: Ustawienia
+  help : Pomoc
+
+tabs:
+  project:
+    desc: 		Opis
+    incomes: 	Przychody
+    costs: 		Koszty
+    contracts: 	Umowy
+    documents: 	Dokumenty
+  settings:
+    periods:    Okresy
+    accounts:   Plan kont
+    categories: Kategorie
+    reports:    Raporty
+    templates:  Szablony
+    parameters: Parametry
+    users:      Użytkownicy    
+    
+headers:
+  common:
+    account:    Konto
+    book:       Dekretacja
+    books:      Dekretacje
+    bookking_date: Data księgowania
+    category:   Kategoria
+    contract:   Umowa
+    contracts:  Umowy
+    cost:       Koszt     
+    dates:      Terminy
+    desc: 		Opis
+    document:   Dokument
+    documents:  Dokumenty
+    email:      Email
+    file:       Kartoteka  
+    filename:   Nazwa pliku
+    files:      Kartoteki 
+    from_date:  Od
+    group:      Grupa      
+    groups:     Grupy  
+    income:     Przychód 
+    name:       Nazwa
+    number:     Numer     
+    options:    Opcje
+    other: Pozostałe    
+    place:      Miejsce
+    reports:    Raporty
+    result:     Wynik
+    send_reminder: Przypomnij
+    status:     Status
+    symbol:     Symbol 
+    tasts:      Zadania
+    template:   Szablon 
+    templates:  
+        bookking : Szablony księgowania
+        transfers: Szablony przelewów
+    to_date:    Do
+    total:      Łącznie
+    transfers:  Przelewy
+    user:       Użytkownik
+    value:      Wartość       
+    year:       Rok  
+  contracts:
+    gross_nett_cost_tax: Brutto/Netto/Koszt/PDOF
+    gross: Brutto
+    netto: Netto
+    income_cost: Koszt
+    tax: PDOF
+  documents:
+    new_document: Nowy Dokument 
+    accepted: Zatw.
+    debit_credit: WnMa
+    debit:        Wn
+    credit:       Ma
+  periods:  
+    active: Aktywny
+    closed: Zamknięty
+  accounts:
+    balance: Bilans
+  categories:
+    contractor: Zleceniobiorca 
+    account: Rachunek
+           
+labels:
+  common:
+    select_deselect: Zaznacz/Odznacz
+  projects:
+    no_project: Brak projektów
+  project:    
+    edit:
+      submit: Edytuj Projekt
+  documents:
+    no_payment_date: Brak daty płat.
+  periods:
+    copy:
+      categories_files:  Kopiuj Kategorie/Kartoteki:
+      categories_documents: Kopiuj Kategorie/Dokumenty:
+  accounts:
+    bank: Bank
+    income: Przychód
+    cost: Koszt
+    balance:
+      in_open: Otw.
+      in_close: Zamk.
+      result: Wynik
+  categories:
+    categories_files: Kategorie Kartotek:
+    categories_documents: Kategorie Dokumentów:
+    categories_predefined: Predefiniowane Kategorie
+      
+errors:
+  project:
+    error: Błąd
+
+# Project
+
+# Doc
+
+# Income
+
+# Cost
+
+# Contract
+
+# Settings

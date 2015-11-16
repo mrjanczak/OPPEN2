@@ -1,0 +1,35 @@
+{% extends "OppenProjectBundle::layout.html.twig" %}
+{% form_theme form 'OppenProjectBundle:Form:fields_tr.html.twig' %}
+
+{% block content %}
+{{ form_start(form, {'method': 'post'}) }}
+
+<div class="content-header">
+	<div class='title'> Kat. Przychodu {{form.name.vars.value}} </div> 
+	<div class='toolbar'>
+	{% for button in buttons %}
+		<span>{{ form_widget(form[button]) }}</span>	
+	{% endfor %}			
+	</div>
+</div>
+
+	{{ form_errors(form) }}
+	
+	<table class="form">
+	<tbody>
+		{{ form_row(form.name) }} 
+		{{ form_row(form.shortname) }} 
+		{{ form_row(form.value) }}
+		{{ form_row(form.comment) }} 
+		{{ form_row(form.show) }} 
+		{{ form_row(form.File) }}
+		{{ form_row(form.BankAcc) }}
+		{{ form_row(form.IncomeAcc) }} 
+	</tbody>
+	</table>        
+ 
+<div style="display: none;">{{ form_rest(form) }}</div>
+		
+{{ form_end(form) }}
+
+{% endblock %}

@@ -1,0 +1,16 @@
+{ 
+"name": "oppen/project", 
+"description": "project management and bookkeeping tool for NGO organizations", 
+"require": 
+   { "php": ">=5.3.0", 
+     "FOS/UserBundle": "1.*",
+     "symfony/symfony": "2.4.*",
+     "fileupload": "*"}, 
+"license": "MIT", 
+"authors": [ 
+    { "name": "Michał Janczak", 
+      "email": "mrjanczak@gmail.com", 
+      "homepage": "http://latempesta.pl", 
+      "role": "Developer" }
+]
+}

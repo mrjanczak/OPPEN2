@@ -1,0 +1,225 @@
+{% extends "OppenProjectBundle::layout.html.twig" %}
+
+{% block content %}
+
+{{ form_start(form, {'method': 'post'}) }}	
+
+<h1 class='title'> Dekretacja </h1>
+	
+	<div class='toolbar'>
+		{% for button in buttons %}
+			<span>{{ form_widget(form[button]) }}</span>	
+		{% endfor %}								
+	</div>
+	
+	{{ form_errors(form) }}
+		
+		<table class="list"><tbody>	
+			<tr><td>{{ form_label(form.desc) }} </td>       <td> {{ form_widget(form.desc) }} </td> </tr>
+			<tr><td>{{ form_label(form.bookingDate) }} </td><td> {{ form_widget(form.bookingDate, {'attr': {'class': 'date'}}) }} </td> </tr>
+			<tr><td>{{ form_label(form.isAccepted) }} </td> <td> {{ form_widget(form.isAccepted) }} </td> </tr>
+			<tr><td>{{ form_label(form.Month) }} </td>      <td> {{ form_widget(form.Month) }} </td> </tr>
+			<tr><td>{{ form_label(form.DocCat) }} </td>     <td> {{ form_widget(form.DocCat) }} </td> </tr>
+			<tr><td>{{ form_label(form.Doc) }} </td>        <td> {{ form_widget(form.Doc) }} </td> </tr>
+		</tbody></table>
+		
+		{% set index = 0 %}
+		<table class="list"><tbody>		
+			<tr><th>Kwota/Konto WN <a href="#" class="debit">(+)</a> </th>
+				<th>Kwota/Konto MA <a href="#" class="credit">(+)</a> </th></tr>
+			<tr>
+				<td>
+				<ul class="debits">
+					{% for BookkEntry in form.BookkEntries %}
+						{% if BookkEntry.isDebit.vars.checked == true %}
+							{% set index = index + 1 %}
+							<li id="li_{{ index }}">
+								{{ form_widget(BookkEntry.value) }}								
+								{{ form_widget(BookkEntry.accNo) }}
+								
+								<div class="h dialog">
+									{{ form_row(BookkEntry.Account) }}
+									{{ form_row(BookkEntry.FileLev1) }}
+									{{ form_row(BookkEntry.FileLev2) }}
+									{{ form_row(BookkEntry.FileLev3) }}							
+								</div>
+								
+								<div class="h">{{ form_rest(BookkEntry) }}</div>
+							</li>
+						{% endif %}
+					{% endfor %}
+				</ul>
+				</td>
+
+				<td>
+				<ul class="credits">
+					{% for BookkEntry in form.BookkEntries %}
+						{% if BookkEntry.isCredit.vars.checked == true %}
+							{% set index = index + 1 %}
+							<li id="li_{{ index }}">
+								{{ form_widget(BookkEntry.value) }}								
+								{{ form_widget(BookkEntry.accNo) }}
+								
+								<div class="h dialog">
+									{{ form_row(BookkEntry.Account) }}
+									{{ form_row(BookkEntry.FileLev1) }}
+									{{ form_row(BookkEntry.FileLev2) }}
+									{{ form_row(BookkEntry.FileLev3) }}							
+								</div>
+								
+								<div class="h">{{ form_rest(BookkEntry) }}</div>
+							</li>
+						{% endif %}
+					{% endfor %}
+				</ul>
+			</td>			
+			</tr>
+		</tbody></table>
+		
+	<div class="h">
+	
+		<div class="prototype"  
+			 data-prototype='{{ form_widget(form.BookkEntries.vars.prototype.value)|e }}
+							 {{ form_widget(form.BookkEntries.vars.prototype.accNo)|e }}	
+								
+								<div class="h dialog">
+									{{ form_row(form.BookkEntries.vars.prototype.Account) }}
+									{{ form_row(form.BookkEntries.vars.prototype.FileLev1) }}
+									{{ form_row(form.BookkEntries.vars.prototype.FileLev2) }}
+									{{ form_row(form.BookkEntries.vars.prototype.FileLev3) }}							
+								</div>
+								
+								<div class="h">{{ form_rest(form.BookkEntries.vars.prototype) }}</div>'
+			 data-index="{{ index }}">
+		</div>	
+		
+		{{ form_rest(form) }}
+
+	</div>
+
+{{ form_end(form) }}
+
+<div id="dialog" 
+	 title="Konto/Kartoteki"
+	 data-id=""
+     data-url="{{ path('oppen_account_files', {'account_id' : '__account_id__'}) }}"> 
+</div>
+
+{% endblock %}
+
+{% block jquery %}
+var date = $( ".date" ).val();
+$( ".date" ).attr('type','text').datepicker().datepicker("option", "dateFormat", "yy-mm-dd").val(date);
+
+var $prototype = $('.prototype');
+var $dialog = $('#dialog');
+							  
+function appendRemoveLink($Li) {
+    var $remove_link = $('<a href="#">(x)</a>');
+    $Li.append($remove_link);
+
+    $remove_link.click( function(e) {
+        e.preventDefault();
+        $(this).parent().remove();
+    });
+}
+
+function onFocusDialog($Li,column) {
+	$Li.find("input[id$='accNo']" ).on('mousedown', function(e) {
+		var id = $(this).parent().attr('id'); 
+		showDialog(id,column);
+	});	
+}
+
+function addForm(column) {
+    var index   = $prototype.data('index') + 1;
+    var newForm = $prototype.data('prototype').replace(/__name__/g, index);
+    var $newFormLi = $('<li></li>').append(newForm).attr('id','li_' + index);
+    $newFormLi.find('input[id$="is' + column.substr(0,1).toUpperCase() + column.substr(1,10) + '"]').attr('checked', 'checked');
+     
+	onFocusDialog($newFormLi, column);
+    appendRemoveLink($newFormLi);
+    $('ul.' + column + 's').append($newFormLi);
+    $prototype.data('index', index);  
+}
+
+function showDialog(id) {
+	$dialog.data('id',id);							 
+	$dialog.html($('#' + id + ' div.dialog').html()).dialog("open");								 					
+
+	for (var lev=1;lev<=3;lev++) {
+		if( $dialog.find('select[id$="FileLev' + lev + '"] option').length == 1 ) {
+			$dialog.find('select[id$="FileLev' + lev + '"] option').removeAttr('selected');		
+			$dialog.find('select[id$="FileLev' + lev + '"]').parent().addClass('h');
+		}
+	}
+	
+	$dialog.find('select').change(function(e) {
+		var $opt = $(this).find('option:selected');
+		$(this).find('option').removeAttr('selected');
+		$opt.attr('selected','selected');
+	});
+	
+	$dialog.find('select[id$="Account"]').change(function(e) {
+		for (var lev=1;lev<=3;lev++) {
+			$dialog.find('select[id$="FileLev' + lev + '"] option:gt(0)').remove();
+			$dialog.find('select[id$="FileLev' + lev + '"]').parent().addClass('h');
+		}
+		var account_id = $(this).find('option:selected').val();
+		 $.ajax({
+			type: "POST",
+			data: "account_id=" + account_id,
+			url: $dialog.data('url').replace(/__account_id__/g, account_id),
+			success: function(data){
+			
+				console.log( JSON.stringify(data) );
+				for (var lev=1;lev<=3;lev++) {
+					$dialog.find('select[id$="FileLev' + lev + '"]').append( data[0][lev-1].join())
+																	.prev().text(data[1][lev-1]);
+					if( data[0][lev-1].length > 0) {
+						$dialog.find('select[id$="FileLev' + lev + '"]').parent().removeClass('h');
+					}
+				}
+			}
+		});
+
+	});
+}
+
+$('a.debit, a.credit').click(function(e) {
+	e.preventDefault();
+	addForm($(this).attr('class'));
+});
+
+$('.debits, .credits').find('li').each(function()  { 
+	var column = $(this).parent().attr('class')
+	appendRemoveLink($(this));
+	onFocusDialog($(this), column);
+});
+
+$dialog.dialog({
+  autoOpen: false,
+  height: 300,
+  width: 700,
+  modal: true,
+  buttons: {
+	"OK": function() {
+		var id = $dialog.data('id');
+		var AccNo  = $(this).find('select[id$="Account"]  option:selected').text().substr(0,3);
+		
+		for (var lev=1;lev<=3;lev++) {
+			if( $dialog.find('select[id$="FileLev' + lev + '"] option:gt(0):selected').length > 0 ) {
+				AccNo += '-' + $(this).find('select[id$="FileLev' + lev + '"] option:selected').text().substr(0,3);
+			}
+		}
+		$("#" + id + " input[id$='accNo']").val(AccNo);
+		$("#" + id + " div.dialog").html($dialog.html());
+		$(this).dialog( "close" );          
+	},
+	"Anuluj": function() {
+	    $(this).dialog( "close" );
+	}
+  }	
+}); 
+
+{% endblock %}

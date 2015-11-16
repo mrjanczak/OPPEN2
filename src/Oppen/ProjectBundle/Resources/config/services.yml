@@ -1,0 +1,3 @@
+services:
+    oppen_project.cat_namer:
+        class: Oppen\ProjectBundle\DependencyInjection\CatNamerInterface

@@ -1,0 +1,81 @@
+/*
+
+*/
+
+$('select[id$="Account"]').change(function(e) {
+	var option  = $(this).find('option:selected'); 
+	var AccNo = option.text().split("|");
+	var AccNo = AccNo[0].trim();
+	
+	$("input[id$='accNo']").val(AccNo+'*');
+
+	for (var lev=1;lev<=3;lev++) {
+		$('select[id$="FileLev' + lev + '"] option:gt(0)').remove();
+		$('label[for$="FileLev' + lev + '"]').text('');
+	}
+	var account_id = $(this).find('option:selected').val();
+	var url = $(this).data('url').replace(/__account_id__/g, account_id);
+	 $.ajax({
+		type: "POST",
+		data: "account_id=" + account_id,
+		url: url,   
+		success: function(data){
+			console.log( JSON.stringify(data) );
+			for (var lev=1;lev<=3;lev++) {
+				var $FileLev = $('select[id$="FileLev' + lev + '"]');
+				$FileLev.append( data[0][lev-1].join(''));
+				var label = data[1][lev-1];
+				$('label[for$="FileLev' + lev + '"]').text(label);
+			}
+		}
+	});
+});
+
+$('select[id$="Method"]').change(function(e) {
+	var method_id = $(this).find('option:selected').val();
+	$('a.report').each(function() {
+		var href = $(this).attr('href').replace(/method\/[0-9]*/g, 'method/'+method_id);
+		$(this).attr('href',href);
+	})
+});	 
+
+$('select[id*="FileLev"]').change(function(e) {
+	var option  = $('select[id$="Account"]  option:selected'); 
+	var AccNo = option.text().split("|");
+	var AccNo = AccNo[0].trim();
+	
+	for (var lev=1;lev<=3;lev++) {
+		var $option = $('select[id$="FileLev' + lev + '"] option:gt(0):selected'); 
+		if(($option !== null) && ($option.length > 0 )) {
+			var FileNo = $option.text().split("|");
+			AccNo += '-' + FileNo[1].substr(0,3);
+		}
+	}
+	$("input[id$='accNo']").val(AccNo+'*');		
+});	
+
+// copy from /to date from Month to From/To
+$('select[id$="Month"]').change(function(e) {
+	var month_id  = $(this).find('option:selected').val(); 
+	var url = $(this).data('url').replace(/__month_id__/g, month_id);
+	 $.ajax({
+		type: "POST",
+		data: "month_id=" + month_id,
+		url: url,   
+		success: function(data){
+			console.log( JSON.stringify(data) );
+			$('input[id*="FromDate"]').val(data[0].date.slice(0,10));
+			$('input[id*="ToDate"]').val(data[1].date.slice(0,10));
+		
+		}
+	});
+	
+});
+
+ Date.prototype.yyyymmdd = function() {
+   var yyyy = this.getFullYear().toString();
+   var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
+   var dd  = this.getDate().toString();
+   return yyyy + (mm[1]?mm:"0"+mm[0]) + (dd[1]?dd:"0"+dd[0]); // padding
+  };
+

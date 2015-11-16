@@ -1,0 +1,300 @@
+
+############### Ajax Update Routes ##############
+
+oppen_month_update:
+    path:  /month/{month_id}/update
+    defaults: { _controller: OppenProjectBundle:Month:update }
+
+oppen_account_update:
+    path:  /account/{account_id}/update
+    defaults: { _controller: OppenProjectBundle:Account:update }
+
+oppen_docs_year_update:
+    path:  /doc/list/year/{year_id}/update
+    defaults: { _controller: OppenProjectBundle:Year:updateDocList }
+
+oppen_docs_month_update:
+    path:  /doc/list/month/{month_id}/project/{project_id}/update
+    defaults: { _controller: OppenProjectBundle:Month:updateDocList }
+
+oppen_doc_update_files:
+    path:  /doc/update/month/{month_id}/doc_cat/{doc_cat_id}
+    defaults: { _controller: OppenProjectBundle:Doc:updateFiles }  
+
+oppen_files_update_filter:
+    path:  /file/list/year/{year_id}/update/filter
+    defaults: { _controller: OppenProjectBundle:File:updateFilter }
+
+oppen_reports_update:  												# will be change to oppen_year_update > JSON
+    path:  /report/list/year/{year_id}/update
+    defaults: { _controller: OppenProjectBundle:Year:update }
+
+############### Project Controller ##############
+
+oppen_projects: 
+    path:  /project/list/year/{year_id}
+    defaults: { _controller: OppenProjectBundle:Project:list}
+    requirements:
+        year_id: \d+      
+oppen_project:
+    path:  /project/{project_id}/edit/tab/{tab_id}/year/{year_id}
+    defaults: { _controller: OppenProjectBundle:Project:edit, tab_id = 1 }
+    requirements:
+        project_id: \d+
+        tab_id: \d+
+        year_id: \d+                 
+
+############### Task Controller ################
+
+oppen_task_move:
+    path:  /task/{task_id}/move/{dir}
+    defaults: { _controller: OppenProjectBundle:Task:move }
+    requirements:  
+        task_id: \d+
+                   
+oppen_task_send_reminder:
+    path: /tasks/send_reminder
+    defaults: {_controller: OppenProjectBundle:Task:sendReminder}
+
+############### Income Controller ##############                  
+                   
+oppen_income:
+    path:  /income/{income_id}/edit/project/{project_id}
+    defaults: { _controller: OppenProjectBundle:Income:edit }
+    requirements:  
+        project_id: \d+
+        income_id: \d+       
+oppen_income_move:
+    path:  /income/{income_id}/move/{dir}
+    defaults: { _controller: OppenProjectBundle:Income:move }
+    requirements:  
+        income_id: \d+
+oppen_income_add_doc:
+    path:  /income/{income_id}/add_doc/month/{month_id}/doc_cat/{doc_cat_id}
+    defaults: { _controller: OppenProjectBundle:Income:addDoc }
+    requirements:   
+        income_id: \d+
+        month_id: \d+    
+        doc_cat_id: \d+
+oppen_income_remove_doc:
+    path:  /income/{income_id}/remove_doc/income_doc/{income_doc_id}
+    defaults: { _controller: OppenProjectBundle:Income:removeDoc }
+    requirements:
+        income_doc_id: \d+    
+                  
+############### Cost Controller ##############   
+                   
+oppen_cost:
+    path:  /cost/{cost_id}/edit/project/{project_id}
+    defaults: { _controller: OppenProjectBundle:Cost:edit }
+    requirements:
+        project_id: \d+    
+        cost_id: \d+
+oppen_cost_move:
+    path:  /cost/{cost_id}/move/{dir}
+    defaults: { _controller: OppenProjectBundle:Cost:move }
+    requirements:   
+        cost_id: \d+  
+oppen_cost_add_doc:
+    path:  /cost/{cost_id}/add_doc/month/{month_id}/doc_cat/{doc_cat_id}
+    defaults: { _controller: OppenProjectBundle:Cost:addDoc }
+    requirements:  
+        cost_id: \d+
+        month_id: \d+    
+        doc_cat_id: \d+
+oppen_cost_remove_doc:
+    path:  /cost/{cost_id}/remove_doc/cost_doc/{cost_doc_id}
+    defaults: { _controller: OppenProjectBundle:Cost:removeDoc }
+    requirements:
+        doc_id: \d+    
+                  
+############### Contract Controller ##############   
+
+oppen_contract:
+    path:  /contract/{contract_id}/edit/cost/{cost_id}
+    defaults: { _controller: OppenProjectBundle:Contract:edit}
+    requirements:  
+        cost_id: \d+
+        contract_id: \d+ 
+oppen_contract_copy:
+    path:  /contract/{contract_id}/copy/cost/{cost_id}
+    defaults: { _controller: OppenProjectBundle:Contract:edit }
+    requirements:  
+        contract_id: \d+
+oppen_contract_delete:
+    path:  /contract/{contract_id}/delete
+    defaults: { _controller: OppenProjectBundle:Contract:delete }
+    requirements:  
+        contract_id: \d+
+                  
+############### Doc & DocCat Controller ##############        
+     
+oppen_docs:
+    path:  /doc/list/year/{year_id}/month/{month_id}/doc_cat/{doc_cat_id}
+    defaults: { _controller: OppenProjectBundle:Doc:list }
+    requirements:  
+        year_id: \d+
+        month_id: \d+      
+        doc_cat_id: \d+         
+oppen_doc:
+    path:  /doc/{doc_id}/edit/month/{month_id}/doc_cat/{doc_cat_id}/return/{return}/{id1}/{id2}
+    defaults: { _controller: OppenProjectBundle:Doc:edit, return: docs, id1: 0, id2: 0 }
+    requirements:
+        doc_id: \d+    
+        month_id: \d+         
+        doc_cat_id: \d+ 
+oppen_doc_cat_edit:
+    path:  /doc_cat/{doc_cat_id}/edit/year/{year_id}
+    defaults: { _controller: OppenProjectBundle:DocCat:edit }
+    requirements:
+        year_id: \d+ 
+        doc_cat_id: \d+  
+
+oppen_docs_repair:
+    path:  /docs/repair/year/{year_id}
+    defaults: { _controller: OppenProjectBundle:Doc:repair }
+    requirements: 
+        year_id: \d+                   
+############### File & FileCat Controller ##############       
+        
+oppen_files:
+    path:  /file/list/file_cat/{file_cat_id}/return/{return}/{id1}/{id2}/{id3}
+    defaults: { _controller: OppenProjectBundle:File:list, return: files, id1: 0, id2: 0, id3: 0  }
+    requirements:
+        file_cat_id: \d+ 
+oppen_file:
+    path:  /file/{file_id}/edit/file_cat/{file_cat_id}
+    defaults: { _controller: OppenProjectBundle:File:edit }
+    requirements:
+        file_cat_id: \d+
+        file_id: \d+ 	
+oppen_file_cat_edit:
+    path:  /file_cat/{file_cat_id}/edit/year/{year_id}
+    defaults: { _controller: OppenProjectBundle:FileCat:edit }
+    requirements:
+        year_id: \d+ 
+        file_cat_id: \d+   
+                          
+############### Bookk & BookkEntry Controller ##############   
+
+oppen_bookks: 
+    path:  /bookk/list/year/{year_id}/month/{month_id}/acc_no/{acc_no}/is_accepted/{is_accepted}
+    defaults: { _controller: OppenProjectBundle:Bookk:list,acc_no : '*', is_accepted : 0 }
+    requirements:  
+        year_id: \d+  
+        month_id: \d+ 
+        acc_no: '[0-9\-\*]+'
+        is_accepted: \d+
+oppen_bookk:
+    path:  /bookk/{bookk_id}/edit/month/{month_id}/return/{return}
+    defaults: { _controller: OppenProjectBundle:Bookk:edit, return: bookks }
+    requirements:
+        bookk_id: \d+    
+        month_id: \d+  
+        return: project|bookks
+oppen_bookk_entry:
+    path:  /bookk_entry/{bookk_entry_id}/edit/bookk/{bookk_id}
+    defaults: { _controller: OppenProjectBundle:BookkEntry:edit }
+    requirements: 
+        bookk_id: \d+
+        
+oppen_bookk_entry_repair:
+    path:  /bookk_entry/repair/year/{year_id}
+    defaults: { _controller: OppenProjectBundle:BookkEntry:repair }
+    requirements: 
+        year_id: \d+        
+# auxiliary form only with Account and File Levels to build AccNo in BookkEntry form         
+oppen_account_files:
+    path:  /account_files/year/{year_id}/account_id/{account_id}/file_lev1_id/{file_lev1_id}/file_lev2_id/{file_lev2_id}/file_lev3_id/{file_lev3_id}
+    defaults: { _controller: OppenProjectBundle:BookkEntry:accountFiles }
+# maintanace functions
+oppen_bookking_date:
+    path:  /bookking_date/year/{year_id}
+    defaults: { _controller: OppenProjectBundle:Bookk:updateBookkingDate }
+oppen_clear_bookks:
+    path:  /clear_bookks/                    
+    defaults: { _controller: OppenProjectBundle:Bookk:clearBookks }                
+############### Report Controller##############           
+              
+oppen_reports:
+    path:  /report/list/year/{year_id}
+    defaults: { _controller: OppenProjectBundle:Report:list }
+    requirements:  
+        year_id: \d+ 
+oppen_report:
+    path:  /report/{report_id}/method/{method_id}
+    defaults: { _controller: OppenProjectBundle:Report:report }
+    requirements:  
+        report_id: \d+ 
+        method_id: \d+
+# Settings
+oppen_report_edit:
+    path:  /report/edit/{report_id}/year/{year_id}
+    defaults: { _controller: OppenProjectBundle:Report:edit }
+    requirements:  
+        report_id: \d+  
+        year_id: \d+
+oppen_report_entry_edit:
+    path:  /report_entry/edit/{report_entry_id}/parent/{parent_id}
+    defaults: { _controller: OppenProjectBundle:ReportEntry:edit }
+    requirements:  
+        report_entry_id: \d+ 
+        parent_id: \d+        
+oppen_report_entry_move:
+    path:  /report_entry/{report_entry_id}/move/{dir}
+    defaults: { _controller: OppenProjectBundle:ReportEntry:move }
+    requirements:  
+        report_entry_id: \d+ 
+                          
+############### Settings Controller##############              
+            
+oppen_settings:
+    path:  /settings/edit/tab/{tab_id}/year/{year_id}
+    defaults: { _controller: OppenProjectBundle:Settings:edit }
+    requirements: 
+        tab_id: \d+
+        year_id: \d+         
+
+oppen_user_edit:
+    path: /user/{user_id}/edit
+    defaults: { _controller: OppenProjectBundle:User:edit2 }
+       
+############### Year Controller ##############  
+        
+oppen_year_edit:
+    path:  /year/edit/{year_id}
+    defaults: { _controller: OppenProjectBundle:Year:edit }
+    requirements:  
+        report_id: \d+ 
+                  
+############### Account Controller ##############          
+        
+oppen_account_edit:
+    path:  /account/{account_id}/edit/parent_id/{parent_id}
+    defaults: { _controller: OppenProjectBundle:Account:edit }
+    requirements:  
+        account_id: \d+ 
+        parent_id: \d+        
+oppen_account_move:
+    path:  /account/{account_id}/move/{dir}
+    defaults: { _controller: OppenProjectBundle:Account:move }
+    requirements:  
+        account_id: \d+  
+          
+############### Template Controller ##############          
+         
+oppen_template_edit:
+    path:  /template/edit/{template_id}/year/{year_id}
+    defaults: { _controller: OppenProjectBundle:Template:edit }
+    requirements:  
+        template_id: \d+ 
+        year_id: \d+        
+              
+############### Security Controller ##############  
+                             
+#_login:
+#    path: /login
+#    defaults: { _controller: OppenProjectBundle:Security:login }
+
+#_login_check:
+#    path: /login_check
