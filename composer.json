@@ -67,5 +67,10 @@
         "branch-alias": {
             "dev-master": "2.4-dev"
         }
+        "heroku": {
+            "compile": [
+                "chmod 777 /app/app/cache"
+            ]
+        }
     }
 }
