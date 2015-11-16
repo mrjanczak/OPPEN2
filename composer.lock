@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "8ba8a2b161e4f10b696186416346045d",
-    "content-hash": "6987c06e644f2560d0bd8e641ff68d86",
+    "hash": "84a484442bf66d22975bf7b202225a4c",
+    "content-hash": "bd3d4754fc90ea7ab20f64009a9ea823",
     "packages": [
         {
             "name": "blueimp/jquery-file-upload",
@@ -1820,52 +1820,6 @@
                 "framework"
             ],
             "time": "2014-09-28 17:03:37"
-        },
-        {
-            "name": "tinymce/tinymce",
-            "version": "4.2.8",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/tinymce/tinymce-dist.git",
-                "reference": "6d516557b3ef4a79e125892adab5f6dc6ebba63e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/tinymce/tinymce-dist/zipball/6d516557b3ef4a79e125892adab5f6dc6ebba63e",
-                "reference": "6d516557b3ef4a79e125892adab5f6dc6ebba63e",
-                "shasum": ""
-            },
-            "type": "component",
-            "extra": {
-                "component": {
-                    "scripts": [
-                        "tinymce.js",
-                        "plugins/*/plugin.js",
-                        "themes/*/theme.js"
-                    ],
-                    "files": [
-                        "tinymce.min.js",
-                        "plugins/*/plugin.min.js",
-                        "themes/*/theme.min.js",
-                        "skins/**"
-                    ]
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL-2.1"
-            ],
-            "description": "Web based JavaScript HTML WYSIWYG editor control.",
-            "homepage": "http://www.tinymce.com",
-            "keywords": [
-                "editor",
-                "html",
-                "javascript",
-                "richtext",
-                "tinymce",
-                "wysiwyg"
-            ],
-            "time": "2015-11-13 01:29:02"
         },
         {
             "name": "twig/extensions",
