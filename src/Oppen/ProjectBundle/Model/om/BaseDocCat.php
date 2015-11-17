@@ -359,7 +359,7 @@ abstract class BaseDocCat extends BaseObject implements Persistent
      */
     public function setName($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -380,7 +380,7 @@ abstract class BaseDocCat extends BaseObject implements Persistent
      */
     public function setSymbol($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -401,7 +401,7 @@ abstract class BaseDocCat extends BaseObject implements Persistent
      */
     public function setDocNoTmp($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 

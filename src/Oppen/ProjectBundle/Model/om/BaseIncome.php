@@ -378,7 +378,7 @@ abstract class BaseIncome extends BaseObject implements Persistent
      */
     public function setName($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -399,7 +399,7 @@ abstract class BaseIncome extends BaseObject implements Persistent
      */
     public function setShortname($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -441,7 +441,7 @@ abstract class BaseIncome extends BaseObject implements Persistent
      */
     public function setComment($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 

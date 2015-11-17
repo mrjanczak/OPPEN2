@@ -48,6 +48,7 @@ use Oppen\ProjectBundle\Model\BookkQuery;
 use Oppen\ProjectBundle\Model\BookkEntryQuery;
 use Oppen\ProjectBundle\Model\ContractQuery;
 use Oppen\ProjectBundle\Model\TemplateQuery;
+use Oppen\ProjectBundle\Model\ParameterQuery;
 
 use Oppen\ProjectBundle\Form\Type\DocType;
 use Oppen\ProjectBundle\Form\Type\DocListType;
@@ -76,7 +77,8 @@ class CostController extends Controller
 			$buttons[] = 'delete';
 		}
 		$securityContext = $this->get('security.context');
-		$disable_accepted_docs = $this->container->getParameter('disable_accepted_docs');
+		$disable_accepted_docs = ParameterQuery::create()->getOneByName('disable_accepted_docs');
+		//$this->container->getParameter('disable_accepted_docs');
  		$form = $this->createForm(new CostType($Year, $CostFileCat, true, 
 			$securityContext, $disable_accepted_docs), $Cost);
         $form->handleRequest($request); 
@@ -161,7 +163,8 @@ class CostController extends Controller
 			$showBookks, $desc, $page, $as_doc_select, $as_bookk_accept);										
 
 		$securityContext = $this->get('security.context');
-		$disable_accepted_docs = $this->container->getParameter('disable_accepted_docs');
+		$disable_accepted_docs = ParameterQuery::create()->getOneByName('disable_accepted_docs');
+		//$this->container->getParameter('disable_accepted_docs');
 		$form = $this->createForm(new DocListType($Year, null, false, true, 
 			$securityContext, $disable_accepted_docs), $DocList);	
 		$return = 'doc_list';

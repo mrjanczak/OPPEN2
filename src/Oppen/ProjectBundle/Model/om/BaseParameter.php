@@ -277,7 +277,7 @@ abstract class BaseParameter extends BaseObject implements Persistent
      */
     public function setName($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -298,7 +298,7 @@ abstract class BaseParameter extends BaseObject implements Persistent
      */
     public function setLabel($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -319,7 +319,7 @@ abstract class BaseParameter extends BaseObject implements Persistent
      */
     public function setFieldType($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -382,7 +382,7 @@ abstract class BaseParameter extends BaseObject implements Persistent
      */
     public function setValueVarchar($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 

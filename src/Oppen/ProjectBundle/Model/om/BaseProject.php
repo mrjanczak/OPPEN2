@@ -479,7 +479,7 @@ abstract class BaseProject extends BaseObject implements Persistent
      */
     public function setName($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -521,7 +521,7 @@ abstract class BaseProject extends BaseObject implements Persistent
      */
     public function setDesc($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -542,7 +542,7 @@ abstract class BaseProject extends BaseObject implements Persistent
      */
     public function setPlace($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -609,7 +609,7 @@ abstract class BaseProject extends BaseObject implements Persistent
      */
     public function setComment($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 

@@ -602,7 +602,7 @@ abstract class BaseContract extends BaseObject implements Persistent
      */
     public function setContractNo($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -646,7 +646,7 @@ abstract class BaseContract extends BaseObject implements Persistent
      */
     public function setContractPlace($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -667,7 +667,7 @@ abstract class BaseContract extends BaseObject implements Persistent
      */
     public function setEventDesc($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -711,7 +711,7 @@ abstract class BaseContract extends BaseObject implements Persistent
      */
     public function setEventPlace($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -732,7 +732,7 @@ abstract class BaseContract extends BaseObject implements Persistent
      */
     public function setEventName($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -753,7 +753,7 @@ abstract class BaseContract extends BaseObject implements Persistent
      */
     public function setEventRole($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -900,7 +900,7 @@ abstract class BaseContract extends BaseObject implements Persistent
      */
     public function setPaymentPeriod($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -942,7 +942,7 @@ abstract class BaseContract extends BaseObject implements Persistent
      */
     public function setComment($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 

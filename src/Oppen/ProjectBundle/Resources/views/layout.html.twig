@@ -7,29 +7,28 @@
 			{% block title %}{% endblock %}</title>
 		<link rel="icon" sizes="16x16" href="{{ asset('favicon.ico') }}" />  
 
+
+
 {% stylesheets  
 	'bundles/framework/css/*.css'
 	'bundles/oppenproject/css/*.css'
-	'jquery/ui/jquery-ui.min.css' 	
-	'fileupload/css/jquery.fileupload.css' 	 		 		 		 	
-	'treegrid/css/jquery.treegrid.css'
+	'bundles/bmatznerjqueryui/css/smoothness/jquery-ui.css'	
+	'bundles/bmatznerjqueryui/css/smoothness/jquery.ui.theme.css'	 		 		 		 	
 	filter='cssrewrite' output='css/compiled.css' %}
     <link rel="stylesheet" href="{{ asset_url }}" />
 {% endstylesheets %}		      
-{% image '/jquery/ui/images/*' %}{% endimage %}
 
 {% javascripts
-    'jquery/*.min.js'
-    'jquery/ui/jquery-ui.min.js'    
-    'bundles/oppenproject/js/oppen-form.js'
-	'fileupload/js/jquery.iframe-transport.js' 
-	'fileupload/js/jquery.fileupload.js' 
+    'bundles/bmatznerjquery/js/jquery.min.js'
+    'bundles/bmatznerjqueryui/js/minified/jquery-ui.min.js'    
+	'bundles/kvdh/js/jquery.iframe-transport.js' 
+    'bundles/punkavefileuploader/js/jquery.fileupload.js'
+    'bundles/punkavefileuploader/js/jquery.iframe-transport.js'
+    'bundles/oppenproject/js/oppen-form.js'	
 	output='js/compiled.js'%}
     <script src="{{ asset_url }}"></script>
 {% endjavascripts %}
 
-<script src="{{ asset('tinymce/tinymce.min.js') }}"></script>
-<!--  'treegrid/js/jquery.treegrid.js'  -->
 
 {% block head %}{% endblock %}
 

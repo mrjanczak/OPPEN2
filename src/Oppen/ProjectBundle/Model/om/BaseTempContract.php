@@ -587,7 +587,7 @@ abstract class BaseTempContract extends BaseObject implements Persistent
      */
     public function setContractNo($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -631,7 +631,7 @@ abstract class BaseTempContract extends BaseObject implements Persistent
      */
     public function setContractPlace($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -652,7 +652,7 @@ abstract class BaseTempContract extends BaseObject implements Persistent
      */
     public function setEventDesc($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -696,7 +696,7 @@ abstract class BaseTempContract extends BaseObject implements Persistent
      */
     public function setEventPlace($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -717,7 +717,7 @@ abstract class BaseTempContract extends BaseObject implements Persistent
      */
     public function setEventName($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -738,7 +738,7 @@ abstract class BaseTempContract extends BaseObject implements Persistent
      */
     public function setEventRole($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -843,7 +843,7 @@ abstract class BaseTempContract extends BaseObject implements Persistent
      */
     public function setFirstName($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -864,7 +864,7 @@ abstract class BaseTempContract extends BaseObject implements Persistent
      */
     public function setLastName($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -885,7 +885,7 @@ abstract class BaseTempContract extends BaseObject implements Persistent
      */
     public function setPesel($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -906,7 +906,7 @@ abstract class BaseTempContract extends BaseObject implements Persistent
      */
     public function setNip($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -927,7 +927,7 @@ abstract class BaseTempContract extends BaseObject implements Persistent
      */
     public function setStreet($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -948,7 +948,7 @@ abstract class BaseTempContract extends BaseObject implements Persistent
      */
     public function setHouse($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -969,7 +969,7 @@ abstract class BaseTempContract extends BaseObject implements Persistent
      */
     public function setFlat($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -990,7 +990,7 @@ abstract class BaseTempContract extends BaseObject implements Persistent
      */
     public function setCode($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -1011,7 +1011,7 @@ abstract class BaseTempContract extends BaseObject implements Persistent
      */
     public function setCity($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -1032,7 +1032,7 @@ abstract class BaseTempContract extends BaseObject implements Persistent
      */
     public function setDistrict($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -1053,7 +1053,7 @@ abstract class BaseTempContract extends BaseObject implements Persistent
      */
     public function setCountry($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -1074,7 +1074,7 @@ abstract class BaseTempContract extends BaseObject implements Persistent
      */
     public function setBankAccount($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -1095,7 +1095,7 @@ abstract class BaseTempContract extends BaseObject implements Persistent
      */
     public function setBankName($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 

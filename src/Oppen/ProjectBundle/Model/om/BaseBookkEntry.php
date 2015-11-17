@@ -269,7 +269,7 @@ abstract class BaseBookkEntry extends BaseObject implements Persistent
      */
     public function setAccNo($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 

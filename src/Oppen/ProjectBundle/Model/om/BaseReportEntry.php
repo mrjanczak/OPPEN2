@@ -268,7 +268,7 @@ abstract class BaseReportEntry extends BaseObject implements Persistent
      */
     public function setNo($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -289,7 +289,7 @@ abstract class BaseReportEntry extends BaseObject implements Persistent
      */
     public function setName($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -310,7 +310,7 @@ abstract class BaseReportEntry extends BaseObject implements Persistent
      */
     public function setSymbol($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -331,7 +331,7 @@ abstract class BaseReportEntry extends BaseObject implements Persistent
      */
     public function setFormula($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 

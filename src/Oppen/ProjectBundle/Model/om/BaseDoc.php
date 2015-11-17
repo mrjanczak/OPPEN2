@@ -883,7 +883,7 @@ abstract class BaseDoc extends BaseObject implements Persistent
      */
     public function setRegNo($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -925,7 +925,7 @@ abstract class BaseDoc extends BaseObject implements Persistent
      */
     public function setDocNo($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -996,7 +996,7 @@ abstract class BaseDoc extends BaseObject implements Persistent
      */
     public function setDesc($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 
@@ -1017,7 +1017,7 @@ abstract class BaseDoc extends BaseObject implements Persistent
      */
     public function setComment($v)
     {
-        if ($v !== null && is_numeric($v)) {
+        if ($v !== null) {
             $v = (string) $v;
         }
 

@@ -254,7 +254,8 @@ class ProjectController extends Controller
 		// Project form
 		// ------------------------------
 		$securityContext = $this->get('security.context');
-		$disable_accepted_docs = $this->container->getParameter('disable_accepted_docs');
+		$disable_accepted_docs = ParameterQuery::create()->getOneByName('disable_accepted_docs');
+		//$this->container->getParameter('disable_accepted_docs');
 		$form = $this->createForm(new ProjectType($tab_id, $Year, 
 			$securityContext, $disable_accepted_docs), $Project); 
 		 				

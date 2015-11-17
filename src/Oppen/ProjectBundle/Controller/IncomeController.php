@@ -41,6 +41,7 @@ use Oppen\ProjectBundle\Model\CostIncomeQuery;
 use Oppen\ProjectBundle\Model\CostDocQuery;
 use Oppen\ProjectBundle\Model\CostDocIncomeQuery;
 use Oppen\ProjectBundle\Model\AccountQuery;
+use Oppen\ProjectBundle\Model\ParameterQuery;
 
 use Oppen\ProjectBundle\Form\Type\DocType;
 use Oppen\ProjectBundle\Form\Type\DocListType;
@@ -65,7 +66,8 @@ class IncomeController extends Controller
 			$buttons[] = 'delete';
 		}
 		$securityContext = $this->get('security.context');
-		$disable_accepted_docs = $this->container->getParameter('disable_accepted_docs');
+		$disable_accepted_docs = ParameterQuery::create()->getOneByName('disable_accepted_docs');
+		//$this->container->getParameter('disable_accepted_docs');
  		$form = $this->createForm(new IncomeType($Year, true,
 			$securityContext, $disable_accepted_docs), $Income);	
         $form->handleRequest($request); 
@@ -158,7 +160,8 @@ class IncomeController extends Controller
 			$showBookks, $desc, $page, $as_doc_select, $as_bookk_accept);
 
 		$securityContext = $this->get('security.context');
-		$disable_accepted_docs = $this->container->getParameter('disable_accepted_docs');
+		$disable_accepted_docs = ParameterQuery::create()->getOneByName('disable_accepted_docs');
+		//$this->container->getParameter('disable_accepted_docs');
 		$form = $this->createForm(new DocListType($Year, null, true, false, 
 			$securityContext, $disable_accepted_docs), $DocList);						
 		$return = 'doc_list';

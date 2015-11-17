@@ -29,6 +29,7 @@ use Oppen\ProjectBundle\Model\YearQuery;
 use Oppen\ProjectBundle\Model\MonthQuery;
 use Oppen\ProjectBundle\Model\BookkQuery;
 use Oppen\ProjectBundle\Model\AccountQuery;
+use Oppen\ProjectBundle\Model\ParameterQuery;
 
 use Oppen\ProjectBundle\Form\Type\DocListType;
 use Oppen\ProjectBundle\Form\Type\DocType;
@@ -113,7 +114,8 @@ class DocController extends Controller
 									 $as_doc_select, $as_bookk_accept);		
 									 								
 		$securityContext = $this->get('security.context');
-		$disable_accepted_docs = $this->container->getParameter('disable_accepted_docs');
+		$disable_accepted_docs = ParameterQuery::create()->getOneByName('disable_accepted_docs');
+		//$this->container->getParameter('disable_accepted_docs');
 		$form = $this->createForm(new DocListType($Year, null, null, null, 
 			$securityContext, $disable_accepted_docs), $DocList);
 		
@@ -122,7 +124,7 @@ class DocController extends Controller
 			'Month' => $Month,
 			'DocCat' => $DocCat,    
 			'form' => $form->createView(),
-			'buttons' => $buttons,
+			'buttons' => $buttons,disable_accepted_docs
 			'project_id' => 0,
 			'return' => 'docs',
 			'id1' => 0,
@@ -175,7 +177,8 @@ class DocController extends Controller
 		$BEform = $this->createForm(new BookkEntryDialogType($Year, $Account), $BookkEntry); 
 
 		$securityContext = $this->get('security.context');
-		$disable_accepted_docs = $this->container->getParameter('disable_accepted_docs');	
+		$disable_accepted_docs = ParameterQuery::create()->getOneByName('disable_accepted_docs');
+		//$this->container->getParameter('disable_accepted_docs');	
 		$form = $this->createForm(new DocType($Year, true, $hasAcceptedBookks, 
 			$securityContext, $disable_accepted_docs), $Doc);	
         $form->handleRequest($request); 
