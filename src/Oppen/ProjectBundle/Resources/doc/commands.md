@@ -26,6 +26,8 @@ git add *
 git commit -a -m 'xxx'
 git push mh 2.0
 
+heroku logs --tail
+
 ### ClearDB
 
 heroku addons:create cleardb:ignite --fork=mysql://root:123@localhost/oppen
