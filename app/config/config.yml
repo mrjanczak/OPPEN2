@@ -77,14 +77,18 @@ swiftmailer:
     spool:     { type: memory }
 
 # Propel Configuration
+# mysql:host=localhost;port=3306;charset=UTF8;dbname=oppen,oppen-admin,123
+# "pgsql:host=localhost;port=5432;dbname=oppen;options=--client_encoding=UTF8,oppen-admin,123",
 propel:
     dbal:
-        driver:              %database_driver%
-        user:                %database_user%
-        password:            %database_password%
-        dsn:                 %database_driver%:host=%database_host%;dbname=%database_name%;charset=UTF8
-        options:             {}
-        attributes:          {}
+        driver:   "%database_driver%"
+        user:     "%database_user%"
+        password: "%database_password%"
+        dsn:       %database_driver%:host=%database_host%;dbname=%database_name%;options=--client_encoding=UTF8;
+        options:
+            ATTR_PERSISTENT: false
+        attributes:
+            ATTR_EMULATE_PREPARES: true
 
 # FOS User    
 fos_user:

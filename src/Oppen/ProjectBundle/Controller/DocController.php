@@ -124,7 +124,7 @@ class DocController extends Controller
 			'Month' => $Month,
 			'DocCat' => $DocCat,    
 			'form' => $form->createView(),
-			'buttons' => $buttons,disable_accepted_docs
+			'buttons' => $buttons,
 			'project_id' => 0,
 			'return' => 'docs',
 			'id1' => 0,

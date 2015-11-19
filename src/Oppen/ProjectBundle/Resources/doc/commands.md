@@ -1,6 +1,7 @@
 Useful commands for console:
 ----------------------------
 service apache2 restart 
+sudo /etc/init.d/apache2 restart
 
 php app/console propel:migration:generate-diff
 php app/console propel:migration:migrate
@@ -25,9 +26,31 @@ git add *
 git commit -a -m 'xxx'
 git push mh 2.0
 
+### PostgreSQL
+
+CREATE ROLE root WITH PASSWORD '123';
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA oppen TO root;
+
+Migration to a remote server:
+
+	pg_dump -C -h localhost -U oppen_admin oppen | psql -h ec2-54-195-252-202.eu-west-1.compute.amazonaws.com -U fmwywibshtmelk d5ll5jdith257o
+
+ewud-jlGTJpGYXMTVxFxIE_-eU
+
+Migration from MySQL:
+
+	https://github.com/AnatolyUss/FromMySqlToPostgreSql
+
+### ClearDB
+
+heroku addons:create cleardb:ignite --fork=mysql://root:123@localhost/oppen
+
+mysql://b39453a823acea:94b8b6ef@eu-cdbr-west-01.cleardb.com/heroku_09a29fcafd1c0c7?reconnect=true
+host: eu-cdbr-west-01.cleardb.com
+b39453a823acea:94b8b6ef
+
 # Heroku
 heroku git:remote -a 
-
 
 ### Changes
 
