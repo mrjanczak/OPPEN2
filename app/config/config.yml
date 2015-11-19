@@ -84,11 +84,9 @@ propel:
         driver:   "%database_driver%"
         user:     "%database_user%"
         password: "%database_password%"
-        dsn:       %database_driver%:host=%database_host%;dbname=%database_name%;options=--client_encoding=UTF8;
-        options:
-            ATTR_PERSISTENT: false
-        attributes:
-            ATTR_EMULATE_PREPARES: true
+        dsn:       %database_driver%:host=%database_host%;dbname=%database_name%;charset=UTF8;
+        options:    {}
+        attributes: {}
 
 # FOS User    
 fos_user:

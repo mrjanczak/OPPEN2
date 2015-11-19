@@ -36,27 +36,7 @@ Copy FOS/UserBundle views to app/
 	
 	$> cp vendor/friendsofsymfony/user-bundle/FOS/UserBundle/Resources/views/* app/Resources/FOSUserBundle
 	
-Install PostgreSQL server:
 
-	$> apt-get install postgresql postgresql-client
-	$> apt-get install php5-pgsql
-	$> sudo apt-get install pgadmin3
-	
-To start off, we need to set the password of the PostgreSQL user (role) called "postgres"; we will not be able to access the server externally otherwise. As the local “postgres” Linux user, we are allowed to connect and manipulate the server using the psql command.	
-	
-	$> sudo -u postgres psql postgres
-
-This connects as a role with same name as the local user, i.e. "postgres", to the database called "postgres" (1st argument to psql).
-
-Set a password for the "postgres" database role using the command:
-
-		\password postgres
-
-and give your password when prompted. The password text will be hidden from the console for security purposes.
-Type Control+D or \q to exit the posgreSQL prompt. 
-
-	sudo -u postgres createuser -D -A -P oppen_admin
-	sudo -u postgres createdb -O oppen_admin oppen
 
 Relaod your project:
 
