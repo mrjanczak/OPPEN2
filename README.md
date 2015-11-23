@@ -47,6 +47,15 @@ Relaod your project:
 	$> php app/console propel:fixtures:load
 	$> chmod 777 -R app/cache app/logs
 
+heroku config:set SYMFONY__DATABASE_DRIVER=pdo_mysql
+heroku config:set SYMFONY__DATABASE_HOST=127.0.0.1
+heroku config:set SYMFONY__DATABASE_PORT=null
+heroku config:set SYMFONY__DATABASE_NAME=heroku_09a29fcafd1c0c7
+heroku config:set SYMFONY__DATABASE_USER=b39453a823acea
+heroku config:set SYMFONY__DATABASE_PASSWORD='94b8b6ef'
+heroku config:set SYMFONY__LOCALE=pl
+heroku config:set SYMFONY__SECRET=sekretnyseret
+
 
 Access the `config.php` script from a browser:
 

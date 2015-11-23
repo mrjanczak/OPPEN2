@@ -34,6 +34,7 @@ heroku addons:create cleardb:ignite --fork=mysql://root:123@localhost/oppen
 
 mysql://b39453a823acea:94b8b6ef@eu-cdbr-west-01.cleardb.com/heroku_09a29fcafd1c0c7?reconnect=true
 host: eu-cdbr-west-01.cleardb.com
+db:heroku_09a29fcafd1c0c7
 b39453a823acea:94b8b6ef
 
 # Heroku

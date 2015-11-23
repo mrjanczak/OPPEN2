@@ -2,6 +2,7 @@ Manual installation step by step
 ===============================
 
 ### Step 1: Add to composer.json following lines:
+Replace "file": "app/config/parameters.yml" by {}
 
 ```js
 {
@@ -18,7 +19,20 @@ Manual installation step by step
     }
     "extra": {
         ...
-        "symfony-assets-install": "symlink"
+        "symfony-assets-install": "symlink",
+        "incenteev-parameters": {},
+        ...
+        "heroku": {
+            "compile": [
+                "chmod 777 /app/app/cache"
+            ],
+            "document-root": "web",
+            "php-config": [
+                "date.timezone=Europe/Warsaw",
+                "display_errors=off",
+                "short_open_tag=off"
+            ]                
+        }
     }
 }
 ```
