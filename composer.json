@@ -26,10 +26,12 @@
         "bmatzner/jquery-bundle": "~1.9",
         "bmatzner/jquery-ui-bundle": "*",
         "stfalcon/tinymce-bundle": "dev-master",
-        "punkave/symfony2-file-uploader-bundle": "dev-master",
-        "ext-PDO": "*"
+        "punkave/symfony2-file-uploader-bundle": "dev-master"
     },
     "scripts": {
+        "pre-install-cmd": [
+            "Oppen\\ProjectBundle\\HerokuDatabase::populateEnvironment"
+         ],    
         "post-install-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
@@ -52,7 +54,16 @@
         "symfony-app-dir": "app",
         "symfony-web-dir": "web",
         "symfony-assets-install": "symlink",
-        "incenteev-parameters": {},
+        "incenteev-parameters": {
+            "file": "app/config/parameters.yml",
+			"env-map": {
+				"database_host": "DATABASE_HOST",
+				"database_port": "DATABASE_PORT",
+				"database_name": "DATABASE_NAME",
+				"database_user": "DATABASE_USER",
+				"database_password": "DATABASE_PASSWORD"
+			}            
+        },
         "branch-alias": {
             "dev-master": "2.4-dev"
         },

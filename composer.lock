@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "b5ea5c25bed438cda998d6b90a91edfd",
-    "content-hash": "466e8c19f962e1ac7cd81658186146ac",
+    "hash": "fc0af5b1cc3e9fe7f03a6dedcb8dd044",
+    "content-hash": "7d28a6c8ee334c9d72ef39d9a4857a21",
     "packages": [
         {
             "name": "bmatzner/jquery-bundle",
@@ -2268,7 +2268,8 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=5.3.3"
+        "php": ">=5.3.3",
+        "ext-pdo": "*"
     },
     "platform-dev": []
 }

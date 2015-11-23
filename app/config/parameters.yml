@@ -3,9 +3,9 @@ parameters:
     database_driver: pdo_mysql
     database_host: 127.0.0.1
     database_port: null
-    database_name: heroku_09a29fcafd1c0c7
-    database_user: b39453a823acea
-    database_password: '94b8b6ef'
+    database_name: oppen
+    database_user: oppen-admin
+    database_password: 123
     mailer_transport: smtp
     mailer_host: 127.0.0.1
     mailer_user: null
