@@ -26,7 +26,8 @@
         "bmatzner/jquery-bundle": "~1.9",
         "bmatzner/jquery-ui-bundle": "*",
         "stfalcon/tinymce-bundle": "dev-master",
-        "punkave/symfony2-file-uploader-bundle": "dev-master"
+        "punkave/symfony2-file-uploader-bundle": "dev-master",
+        "ext-mbstring": "*"
     },
     "scripts": {
         "pre-install-cmd": [
