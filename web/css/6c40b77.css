@@ -1,0 +1,336 @@
+body {
+    font-size: 12px;
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Verdana, Arial, Helvetica, sans-serif;
+}
+div{
+	vertical-align:text-top;
+}
+div.header {
+	padding: 10px 30px 20px 30px;
+}
+div.top-menu {
+    float: right;
+    position:relative;
+    right:0px;
+    top:35px;
+    padding: 0px;
+}
+ul.menu {
+	display: inline;
+}
+ul.sub-menu {
+	border-bottom: solid #000 thin;
+	padding: 5px;
+}
+ul.list {
+	margin-top: 10px;
+}
+li.list {
+	list-style-type: square;
+	margin-left: 20px;
+}
+div.content-header {
+	padding: 5px 5px 10px 5px ;
+	border-bottom: solid #000 thin;	
+}
+.content-header div.title {
+	font-size: 20px;
+	font-family: "Lucida Sans Unicode", "Lucida Grande", Verdana, Arial, Helvetica, sans-serif;
+	display:inline;
+}
+.content-header div.toolbar {
+	float: right;
+	display:inline;
+}
+div.filter {
+	padding: 5px 5px 15px 5px ;
+	display:block;
+	border-bottom: solid #000 thin;
+	margin-bottom: 10px;
+}
+.filter div.fields {
+	width:600px;
+	margin:5px;
+	display:inline;
+}
+.filter div.search {
+    float: right;
+}
+div.s, th.s, td.s  {
+	width:100%;
+	border-bottom:solid #000 thin;
+	margin-bottom:5px;
+}
+textarea.wide  {
+	width:100%;
+	height:100px;
+}
+div.comment {
+	font-size: 10px;
+	color: #999;
+}
+span.b {
+	font-weight:   bold;}
+span.orange {
+	color:orange;}
+span.green {
+	color:green;}
+span.red {
+	color:red;}
+	
+li.i {
+	display: inline;
+}
+div.i {
+	display: inline-block;
+}
+.h {
+	display:none;
+}
+.b {
+    font-weight:   bold;	
+}
+.c, th.c, td.c {
+	text-align: center;
+}
+.r, th.r, td.r {
+	text-align: right;
+}
+div.pager_links {
+	margin-top : 20px;
+	border-top: solid #000 thin;
+}
+span.dialog-icon {
+	float:left !important; 
+	margin:0 7px 200px 0 !important;
+}
+
+/* table form */
+
+table.list tbody tr.odd {
+	background-color : #eee;
+}
+table.form tbody tr th {
+	font-weight:   bold;
+	padding:5px;
+}
+table.form tbody tr td {
+	vertical-align:top;
+	padding:5px;
+}
+th.col_no {
+	width:70px;}
+td.right-border {
+	border-right:solid #000 thin;
+}
+td.bookk_side {
+	width:220px;
+}
+th.option-column {
+	width:150px;
+}
+td {
+	vertical-align:text-top;	
+	padding:10px;
+}
+td.item_level_0 {
+	font-weight:   bold;
+	font-size:14px;
+}
+.item, .checkbox {
+	width:30px;	
+}
+.item, .toggle_items, .checkbox {
+	text-align:center;
+}
+td.item_level_1 {
+	font-weight:   bold;
+}
+td.item_level_3 {
+	font-style:   italic;
+}
+
+/* div form */
+
+div.form {
+	padding: 5px;
+	display: inline-block;
+}
+div.form-row  {
+	margin:5px 0;
+}
+div.form-row div label {
+	margin: 0 10px 0 0;
+}
+div.form-column {
+	width: 320px;
+	margin:5px;
+	display: inline-block;
+}
+div.w50 {
+	width:50px;
+}
+div.w100 {
+	width:100px;
+}
+div.w200 {
+	width:200px;
+}
+div.w300, input.w300, textarea.w300, td.w300 {
+	width:300px;
+}
+div.w600, input.w600, textarea.w600 {
+	width:600px;
+}
+div.option-column {
+	width:200px;
+}
+div.label {
+	width:150px;
+}
+
+/* Common fields */
+
+.date, .from_date, .to_date {
+	width:80px;
+}
+input.text, textarea.text {
+	width:300px;
+}
+#progressbar {
+	width:300px;
+	display: inline-block;
+	margin-top:-6px;
+}
+/* Project */
+
+div.tasks_label, div.balance_label {
+	font-weight: bold;
+	font-size:16px;
+}
+textarea.task-comment {
+	width: 600px;
+	height: 150px;
+}
+/* Document */
+
+div.bookks_label {
+	font-weight: bold;
+	font-size:16px;
+}
+div.bookk {
+	float:normal;
+	margin-bottom: 5px;
+}
+div.bookk_sides{
+	text-align:right;
+}
+div.bookk_side,div.bookk_side1,div.bookk_side2{
+	width:250px;
+	text-align:left;
+}
+input.desc_wide {
+	width:600px;
+}
+input.accNo, div.accNo {
+	width:120px;
+	display: inline-block;	
+}
+input.value, div.value {
+	width:60px;
+	display: inline-block;
+}
+textarea.tinymce {
+	width:100%; 
+}
+
+/* message */
+
+div.message, div.error {
+	margin-bottom: 10px;
+}
+.message-container
+{
+    padding: 0.5em;
+    line-height: 1em;
+}
+.message-container p
+{
+    padding: 0 1em;
+    margin: 17.6px 0;
+}
+.message-container p .ui-icon
+{
+    margin-right: .3em;
+}
+.ui-widget-header
+{
+    text-align: center;
+}
+
+
+/* printable */
+.page, .page-break {
+	page-break-after: always;	
+}
+.last-page {
+	page-break-after: avoid;	
+}
+.page p, .last-page p {
+ margin-top:0.2em;
+ margin-bottom: 0em;
+}
+
+.flash-message {
+    padding: 10px;
+    margin: 5px;
+    margin-top: 15px;
+    background-color: #ffe;
+}
+
+#login label {
+    display: block;
+    float: left;
+    width: 90px;
+}
+
+.sf-reset .error {
+    color: red;
+}
+.sf-reset p {
+	font-size: 12px;
+    line-height:    12px;
+    padding-bottom: 5px;
+}
+.sf-reset a,
+.sf-reset li a {
+    color: #08C;
+    text-decoration: none;
+}
+.sf-reset a:hover,
+.sf-reset li a:hover {
+    color: #08C;
+    text-decoration: underline;
+}
+.sf-reset .symfony-content pre {
+    white-space: pre;
+    font-family: monospace;
+}
+.border td, .border th {
+border: 1px solid black;
+font-size: 10px;}
+.register_doc .c1 {width: 70px}
+.register_doc .c2 {width: 70px}
+.register_doc .c3 {width: 70px}
+.register_doc .c4 {width: 70px}
+.register_doc .c5 {width: 70px}
+.register_doc .c6 {width: 300px}
+.register_doc .c7 {width: 70px}
+.register_doc .c8 {width: 80px}
+
+.register_bookk .c1 {width: 57px}
+.register_bookk .c2 {width: 300px}
+
+.register_bookk_entry .c1 {width: 20px}
+.register_bookk_entry .c2 {width: 100px}
+.register_bookk_entry .c3 {width: 100px}

@@ -2,7 +2,6 @@ Manual installation step by step
 ===============================
 
 ### Step 1: Add to composer.json following lines:
-Replace "file": "app/config/parameters.yml" by {}
 
 ```js
 {
@@ -20,7 +19,16 @@ Replace "file": "app/config/parameters.yml" by {}
     "extra": {
         ...
         "symfony-assets-install": "symlink",
-        "incenteev-parameters": {},
+        "incenteev-parameters": {
+            "file": "app/config/parameters.yml",
+			"env-map": {
+				"database_host": "DATABASE_HOST",
+				"database_port": "DATABASE_PORT",
+				"database_name": "DATABASE_NAME",
+				"database_user": "DATABASE_USER",
+				"database_password": "DATABASE_PASSWORD"
+			}            
+        },
         ...
         "heroku": {
             "compile": [
