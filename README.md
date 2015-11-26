@@ -35,8 +35,6 @@ Then install all vendors with Composer and build model
 Copy FOS/UserBundle views to app/
 	
 	$> cp vendor/friendsofsymfony/user-bundle/FOS/UserBundle/Resources/views/* app/Resources/FOSUserBundle
-	
-
 
 Relaod your project:
 

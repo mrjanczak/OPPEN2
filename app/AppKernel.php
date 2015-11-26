@@ -5,7 +5,7 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 
 class AppKernel extends Kernel
 {
-	/*
+	
 	public function getRootDir()
 	{
 		if (isset($_ENV['SYMFONY_ENV']) && $_ENV['SYMFONY_ENV'] == 'prod') {
@@ -14,7 +14,7 @@ class AppKernel extends Kernel
 		}
 		return parent::getRootDir();
 	}
-	*/
+	
 
     public function registerBundles()
     {
