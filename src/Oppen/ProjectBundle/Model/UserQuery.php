@@ -2,8 +2,8 @@
 
 namespace Oppen\ProjectBundle\Model;
 
-use FOS\UserBundle\Propel\om\BaseUserQuery;
-
+use Oppen\ProjectBundle\Model\om\BaseUserQuery;
+    //FOS\UserBundle\Propel\om\
 class UserQuery extends BaseUserQuery
 {
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace FOS\UserBundle\Propel\om;
+namespace Oppen\ProjectBundle\Model\om;
 
 use \BaseObject;
 use \BasePeer;
@@ -757,7 +757,7 @@ abstract class BaseUser extends BaseObject implements Persistent
      *               Empty strings are treated as null.
      * @return User The current object (for fluent API support)
      */
-    public function setLastLogin(DateTime $v = null)
+    public function setLastLogin(DateTime $v)
     {
         $dt = PropelDateTime::newInstance($v, null, 'DateTime');
         if ($this->last_login !== null || $dt !== null) {

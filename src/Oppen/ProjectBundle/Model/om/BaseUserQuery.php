@@ -1,6 +1,6 @@
 <?php
 
-namespace FOS\UserBundle\Propel\om;
+namespace Oppen\ProjectBundle\Model\om;
 
 use \Criteria;
 use \Exception;
