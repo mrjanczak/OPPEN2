@@ -84,8 +84,7 @@ propel:
 fos_user:
     db_driver: propel
     firewall_name: main
-    user_class: Oppen\ProjectBundle\Model\User
-               #FOS\UserBundle\Propel\User  
+    user_class: FOS\UserBundle\Propel\User  
     group:
         group_class: FOS\UserBundle\Propel\Group
  
