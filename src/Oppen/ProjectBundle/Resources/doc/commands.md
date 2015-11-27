@@ -31,7 +31,7 @@ git push mh 2.0
 heroku git:remote -a 
 heroku logs --tail
 heroku run php app/console assets:install web
-
+heroku run php app/console propel:model:build
 
 ### Changes
 
