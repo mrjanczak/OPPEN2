@@ -32,11 +32,15 @@ Then install all vendors with Composer and build model
 	$> curl -s https://getcomposer.org/installer | php
 	$> composer install
 	
-Copy FOS/UserBundle views to app/
-	
-	$> cp vendor/friendsofsymfony/user-bundle/FOS/UserBundle/Resources/views/* app/Resources/FOSUserBundle
+Copy views of UserBundle to app/Resources
 
-Relaod your project:
+    $> cp vendor/friendsofsymfony/user-bundle/FOS/UserBundle/Resources/views/* app/Resources/FOSUserBundle
+
+and set new template in UserBundle layout:
+
+    $> echo "{% extends 'OppenProjectBundle::layout.html.twig' %}" > app/Resources/FOSUserBundle/layout.html.twig
+
+Update your project:
 
 	$> php bin/vendors update
 	$> php app/console assets:install web
@@ -44,16 +48,6 @@ Relaod your project:
 	$> php app/console propel:schema:create
 	$> php app/console propel:fixtures:load
 	$> chmod 777 -R app/cache app/logs
-
-	$> heroku config:set SYMFONY__DATABASE_DRIVER=pdo_mysql
-	$> heroku config:set SYMFONY__DATABASE_HOST=127.0.0.1
-	$> heroku config:set SYMFONY__DATABASE_PORT=null
-	$> heroku config:set SYMFONY__DATABASE_NAME=xxxxxxxxxxxxxx
-	$> heroku config:set SYMFONY__DATABASE_USER=xxxxxxxxxxxxxx
-	$> heroku config:set SYMFONY__DATABASE_PASSWORD='xxxxxxxxx'
-	$> heroku config:set SYMFONY__LOCALE=pl
-	$> heroku config:set SYMFONY__SECRET=xxxxxxxxxxxxxxxxxxxxx
-
 
 Access the `config.php` script from a browser:
 
