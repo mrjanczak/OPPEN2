@@ -19,7 +19,7 @@
         "sensio/framework-extra-bundle": "~3.0",
         "sensio/generator-bundle": "~2.3",
         "incenteev/composer-parameter-handler": "~2.0",
-        "propel/propel-bundle": "1.2.*",
+        "propel/propel-bundle": "1.4.*",
         "friendsofsymfony/user-bundle": "~1.3",
         "willdurand/propel-typehintable-behavior": "~1.0",
         "oneup/uploader-bundle": "^1.3",

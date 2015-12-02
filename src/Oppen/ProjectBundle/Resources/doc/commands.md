@@ -26,10 +26,12 @@ git add *
 git commit -a -m 'xxx'
 git push mh 2.0
 
-
 # Heroku
 heroku login
 heroku git:clone -a oppen-project
+git add *
+git commit -a -m 'xxx'
+git push heroku master
 
 heroku git:remote -a 
 heroku logs --tail

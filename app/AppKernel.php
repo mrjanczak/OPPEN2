@@ -5,16 +5,6 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 
 class AppKernel extends Kernel
 {
-	/*
-	public function getRootDir()
-	{
-		if (isset($_ENV['SYMFONY_ENV']) && $_ENV['SYMFONY_ENV'] == 'prod') {
-			// Workaround to avoid problem with the slug of heroku
-			return '/app/app';
-		}
-		return parent::getRootDir();
-	}
-	*/
 
     public function registerBundles()
     {
