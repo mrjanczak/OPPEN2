@@ -198,6 +198,7 @@ parameters:
 ### Step 7: Copy views of UserBundle to app/Resources
 
     $> cp vendor/friendsofsymfony/user-bundle/FOS/UserBundle/Resources/views/* app/Resources/FOSUserBundle
+    $> cp src/oppen/user-bundle/FOS/UserBundle/Resources/views/* app/Resources/FOSUserBundle
 
 and set new template in UserBundle layout:
 

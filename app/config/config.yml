@@ -1,10 +1,11 @@
 imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
-    - { resource: "@OppenProjectBundle/Resources/config/services.yml" }
+    - { resource: services.yml }
+#    - { resource: "@OppenProjectBundle/Resources/config/services.yml" }
 
 framework:
-    #esi:             ~
+    # esi:             ~
     translator:      { fallback: "%locale%" }
     secret:          "%secret%"
     router:
@@ -15,15 +16,15 @@ framework:
     validation:      { enable_annotations: true }
     templating:
         engines: ['twig']
-        #assets_version: SomeVersionScheme
+        # assets_version: SomeVersionScheme
     default_locale:  "%locale%"
     trusted_hosts:   ~
     trusted_proxies: ~
     session:
-        handler_id: session.handler.native_file
-        save_path: "%kernel.root_dir%/sessions"
+        # handler_id: session.handler.native_file
+        # save_path: "%kernel.root_dir%/sessions"
         # handler_id set to null will use default session handler from php.ini
-        # handler_id:  ~
+        handler_id:  ~
     fragments:       ~
     http_method_override: true
 
@@ -40,8 +41,9 @@ twig:
 assetic:
     debug:          "%kernel.debug%"
     use_controller: false
-    bundles:        [ OppenProjectBundle ]
-    #java: /usr/bin/java
+    bundles:        [ ]
+        # OppenProjectBundle ]
+    # java: /usr/bin/java
     filters:
         cssrewrite: ~
         #closure:

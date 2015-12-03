@@ -1,10 +1,14 @@
-home:
-    path:  /
-    defaults: { _controller: OppenProjectBundle:Settings:home }
+app:
+    resource: "@AppBundle/Controller/"
+    type:     annotation
+    
+#home:
+#    path:  /
+#    defaults: { _controller: OppenProjectBundle:Settings:home }
 
-oppen:
-    resource: "@OppenProjectBundle/Resources/config/routing.yml"
-    prefix: /oppen
+#oppen:
+#    resource: "@OppenProjectBundle/Resources/config/routing.yml"
+#    prefix: /oppen
 
 fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"

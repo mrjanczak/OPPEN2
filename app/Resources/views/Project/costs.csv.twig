@@ -1,0 +1,44 @@
+Lp; {# -#}
+Nr Dok; {# -#}
+Nr i Data umowy; {# -#}
+Data rach.; {# -#}
+Data zapłaty; {# -#}
+Nr Poz.; {# -#}
+Nazwa wydatku; {# -#}
+Łącznie; {# -#}
+{% for Income in Project.Incomes -%} 
+	{{ Income.shortname}};{# -#}
+{% endfor %}
+
+{% for Cost in Project.Costs %}
+	
+	{{Cost.name }};{# -#}
+	;;;;;; {# -#}
+	{{ Cost.value }}; {# -#}
+	{% for CostIncome in Cost.CostIncomes -%} 
+		{{ CostIncome.value }}; {# -#}
+	{% endfor -%}
+
+	{% for i,CostDoc in Cost.CostDocs %}
+		
+		{% set Doc = CostDoc.Doc -%}
+		{{i}}; {# -#}
+		{{ Doc.DocNo }}; {# -#}
+		{% if Doc.Contracts[0] -%}
+			umowa {{ Doc.Contracts[0].contractNo}} z dnia {{ Doc.Contracts[0].contractDate|date("d/m/Y")}}; {# -#}
+		{% else -%}
+			;{# -#}
+		{% endif -%}
+		{{ Doc.documentDate|date("d/m/Y") }}; {# -#}
+		{{ Doc.paymentDate|date("d/m/Y") }}; {# -#}
+		{{Cost.sortableRank }}; {# -#}
+		{{ Doc.desc }}; {# -#}
+		{{ CostDoc.value }}; {# -#}
+		{% for CostDocIncome in CostDoc.CostDocIncomes -%} 
+			{{ CostDocIncome.value }}; {# -#}
+		{% endfor -%}
+	{% endfor -%}
+{% endfor -%}
+
+
+

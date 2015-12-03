@@ -1,0 +1,23 @@
+{% extends "OppenProjectBundle::layout.html.twig" %}
+
+{% block content %}
+{{ form_start(form, {'method': 'post'}) }}
+
+<div class="content-header">
+	<div class='title'> Dokumenty  ({{subtitle}})</div> 		
+</div>		
+				
+	{{ form_errors(form) }}
+	
+	{% set DocListF =  form %}
+
+	{% include 'OppenProjectBundle:Doc:list2.html.twig' %}
+	
+<div class="h">{{ form_rest(form) }}</div>
+
+{{ form_end(form) }}
+{% endblock %}
+
+{% block jquery %}
+{% include 'OppenProjectBundle:Doc:list.js.twig' %}
+{% endblock %}

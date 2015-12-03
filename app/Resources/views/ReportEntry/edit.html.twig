@@ -1,0 +1,31 @@
+{% extends "OppenProjectBundle::layout.html.twig" %}
+{% form_theme form 'OppenProjectBundle:Form:fields.html.twig' %}
+
+{% block content %}
+{{ form_start(form, {'method': 'post', attr:{ 'id':'Year-form'}}) }}
+
+<div class="content-header">
+	<div class='title'> Pozycja Raportu: {{Report.name}} {{Report.Year.name}} /{{form.no.vars.value}} </div> 
+
+	<div class='toolbar'>
+	{% for button in buttons %}
+		<span>{{ form_widget(form[button]) }}</span>	
+	{% endfor %}			
+	</div>		
+</div>	
+
+	<div class="form">
+		{{ form_row(form.no) }}
+		{{ form_row(form.name) }}
+		{{ form_row(form.symbol) }}
+		{{ form_row(form.formula) }}
+		{{ form_row(form.Parent) }}
+	</div>	
+
+<div class="h">
+	{{ form_rest(form) }}
+</div>
+		
+{{ form_end(form) }}
+{% endblock %}
+

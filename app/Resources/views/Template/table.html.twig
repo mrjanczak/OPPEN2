@@ -1,0 +1,31 @@
+<table class="form list">
+<tbody>
+	
+	{% for r,row in data %}
+	
+		{% if loop.first %}
+		<tr>
+			{% for c,col in row %}
+			<th>{{ col }}</th>	
+			{% endfor %}	
+		</tr>
+
+		{% elseif loop.last and r == 'total' %}
+		<tr>
+			{% for c,col in row %}
+			<td><b>{{ col }}</b></td>	
+			{% endfor %}	
+		</tr>
+		
+		{% else %}
+		<tr>
+			{% for c,col in row %}
+			<td>{{ col }}</td>	
+			{% endfor %}	
+		</tr>
+		{% endif %}
+		
+	{% endfor %}
+	
+</tbody>
+</table>

@@ -1,0 +1,19 @@
+{% block content %}
+
+<h1 class='title'> Konto </h1>
+
+{{ form_start(form, {'method': 'post'}) }}
+
+	{{ form_row(form.Account) }} 
+	{{ form_row(form.FileLev1) }}
+	{{ form_row(form.FileLev2) }}
+	{{ form_row(form.FileLev3) }}
+			
+	{{ form_errors(form) }}	
+
+<div style="display: none;">{{ form_rest(form) }}</div>
+
+{{ form_end(form) }}	
+
+{% endblock %}
+

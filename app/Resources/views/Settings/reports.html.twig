@@ -1,0 +1,23 @@
+{% form_theme form 'OppenProjectBundle:Form:fields_inline.html.twig' %}
+
+<div class='filter' >		
+	<div class="search">{{ form_widget(form.search) }}</div>
+	<div class="fields">{{ form_row(form.Year) }}	  </div>
+</div>
+
+<table class="form list">
+<tbody>
+	<tr><th>{%trans%}headers.common.name{%endtrans%} </th></tr>	
+
+	{% for Report in form.Reports %}
+	<tr><td> <a href={{ path('oppen_report_edit', { 'report_id' : Report.id.vars.value, 'year_id' : Year.id}) }}> 
+				{{ Report.name.vars.value }} ({{Report.shortname.vars.value}})</a>   </td> 
+	</tr>
+	{% endfor %}
+		
+</tbody>
+</table>	
+
+
+
+

@@ -1,0 +1,25 @@
+{% extends "OppenProjectBundle::layout.html.twig" %}
+
+{% block content %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+{% form_theme form 'OppenProjectBundle:Form:fields.html.twig' %}
+
+{{ form_start(form, {'method': 'post'}) }}
+
+<div class="content-header">
+	<div class='title'>  
+		 Użytkownik: {{form.username.vars.value}}
+	</div> 
+	
+	<div class='toolbar'>
+	{% for button in buttons %}
+		<span>{{ form_widget(form[button]) }}</span>	
+	{% endfor %}			
+	</div>
+</div>
+
+{{ form_widget(form) }}
+{{ form_end(form) }}
+
+{% endblock %}

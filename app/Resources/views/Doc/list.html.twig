@@ -1,0 +1,32 @@
+{% extends "OppenProjectBundle::layout.html.twig" %}
+
+{% block content %}
+{{ form_start(form, {'method': 'post'}) }}
+
+<div class="content-header">
+	<div class='title'> {%trans%} modules.documents {%endtrans%} {{subtitle}} 
+		{% if Month is not null and Month.id > 0 and DocCat is not null and DocCat.id > 0 %}
+			<a href={{ path('oppen_doc', { 'doc_id' : 0, 'month_id' : Month.id ,'doc_cat_id' : DocCat.id}) }}> ( + ) </a> 
+		{% endif %}
+	</div> 
+	
+	<div class='toolbar'>
+	{% for button in buttons %}
+		<span>{{ form_widget(form[button]) }}</span>	
+	{% endfor %}			
+	</div>			
+</div>		
+				
+	{{ form_errors(form) }}
+	
+	{% set DocListF = form %}
+	{% include 'OppenProjectBundle:Doc:list2.html.twig' %}
+	
+<div class="h">{{ form_rest(form) }}</div>
+
+{{ form_end(form) }}
+{% endblock %}
+
+{% block jquery %}
+{% include 'OppenProjectBundle:Doc:list.js.twig' %}
+{% endblock %}

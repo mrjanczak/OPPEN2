@@ -1,0 +1,57 @@
+{% extends "OppenProjectBundle::layout.html.twig" %}
+
+{% block content %}
+{{ form_start(form, {'method': 'post'}) }}
+{% set project_id = form.id.vars.value %}
+
+{% if project_id is empty %}
+	{% set project_id = 0 %}
+{% endif %}
+
+<ul class="sub-menu">
+	{% for key, tab in tabs%}
+		<li class='i'><a href={{ path('oppen_project', {'project_id': project_id, 'tab_id': key, 'year_id': Year.id }) }}
+		{% if key == tab_id %}
+			class='b'
+		{% endif %} >
+		{%set tab_ = 'tabs.project.'~tab%}
+		{{ tab_|trans }} </a> | </li>
+	{% endfor %}
+</ul>
+{%set tab_ = 'tabs.project.'~tabs[tab_id]%}
+<div class="content-header">
+	<div class='title'> {%trans%} modules.projects {%endtrans%} - {{form.name.vars.value}} - {{ tab_|trans }}</div> 
+	<div class='toolbar'>
+	{% for button in buttons %}
+		<span>{{ form_widget(form[button]) }}</span>	
+	{% endfor %}			
+	</div>
+</div>
+
+{{ form_errors(form) }}
+   
+{% include 'OppenProjectBundle:Project:' ~ tabs[tab_id] ~ '.html.twig' %}
+
+<div class="h">
+	{{ form_rest(form) }}
+</div>
+		
+{{ form_end(form) }}
+
+{% if tab_id == 1 and project_id > 0 %}
+	<div id="Tform" data-width="650" data-height="400" title="Opis zadania" class="h">
+	{{ form_start(Tform) }}
+		{{ form_row(Tform.desc,{"attr":{"class":"w600"}}) }}
+		{{ form_row(Tform.comment,{"attr":{"class":"task-comment"}}) }}
+		{{ form_row(Tform.User) }}
+		{{ form_row(Tform.send_reminder) }}
+	{{ form_end(Tform) }}
+	</div>
+{% endif %}
+
+{% endblock %}
+
+{% block jquery %}
+{% include 'OppenProjectBundle:Doc:list.js.twig' %}
+{% include 'OppenProjectBundle:Project:edit.js.twig' %}
+{% endblock %}

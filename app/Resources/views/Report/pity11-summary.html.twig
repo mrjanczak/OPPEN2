@@ -1,0 +1,24 @@
+<table class="form list"><tbody>
+	<tr>
+		<th>imie i nazwisko</th>
+		<th>email</th>
+		<th>brutto</th>
+		<th>netto</th>
+		<th>koszty</th>
+		<th>PDOF</th>
+		<th>plik</th>		
+	</tr>
+			
+	{% for ItemColl in ItemColls %}
+	{% set d = ItemColl.data %}
+	<tr>
+		<td>{{ d.first_name }} {{ d.last_name }} </td>
+		<td>{{ d.email }} </td>
+		<td>{{ d.gross }} </td>
+		<td>{{ d.netto }} </td>
+		<td>{{ d.income_cost }} </td>
+		<td>{{ d.tax }} </td>
+		<td>{{ d.filename }} </td>
+	</tr>
+	{% endfor %}
+</tbody></table>
