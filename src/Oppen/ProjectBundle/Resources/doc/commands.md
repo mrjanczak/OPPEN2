@@ -26,6 +26,7 @@ git commit -a -m 'xxx'
 git push mh 2.0
 
 $loader->add('FOS', __DIR__.'/../vendor/friendsofsymfony/user-bundle');
+$loader->add('Sensio', __DIR__.'/../vendor/sensio/generator-bundle');
 
 # Heroku
 
