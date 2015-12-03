@@ -8,7 +8,6 @@ php app/console propel:migration:migrate
 php app/console propel:model:build
 
 php app/console router:debug --env=prod
-
 php composer.phar install --no-dev --optimize-autoloader
 
 sudo chmod -R 777 app
@@ -26,8 +25,9 @@ git add *
 git commit -a -m 'xxx'
 git push mh 2.0
 
-# Heroku
+$loader->add('FOS', __DIR__.'/../vendor/friendsofsymfony/user-bundle');
 
+# Heroku
 
 	$> heroku config:set SYMFONY__DATABASE_DRIVER=pdo_mysql
 	$> heroku config:set SYMFONY__DATABASE_HOST=127.0.0.1
@@ -48,6 +48,8 @@ heroku git:remote -a
 heroku logs --tail
 heroku run php app/console assets:install web
 heroku run php app/console propel:model:build
+
+heroku run composer install -dev --optimize-autoloader
 
 ### Changes
 
