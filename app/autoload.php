@@ -8,7 +8,7 @@ use Composer\Autoload\ClassLoader;
  */
 $loader = require __DIR__.'/../vendor/autoload.php';
 
-$loader->add('SensioGeneratorBundle', __DIR__.'/../vendor/sensio/generator-bundle');
+$loader->add('SensioGeneratorBundle', __DIR__.'/../vendor/sensio/generator-bundle/Sensio/Bundle/GeneratorBundle');
 
 AnnotationRegistry::registerLoader(array($loader, 'loadClass'));
 
