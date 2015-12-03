@@ -36,7 +36,7 @@
     
     "scripts": {
         "pre-install-cmd": [
-            "Oppen\\ProjectBundle\\HerokuDatabase::populateEnvironment"
+            "AppBundle\\HerokuDatabase::populateEnvironment"
          ],    
         "post-install-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
