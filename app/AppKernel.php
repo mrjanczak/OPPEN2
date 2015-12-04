@@ -16,17 +16,18 @@ class AppKernel extends Kernel
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
+            new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle(),
             
             new Propel\PropelBundle\PropelBundle(),
-            new FOS\UserBundle\FOSUserBundle(),          
             new Bmatzner\JQueryBundle\BmatznerJQueryBundle(),
             new Bmatzner\JQueryUIBundle\BmatznerJQueryUIBundle(),
             new PunkAve\FileUploaderBundle\PunkAveFileUploaderBundle(),
             new Stfalcon\Bundle\TinymceBundle\StfalconTinymceBundle(),
             new Oneup\UploaderBundle\OneupUploaderBundle(),
-            // new Oppen\ProjectBundle\OppenProjectBundle(),
+
             new AppBundle\AppBundle(),
-            new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle()
+            new FOS\UserBundle\FOSUserBundle(),
+            new Oppen\ProjectBundle\OppenProjectBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
