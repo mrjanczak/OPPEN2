@@ -28,7 +28,7 @@ abstract class BaseUserGroupPeer
     const OM_CLASS = 'FOS\\UserBundle\\Propel\\UserGroup';
 
     /** the related TableMap class for this table */
-    const TM_CLASS = 'FOS\\UserBundle\\Propel\\map\\UserGroupTableMap';
+    const TM_CLASS = 'FOS\\UserBundle\\Propel\\UserGroupTableMap';
 
     /** The total number of columns. */
     const NUM_COLUMNS = 2;
@@ -1113,7 +1113,7 @@ abstract class BaseUserGroupPeer
     {
       $dbMap = Propel::getDatabaseMap(BaseUserGroupPeer::DATABASE_NAME);
       if (!$dbMap->hasTable(BaseUserGroupPeer::TABLE_NAME)) {
-        $dbMap->addTableObject(new \FOS\UserBundle\Propel\map\UserGroupTableMap());
+        $dbMap->addTableObject(new \FOS\UserBundle\Propel\UserGroupTableMap());
       }
     }
 

@@ -26,7 +26,7 @@ abstract class BaseUserPeer
     const OM_CLASS = 'FOS\\UserBundle\\Propel\\User';
 
     /** the related TableMap class for this table */
-    const TM_CLASS = 'FOS\\UserBundle\\Propel\\map\\UserTableMap';
+    const TM_CLASS = 'FOS\\UserBundle\\Propel\\UserTableMap';
 
     /** The total number of columns. */
     const NUM_COLUMNS = 17;
@@ -555,7 +555,7 @@ abstract class BaseUserPeer
     {
       $dbMap = Propel::getDatabaseMap(BaseUserPeer::DATABASE_NAME);
       if (!$dbMap->hasTable(BaseUserPeer::TABLE_NAME)) {
-        $dbMap->addTableObject(new \FOS\UserBundle\Propel\map\UserTableMap());
+        $dbMap->addTableObject(new \FOS\UserBundle\Propel\UserTableMap());
       }
     }
 
