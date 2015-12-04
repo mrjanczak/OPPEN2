@@ -11,7 +11,7 @@
 
 namespace FOS\UserBundle\Propel;
 
-use FOS\UserBundle\Propel\om\BaseGroupPeer;
+use FOS\UserBundle\Propel\BaseGroupPeer;
 
 class GroupPeer extends BaseGroupPeer
 {
