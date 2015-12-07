@@ -1,5 +1,5 @@
 imports:
-    - { resource: parameters_prod.php }
+    # - { resource: parameters_prod.php }
     - { resource: config.yml }
 
 # Assetic
