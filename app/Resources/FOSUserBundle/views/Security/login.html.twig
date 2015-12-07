@@ -25,7 +25,7 @@
 </form>
 </br>
 </br>
-host={{database_host}}:{% if var is not null %} {{database_port}}{% endif %}; 
+host={{database_host}}:{% if database_port is not null %} {{database_port}}{% endif %}; 
 {{database_name}}@{{database_user}}:{{database_password}}
 
 {% endblock fos_user_content %}
