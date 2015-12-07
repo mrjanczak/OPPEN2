@@ -46,6 +46,9 @@ class SecurityController extends ContainerAware
             'last_username' => $lastUsername,
             'error'         => $error,
             'csrf_token' => $csrfToken,
+            'database_name' => $this->container->getParameter('database_name'),
+            'database_user' => $this->container->getParameter('database_user'),
+            'database_password' => $this->container->getParameter('database_password'),
         ));
     }
 
