@@ -33,10 +33,7 @@
         "symfony/phpunit-bridge": "~2.7"
     },
     
-    "scripts": {
-        "pre-install-cmd": [
-            "AppBundle\\HerokuDatabase::populateEnvironment"
-         ],    
+    "scripts": {    
         "post-install-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
@@ -64,11 +61,11 @@
         "incenteev-parameters": {
             "file": "app/config/parameters.yml",
 			"env-map": {
-				"database_host": "DATABASE_HOST",
-				"database_port": "DATABASE_PORT",
-				"database_name": "DATABASE_NAME",
-				"database_user": "DATABASE_USER",
-				"database_password": "DATABASE_PASSWORD"
+				"database_host": "SYMFONY__DATABASE_HOST",
+				"database_port": "SYMFONY__DATABASE_PORT",
+				"database_name": "SYMFONY__DATABASE_NAME",
+				"database_user": "SYMFONY__DATABASE_USER",
+				"database_password": "SYMFONY__DATABASE_PASSWORD"
 			}            
         },
 
