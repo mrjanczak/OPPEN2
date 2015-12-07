@@ -41,8 +41,7 @@ twig:
 assetic:
     debug:          "%kernel.debug%"
     use_controller: false
-    bundles:        [ ]
-        # OppenProjectBundle ]
+    bundles:        [ OppenProjectBundle ]
     # java: /usr/bin/java
     filters:
         cssrewrite: ~

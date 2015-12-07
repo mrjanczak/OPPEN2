@@ -11,11 +11,12 @@ php app/console router:debug --env=prod
 php composer.phar install --no-dev --optimize-autoloader
 
 sudo chmod -R 777 app
+php app/console assets:install web
+
 php app/console cache:clear
 php app/console cache:clear --env=prod --no-debug
 php app/console assetic:dump --env=prod --no-debug
 php app/console cache:warmup --env=prod --no-debug
-php app/console assets:install web --symlink
 
 git clone https://github.com/musicahumana/Oppen.git
 git config --global user.name "mrjanczak"
