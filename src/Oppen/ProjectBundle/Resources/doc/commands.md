@@ -30,10 +30,9 @@ $loader->add('FOS', __DIR__.'/../vendor/friendsofsymfony/user-bundle');
 $loader->add('Sensio', __DIR__.'/../vendor/sensio/generator-bundle');
 
 # Heroku
-	$> heroku config:set SYMFONY__DATABASE_HOST=127.0.0.1
 	
 	$> heroku config:set SYMFONY__DATABASE_DRIVER=pdo_mysql
-	$> heroku config:set SYMFONY__DATABASE_HOST=localhost
+	$> heroku config:set SYMFONY__DATABASE_HOST=127.0.0.1
 	$> heroku config:set SYMFONY__DATABASE_PORT=null
 	$> heroku config:set SYMFONY__DATABASE_NAME=xxxxxxxxxxxxxx
 	$> heroku config:set SYMFONY__DATABASE_USER=xxxxxxxxxxxxxx

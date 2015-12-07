@@ -61,11 +61,11 @@
         "incenteev-parameters": {
             "file": "app/config/parameters.yml",
 			"env-map": {
-				"database_host": "SYMFONY__DATABASE_HOST",
-				"database_port": "SYMFONY__DATABASE_PORT",
-				"database_name": "SYMFONY__DATABASE_NAME",
-				"database_user": "SYMFONY__DATABASE_USER",
-				"database_password": "SYMFONY__DATABASE_PASSWORD"
+				"database_host1": "SYMFONY__DATABASE_HOST",
+				"database_port1": "SYMFONY__DATABASE_PORT",
+				"database_name1": "SYMFONY__DATABASE_NAME",
+				"database_user1": "SYMFONY__DATABASE_USER",
+				"database_password1": "SYMFONY__DATABASE_PASSWORD"
 			}            
         },
 
