@@ -92,7 +92,22 @@ db:heroku_09a29fcafd1c0c7
 user:b39453a823acea
 password:94b8b6ef
 
+/*
+	$container->setParameter('database_driver', 'pdo_mysql'); 
+	$container->setParameter('database_host', 'localhost'); 
+	$container->setParameter('database_port', '~');
+	$container->setParameter('database_name', 'heroku_09a29fcafd1c0c7'); 
+	$container->setParameter('database_user', 'root'); 
+	$container->setParameter('database_password', '123');
 
+	$container->setParameter('mailer_transport', 'smtp');
+	$container->setParameter('mailer_host', null);
+	$container->setParameter('mailer_user', null);
+	$container->setParameter('mailer_password', null);
+	
+	$container->setParameter('locale', 'pl');
+	$container->setParameter('secret', 'c5bd9c14be810cd74439e07bdbc933049e092c5c');
+*/
 
 
 ### PostgreSQL

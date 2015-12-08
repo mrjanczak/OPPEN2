@@ -1,10 +1,10 @@
-app:
-    resource: "@AppBundle/Controller/"
-    type:     annotation
+#app:
+#    resource: "@AppBundle/Controller/"
+#    type:     annotation
     
-#home:
-#    path:  /
-#    defaults: { _controller: OppenProjectBundle:Settings:home }
+home:
+    path:  /
+    defaults: { _controller: OppenProjectBundle:Settings:home }
 
 oppen:
     resource: "@OppenProjectBundle/Resources/config/routing.yml"
