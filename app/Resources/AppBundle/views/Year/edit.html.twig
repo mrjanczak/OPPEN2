@@ -1,0 +1,57 @@
+{% extends "layout.html.twig" %}
+{% form_theme form 'AppBundle:Form:fields.html.twig' %}
+
+{% block content %}
+{{ form_start(form, {'method': 'post', attr:{ 'id':'Year-form'}}) }}
+
+<div class="content-header">
+	<div class='title'> Rok {{form.name.vars.value}} </div> 
+
+	<div class='toolbar'>
+	{% for button in buttons %}
+		<span>{{ form_widget(form[button]) }}</span>	
+	{% endfor %}			
+	</div>		
+</div>	
+
+<table class="form list">
+<tbody>
+	<tr><th></th><th>Rok</th> <th>Aktywny</th> <th>Zamknięty</th><th>Od</th><th>Do</th>	</tr>
+
+	<tr><td></td>
+		<td> {{ form_widget(form.name) }}</td>
+		<td class='center'>{% if form.is_active.vars.checked %} X {% endif %}</td>
+		<td class='center'>{% if form.is_closed.vars.checked %} X {% endif %}</td>
+		<td>{{ form_widget(form.from_date,{'attr':{'class':'date'}} ) }} </td>
+		<td>{{ form_widget(form.to_date,{'attr':{'class':'date'}} ) }}</td> 
+	</tr>
+
+	<tr><th></th><th>Okresy</th> <th>Aktywny</th> <th>Zamknięty</th><th>Od</th><th>Do</th>	</tr>	
+
+	{% for Month in form.Months %}
+	<tr><td> {{ form_widget(Month.select) }}</td>
+		<td> {{ form_widget(Month.name) }}  </td> 
+		<td class='center'>{% if Month.is_active.vars.checked %} X {% endif %} </td>
+		<td class='center'>{% if Month.is_closed.vars.checked %} X {% endif %} </td>
+		<td>{{ form_widget(Month.from_date,{'attr':{'class':'date'}} ) }} </td>
+		<td>{{ form_widget(Month.to_date,{'attr':{'class':'date'}} ) }}	 </td>
+	</tr>
+	{% endfor %}
+		
+</tbody>
+</table>	
+
+<div class="form">	
+	{{ form_widget(form.close_month) }}	{{ form_widget(form.activate_month) }}	
+</div>
+
+<div class="h">
+	<div id="dialog-confirm" data-button="year_close_month" title="Potwierdzenie">Zamknięcie okresu jest nieodwracalne. Czy jesteś pewien?	</div>	
+	{{ form_rest(form) }}
+</div>
+		
+{{ form_end(form) }}
+{% endblock %}
+
+{% block jquery %}
+{% endblock %}

@@ -1,0 +1,72 @@
+{% form_theme form 'AppBundle:Form:fields.html.twig' %}
+
+<table class="form list">
+<tbody>
+	<tr><th></th><th>{%trans%}headers.common.year{%endtrans%} </th> 
+				 <th>{%trans%}headers.periods.active{%endtrans%}</th>
+				 <th>{%trans%}headers.periods.closed{%endtrans%}</th></tr>	
+
+	{% for Year in form.Years %}
+	<tr><td> {{ form_widget(Year.select) }} </td>
+		<td> <a href={{ path('oppen_year_edit', { 'year_id' : Year.id.vars.value}) }}> 
+				{{ Year.name.vars.value }} </a>   </td> 
+		<td class='center'>{% if Year.is_active.vars.checked %} X {% endif %} </td>
+		<td class='center'>{% if Year.is_closed.vars.checked %} X {% endif %} </td>	 
+	</tr>
+	{% endfor %}
+		
+</tbody>
+</table>	
+
+<div class="s"></div>
+
+<div class="form">
+	{{ form_row(form.copy_accounts) }}
+	{{ form_row(form.copy_reports) }}
+</div>
+
+<div class="s"></div>
+
+<div class="form">
+<table class="form list"><tbody>
+		<tr class="header"><th colspan=4>{%trans%}labels.periods.copy.categories_files{%endtrans%} </th>
+		<tr/>
+		<tr><th>{%trans%}headers.common.category{%endtrans%} </th>
+			<th>{%trans%}headers.common.file{%endtrans%}</th>
+			<th>{%trans%}headers.common.symbol{%endtrans%} </th> 
+			<th>{%trans%}headers.common.name{%endtrans%} </th></tr>
+		{% for FileCatF in form.FileCats %}
+			{% set FileCat = FileCatF.vars.value %}
+			<tr>
+				<td> {{ form_widget(FileCatF.select) }}</td>
+				<td>{{ form_widget(FileCatF.select2) }} </td>
+				<td> {{ FileCat.symbol }} </td>
+				<td> {{ FileCat.name }}	</td> 					
+			</tr>
+		{% endfor %}
+		<tr></tr>
+
+		<tr class="header"><th colspan=4>{%trans%}labels.periods.copy.categories_documents{%endtrans%} </th>
+		<tr/>
+
+		<tr><th>{%trans%}headers.common.category{%endtrans%} </th>
+			<th>{%trans%}headers.common.document{%endtrans%}</th>
+			<th>{%trans%}headers.common.symbol{%endtrans%} </th> 
+			<th>{%trans%}headers.common.name{%endtrans%} </th></tr>
+		{% for DocCatF in form.DocCats %}
+			{% set DocCat = DocCatF.vars.value %}
+			<tr>
+				<td> {{ form_widget(DocCatF.select) }}</td>
+				<td> {{ form_widget(DocCatF.select2) }} </td>
+				<td> {{ DocCat.symbol }} </td>
+				<td> {{ DocCat.name }}	</td>	
+			</tr>
+		{% endfor %}
+</tbody></table>
+</div>
+
+<div class="form-row">
+	{#{ form_widget(form.add_prev) }#}	
+	{{ form_widget(form.add_next) }}
+</div>
+

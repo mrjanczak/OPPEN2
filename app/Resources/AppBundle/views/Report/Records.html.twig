@@ -1,0 +1,40 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+{{ form_start(form, {'method': 'post'}) }}
+
+<div class="content-header">
+	<div class='title'> Zapisy na koncie: {{ReportList.accNo}} od {{ReportList.FromDate|date("d/m/Y")}} do {{ReportList.ToDate|date("d/m/Y")}}</div> 	
+	
+	<div class='toolbar'>
+	{% for button in buttons %}
+		<span>{{ form_widget(form[button]) }}</span>	
+	{% endfor %}			
+	</div>			
+</div>	
+
+<table class="form list"><tbody>
+	<tr> 
+		<th>Okres</th> <th>Data</th> <th>Dokument</th> <th> Opis</th> <th>Wn</th> <th> Ma</th><th> Konto przeciwstawne</th></tr>
+		
+	{% for Item in Items %}
+	
+		<tr class='{% if Item.data.Desc == 'SUMA' %} b {% endif %}'>
+			<td > {{ Item.data.Month }} </td>
+			<td > {{ Item.data.OperationDate|date("d/m/Y") }} </td>
+			<td > {{ Item.data.DocNo }} </td>
+			<td > {{ Item.data.Desc }} </td>
+			<td > {{ Item.data.Side1|number_format(2, ',', '.') }} </td>
+			<td > {{ Item.data.Side2|number_format(2, ',', '.') }} </td>
+			<td > {{ Item.data.OppositeAccNo }} </td>
+		</tr>
+	
+	{% endfor %}
+
+</tbody></table>	
+
+{{ form_errors(form) }}
+<div class="h">{{ form_rest(form) }}</div>
+{{ form_end(form) }}
+
+{% endblock %}

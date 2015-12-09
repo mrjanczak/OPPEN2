@@ -1,0 +1,632 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database name="default" namespace="AppBundle\Model" defaultIdMethod="native" >
+    
+	<table name="year">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="name" type="varchar" primaryString="true" size="10" />
+        <column name="is_active" type="boolean" defaultValue="false" />        
+        <column name="is_closed" type="boolean" defaultValue="false" /> 
+        <column name="from_date" type="date" />
+        <column name="to_date" type="date" />
+		<behavior name="sortable"> 	</behavior>  
+	</table>    
+
+	<table name="month">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="name" type="varchar" primaryString="true" size="10" />
+        <column name="is_active" type="boolean" defaultValue="false" />        
+        <column name="is_closed" type="boolean" defaultValue="false" />       
+        <column name="from_date" type="date" />
+        <column name="to_date" type="date" />
+        
+        <column name="year_id" type="integer" />
+        <foreign-key foreignTable="year"  onDelete = "cascade">
+            <reference local="year_id" foreign="id" />
+        </foreign-key>         
+		<behavior name="sortable"> </behavior>  
+	</table> 
+
+	<table name="file_cat">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="name" type="varchar" primaryString="true" size="100" />
+        <column name="symbol" type="varchar" size="10" /> 
+        <column name="as_project" type="boolean" defaultValue="false" />        
+        <column name="as_income" type="boolean" defaultValue="false"/>
+        <column name="as_cost" type="boolean" defaultValue="false" />
+        <column name="as_contractor" type="boolean" defaultValue="false" />
+        <column name="is_locked" type="boolean" defaultValue="false" />
+                        
+        <column name="year_id" type="integer" />
+        <foreign-key foreignTable="year"  onDelete = "cascade">
+            <reference local="year_id" foreign="id" />
+        </foreign-key>        
+          
+        <column name="sub_file_cat_id" type="integer" />
+        <foreign-key foreignTable="file_cat"
+                     phpName="SubFileCat"
+					 refPhpName="FileCat">
+            <reference local="sub_file_cat_id" foreign="id" />
+        </foreign-key>                        
+	</table>    
+
+	<table name="file">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="name" type="varchar" primaryString="true" size="100" />
+        <column name="acc_no" type="integer" />  
+
+        <column name="file_cat_id" type="integer" />
+        <foreign-key foreignTable="file_cat"  onDelete = "cascade">
+            <reference local="file_cat_id" foreign="id" />
+        </foreign-key> 
+              
+        <column name="sub_file_id" type="integer" />
+        <foreign-key foreignTable="file"
+                     phpName="SubFile"
+					 refPhpName="File">
+            <reference local="sub_file_id" foreign="id" />
+        </foreign-key>
+           
+       <column name="first_name" type="varchar" size="50" />        
+       <column name="second_name" type="varchar" size="50" />        
+       <column name="last_name" type="varchar" size="50" />  
+       <column name="maiden_name" type="varchar" size="50" />  
+       <column name="father_name" type="varchar" size="50" />  
+       <column name="mother_name" type="varchar" size="50" />  
+       
+       <column name="birth_date" type="date" />
+       <column name="birth_place" type="varchar" size="50" />        
+       <column name="PESEL" type="varchar" size="50" />        
+       <column name="Passport" type="varchar" size="50" />        
+       <column name="NIP" type="varchar" size="50" />        
+       <column name="profession" type="varchar" size="50" />   
+                  
+       <column name="street" type="varchar" size="50" />  
+       <column name="house" type="varchar" size="5" />  
+       <column name="flat" type="varchar" size="5" />  
+       <column name="code" type="varchar" size="6" />  
+       <column name="city" type="varchar" size="50" />    
+       <column name="district2" type="varchar" size="50" />  
+       <column name="district" type="varchar" size="50" />  
+       <column name="province" type="varchar" size="50" />  
+       <column name="country" type="varchar" size="50" />
+       <column name="post_office" type="varchar" size="50" />
+         
+       <column name="bank_account" type="varchar" size="100" />  
+       <column name="bank_name" type="varchar" size="50" />
+
+       
+       <column name="phone" type="varchar" size="50" />                                
+       <column name="email" type="varchar" size="50" />  
+	</table> 
+
+	<table name="doc_cat">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="name" type="varchar" primaryString="true" size="100" />
+        <column name="symbol" type="varchar" size="10" />   
+        <column name="doc_no_tmp" type="varchar" size="20" />   
+        
+        <column name="as_income" type="boolean" defaultValue="false" />
+        <column name="as_cost" type="boolean" defaultValue="false" />
+        <column name="as_bill" type="boolean" defaultValue="false" />
+        <column name="is_locked" type="boolean" defaultValue="false" />
+                            
+        <column name="year_id" type="integer" />
+        <foreign-key foreignTable="year"  onDelete = "cascade">
+            <reference local="year_id" foreign="id" />
+        </foreign-key> 
+        
+        <column name="file_cat_id" type="integer" />
+        <foreign-key foreignTable="file_cat">
+            <reference local="file_cat_id" foreign="id" />
+        </foreign-key>    
+        
+        <column name="commitment_acc_id" type="integer" />
+        <foreign-key foreignTable="account"
+                     phpName="CommitmentAcc">			
+            <reference local="commitment_acc_id" foreign="id" />
+        </foreign-key>                           
+
+        <column name="tax_commitment_acc_id" type="integer" />
+        <foreign-key foreignTable="account"
+                     phpName="TaxCommitmentAcc">			
+            <reference local="tax_commitment_acc_id" foreign="id" />
+        </foreign-key> 
+	</table> 
+
+	<table name="doc">
+		<column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+		
+        <column name="document_date" type="date" />
+        <column name="operation_date" type="date" />
+        <column name="receipt_date" type="date" />
+        <column name="bookking_date" type="date" />
+        <column name="payment_deadline_date" type="date" />
+        <column name="payment_date" type="date" />
+                
+        <column name="payment_method" type="integer" />
+        
+		<column name="month_id" type="integer" />
+		<foreign-key foreignTable="month"  onDelete = "cascade">
+			<reference local="month_id" foreign="id" />
+		</foreign-key>
+		       
+		<column name="doc_cat_id" type="integer" />
+		<foreign-key foreignTable="doc_cat"  onDelete = "cascade">
+			<reference local="doc_cat_id" foreign="id" />
+		</foreign-key> 	
+			  
+		<column name="reg_idx" type="integer" />   
+		<column name="reg_no" type="varchar" size="20"  />  
+		<column name="doc_idx" type="integer" />  
+		<column name="doc_no" type="varchar" size="20" primaryString="true"/> 
+   		
+        <column name="file_id" type="integer" />
+        <foreign-key foreignTable="file">
+            <reference local="file_id" foreign="id" />
+        </foreign-key> 
+
+        <column name="user_id" type="integer" />
+        <foreign-key foreignTable="fos_user">
+            <reference local="user_id" foreign="id" />
+        </foreign-key> 
+
+		<column name="desc" type="varchar"  size="500" />
+        <column name="comment" type="longvarchar" />
+	</table> 
+
+	<table name="bookk">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="no" type="integer" />
+        <column name="desc" type="varchar" primaryString="true" size="500" />
+        <column name="is_accepted" type="boolean" defaultValue="false"/>
+        <column name="bookking_date" type="date" />
+
+		<column name="doc_id" type="integer" />
+		<foreign-key foreignTable="doc" onDelete = "cascade">
+			<reference local="doc_id" foreign="id" />
+		</foreign-key> 	
+		
+        <column name="project_id" type="integer" />
+        <foreign-key foreignTable="project" onDelete = "cascade">
+            <reference local="project_id" foreign="id" />
+        </foreign-key> 			
+	</table>  
+
+	<table name="bookk_entry">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+		<column name="acc_no" type="varchar" size="20" />
+        <column name="value" type="float" />
+        <column name="side" type="tinyint" />
+        
+		<column name="bookk_id" type="integer" />
+		<foreign-key foreignTable="bookk"  onDelete = "cascade">
+			<reference local="bookk_id" foreign="id" />
+		</foreign-key> 
+        
+        <column name="account_id" type="integer" />
+        <foreign-key foreignTable="account" >			
+            <reference local="account_id" foreign="id" />
+        </foreign-key>
+        
+        <column name="file_lev1_id" type="integer" />
+        <foreign-key foreignTable="file"
+                     phpName="FileLev1">        
+            <reference local="file_lev1_id" foreign="id" />
+        </foreign-key> 
+        
+        <column name="file_lev2_id" type="integer" />
+        <foreign-key foreignTable="file"
+                     phpName="FileLev2">        
+            <reference local="file_lev2_id" foreign="id" />
+        </foreign-key>               
+        
+        <column name="file_lev3_id" type="integer" />
+        <foreign-key foreignTable="file"
+                     phpName="FileLev3">        
+            <reference local="file_lev3_id" foreign="id" />
+        </foreign-key>         
+	</table>
+
+	<table name="account">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="acc_no" type="varchar" primaryString="true" size="100" />  
+        <column name="name" type="varchar" size="100" />
+        <column name="report_side" type="tinyint" />
+        
+        <column name="as_bank_acc" type="boolean" defaultValue="false"/>
+        <column name="as_income" type="boolean" defaultValue="false" />
+        <column name="as_cost" type="boolean" defaultValue="false" />
+        
+        <column name="inc_open_b" type="boolean"  defaultValue="false"/>
+        <column name="inc_close_b" type="boolean"  defaultValue="false"/>
+        <column name="as_close_b" type="boolean"  defaultValue="false"/>
+        
+		<behavior name="nested_set">
+			<parameter name="use_scope" value="true" />
+			<parameter name="scope_column" value="year_id" />
+		</behavior>
+                
+        <column name="year_id" type="integer" />
+        <foreign-key foreignTable="year" onDelete = "cascade">
+            <reference local="year_id" foreign="id" />
+        </foreign-key>          
+        
+        <column name="file_cat_lev1_id" type="integer" />
+        <foreign-key foreignTable="file_cat"
+                     phpName="FileCatLev1">        
+            <reference local="file_cat_lev1_id" foreign="id" />
+        </foreign-key> 
+        
+        <column name="file_cat_lev2_id" type="integer" />
+        <foreign-key foreignTable="file_cat"
+                     phpName="FileCatLev2">        
+            <reference local="file_cat_lev2_id" foreign="id" />
+        </foreign-key>               
+        
+        <column name="file_cat_lev3_id" type="integer" />
+        <foreign-key foreignTable="file_cat"
+                     phpName="FileCatLev3">        
+            <reference local="file_cat_lev3_id" foreign="id" />
+        </foreign-key>         
+	</table> 
+
+	<table name="report">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="name" type="varchar" primaryString="true" size="100" />
+        <column name="shortname" type="varchar" size="10" required="true" />
+        <column name="is_locked" type="boolean" defaultValue="false" />                  
+                            
+        <column name="year_id" type="integer" />
+        <foreign-key foreignTable="year"  onDelete = "cascade">
+            <reference local="year_id" foreign="id" />
+        </foreign-key> 
+
+        <column name="template_id" type="integer" />
+        <foreign-key foreignTable="template" >
+            <reference local="template_id" foreign="id" />
+        </foreign-key>
+        
+		<behavior name="sortable">
+			<parameter name="use_scope" value="true" />
+			<parameter name="scope_column" value="year_id" />
+		</behavior>                
+	</table> 
+    	
+	<table name="report_entry">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="no" type="varchar" size="50" required="true" />
+        <column name="name" type="varchar" primaryString="true" size="500" required="true" />
+        <column name="symbol" type="varchar" size="10" />
+        <column name="formula" type="varchar" size="100" />
+
+		<column name="report_id" type="integer" />
+		<foreign-key foreignTable="report"  onDelete = "cascade">
+			<reference local="report_id" foreign="id" />
+		</foreign-key> 
+		                     
+		<behavior name="nested_set">
+			<parameter name="use_scope" value="true" />
+			<parameter name="scope_column" value="report_id" />
+		</behavior>  		
+	</table> 
+
+	<table name="template">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="name" type="varchar" primaryString="true" size="100" /> 
+        <column name="symbol" type="varchar" primaryString="true" size="100" /> 
+        <column name="type" type="integer" />
+        <column name="as_contract" type="boolean" defaultValue="false" />
+        <column name="as_report" type="boolean" defaultValue="false" />                
+        <column name="as_booking" type="boolean" defaultValue="false" />                
+        <column name="as_transfer" type="boolean" defaultValue="false" />                
+        <column name="contents" type="longvarchar"  />           
+        <column name="data" type="longvarchar"  />           
+		
+		<behavior name="archivable">
+			<parameter name="archive_on_insert" value="false" />
+			<parameter name="archive_on_update" value="false" />
+			<parameter name="archive_on_delete" value="true" />
+		</behavior>
+	</table> 
+	
+	<table name="project">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="name" type="varchar" primaryString="true" size="250" required="true" />
+        <column name="status" type="integer" />
+        <column name="desc" type="longvarchar" />
+		<column name="place" type="varchar" size="100" />
+        <column name="from_date" type="date" />
+        <column name="to_date" type="date" />
+        <column name="comment" type="longvarchar" />
+        
+        <column name="year_id" type="integer" />
+        <foreign-key foreignTable="year" onDelete = "cascade">
+            <reference local="year_id" foreign="id" />
+        </foreign-key>
+        
+        <column name="file_id" type="integer" />
+        <foreign-key foreignTable="file" >
+            <reference local="file_id" foreign="id" />
+        </foreign-key>     
+
+        <column name="file_cat_id" type="integer" />
+        <foreign-key foreignTable="file_cat" phpName="CostFileCat">
+            <reference local="file_cat_id" foreign="id" />
+        </foreign-key> 
+
+        <column name="income_acc_id" type="integer" />
+        <foreign-key foreignTable="account" phpName="IncomeAcc">			
+            <reference local="income_acc_id" foreign="id" />
+        </foreign-key>
+
+        <column name="cost_acc_id" type="integer" />
+        <foreign-key foreignTable="account" phpName="CostAcc">        
+            <reference local="cost_acc_id" foreign="id" />
+        </foreign-key>      
+
+        <column name="bank_acc_id" type="integer" />
+        <foreign-key foreignTable="account" phpName="BankAcc">        
+            <reference local="bank_acc_id" foreign="id" />
+        </foreign-key> 
+	</table>
+
+	<table name="income">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="name" type="varchar" primaryString="true" size="100" required="true" />
+        <column name="shortname" type="varchar" size="10" required="true" />
+        <column name="value" type="float" />
+        <column name="comment" type="longvarchar" />
+        <column name="show" type="boolean" defaultValue="true" />
+
+        <column name="project_id" type="integer" />
+        <foreign-key foreignTable="project" onDelete = "cascade">
+            <reference local="project_id" foreign="id" />
+        </foreign-key> 
+        
+        <column name="file_id" type="integer" />
+        <foreign-key foreignTable="file">
+            <reference local="file_id" foreign="id" />
+        </foreign-key>   
+        
+        <column name="bank_acc_id" type="integer" />
+        <foreign-key foreignTable="account"
+                     phpName="BankAcc">
+            <reference local="bank_acc_id" foreign="id" />
+        </foreign-key>
+
+        <column name="income_acc_id" type="integer" />
+        <foreign-key foreignTable="account"
+                     phpName="IncomeAcc">			
+            <reference local="income_acc_id" foreign="id" />
+        </foreign-key>
+        
+	  <behavior name="sortable">
+		<parameter name="use_scope" value="true" />
+		<parameter name="scope_column" value="project_id" />
+	  </behavior>                   
+	</table>
+
+	<table name="cost">
+		<behavior name="sortable" /> 
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="name" type="varchar" primaryString="true" size="100" required="true" />
+        <column name="value" type="float" />
+        <column name="comment" type="longvarchar" />
+
+        <column name="project_id" type="integer" />
+        <foreign-key foreignTable="project" onDelete = "cascade">
+            <reference local="project_id" foreign="id" />
+        </foreign-key> 
+        
+        <column name="file_id" type="integer" />
+        <foreign-key foreignTable="file">
+            <reference local="file_id" foreign="id" />
+        </foreign-key> 
+        
+        <column name="bank_acc_id" type="integer" />
+        <foreign-key foreignTable="account"
+                     phpName="BankAcc">
+            <reference local="bank_acc_id" foreign="id" />
+        </foreign-key>
+        
+        <column name="cost_acc_id" type="integer" />
+        <foreign-key foreignTable="account"
+                     phpName="CostAcc">        
+            <reference local="cost_acc_id" foreign="id" />
+        </foreign-key> 
+        
+		<behavior name="sortable">
+			<parameter name="use_scope" value="true" />
+			<parameter name="scope_column" value="project_id" />
+		</behavior>             
+	</table>
+
+	<table name="income_doc" >
+		<column name="id" type="INTEGER" primaryKey="true" autoIncrement="true"/>		
+        <column name="value" type="float" />
+		<column name="desc" type="varchar"  size="500" />
+		        
+		<column name="income_id" type="integer" />
+		<foreign-key foreignTable="income" onDelete = "cascade">
+			<reference local="income_id" foreign="id" />
+		</foreign-key> 
+		
+		<column name="doc_id" type="integer" />
+		<foreign-key foreignTable="doc" onDelete = "cascade">
+			<reference local="doc_id" foreign="id" />
+		</foreign-key> 
+	</table>
+
+	<table name="cost_income">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="value" type="float" />
+        
+        <column name="cost_id" type="integer" />
+        <foreign-key foreignTable="cost" onDelete = "cascade">
+            <reference local="cost_id" foreign="id" />
+        </foreign-key> 
+        
+        <column name="income_id" type="integer" />
+        <foreign-key foreignTable="income" onDelete = "cascade">
+            <reference local="income_id" foreign="id" />
+        </foreign-key> 
+	</table>
+
+	<table name="cost_doc" >
+		<column name="id" type="INTEGER" primaryKey="true" autoIncrement="true"/>		
+        <column name="value" type="float" />
+		<column name="desc" type="varchar"  size="500" />
+		        
+        <column name="cost_id" type="integer" />
+        <foreign-key foreignTable="cost" onDelete = "cascade">
+            <reference local="cost_id" foreign="id" />
+        </foreign-key>      
+
+		<column name="doc_id" type="integer" />
+		<foreign-key foreignTable="doc" onDelete = "cascade">
+			<reference local="doc_id" foreign="id" />
+		</foreign-key>  
+	</table>
+
+	<table name="cost_doc_income" >
+		<column name="id" type="INTEGER" primaryKey="true" autoIncrement="true"/>		
+        <column name="value" type="float" />
+
+        <column name="cost_doc_id" type="integer" />
+        <foreign-key foreignTable="cost_doc" onDelete = "cascade">
+            <reference local="cost_doc_id" foreign="id" />
+        </foreign-key>      
+
+        <column name="income_id" type="integer" />
+        <foreign-key foreignTable="income" onDelete = "cascade">
+            <reference local="income_id" foreign="id" />
+        </foreign-key>   
+	</table>
+
+	<table name="contract">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+
+        <column name="contract_no" type="varchar" size="20" />        
+        <column name="contract_date" type="date" />
+        <column name="contract_place" type="varchar" size="20" />
+        
+        <column name="event_desc" type="varchar"  size="1000" />
+        <column name="event_date" type="date" />
+        <column name="event_place" type="varchar" size="100" />
+        <column name="event_name" type="varchar" size="100" />        
+        <column name="event_role" type="varchar" size="100" />
+                        		
+        <column name="gross" type="float"/> 
+        <column name="income_cost" type="float"/> 
+        <column name="tax" type="float"/>         
+        <column name="netto" type="float"/> 
+        <column name="tax_coef" type="float"/> 
+        <column name="cost_coef" type="float"/> 
+        <column name="payment_period" type="varchar" size="16" />
+        <column name="payment_method" type="integer" />
+
+        <column name="comment" type="longvarchar" />
+                
+        <column name="cost_id" type="integer" />
+        <foreign-key foreignTable="cost" onDelete = "cascade">
+            <reference local="cost_id" foreign="id" />
+        </foreign-key>   
+
+        <column name="template_id" type="integer" />
+        <foreign-key foreignTable="template" >
+            <reference local="template_id" foreign="id" />
+        </foreign-key>  
+        
+        <column name="file_id" type="integer" />
+        <foreign-key foreignTable="file">
+            <reference local="file_id" foreign="id" />
+        </foreign-key> 
+			
+		<column name="doc_id" type="integer" />
+		<foreign-key foreignTable="doc" >
+			<reference local="doc_id" foreign="id" />
+		</foreign-key> 
+
+		<column name="month_id" type="integer" />
+		<foreign-key foreignTable="month"  onDelete = "cascade">
+			<reference local="month_id" foreign="id" />
+		</foreign-key>
+		        
+		<behavior name="sortable">
+			<parameter name="use_scope" value="true" />
+			<parameter name="scope_column" value="cost_id" />
+		</behavior>  
+	</table>       
+
+	<table name="temp_contract">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+
+        <column name="contract_no" type="varchar" size="20" />        
+        <column name="contract_date" type="date" />
+        <column name="contract_place" type="varchar" size="20" />
+        
+        <column name="event_desc" type="varchar"  size="1000" />
+        <column name="event_date" type="date" />
+        <column name="event_place" type="varchar" size="100" />
+        <column name="event_name" type="varchar" size="100" />        
+        <column name="event_role" type="varchar" size="100" />
+                        		
+        <column name="gross" type="float"/> 
+        <column name="income_cost" type="float"/> 
+        <column name="tax" type="float"/>         
+        <column name="netto" type="float"/> 
+
+       <column name="first_name" type="varchar" size="50" />        
+       <column name="last_name" type="varchar" size="50" />        
+       <column name="PESEL" type="varchar" size="50" />        
+       <column name="NIP" type="varchar" size="50" />        
+              
+       <column name="street" type="varchar" size="50" />  
+       <column name="house" type="varchar" size="5" />  
+       <column name="flat" type="varchar" size="5" />  
+       <column name="code" type="varchar" size="6" />  
+       <column name="city" type="varchar" size="50" />  
+       <column name="district" type="varchar" size="50" />  
+       <column name="country" type="varchar" size="50" />
+         
+       <column name="bank_account" type="varchar" size="32" />  
+       <column name="bank_name" type="varchar" size="50" />                
+	</table>       
+
+
+
+	<table name="task">
+		<behavior name="sortable" /> 
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="desc" type="varchar" primaryString="true" size="100" required="true" />
+        <column name="from_date" type="date" />
+        <column name="to_date" type="date" />
+        <column name="comment" type="longvarchar" />
+        <column name="send_reminder" type="boolean" defaultValue="false" />  
+        
+        <column name="user_id" type="integer" />
+        <foreign-key foreignTable="fos_user">
+            <reference local="user_id" foreign="id" />
+        </foreign-key> 
+        
+        <column name="project_id" type="integer" />
+        <foreign-key foreignTable="project" onDelete = "cascade">
+            <reference local="project_id" foreign="id" />
+        </foreign-key>      
+		                
+	</table>    
+
+	<table name="parameter">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="name" type="varchar" primaryString="true" size="100" required="true" />
+        <column name="label" type="varchar" size="100" required="true" />
+        <column name="field_type" type="varchar"  size="10" required="true" />
+        <column name="value_float" type="float"/> 
+        <column name="value_int" type="integer" />
+        <column name="value_varchar" type="varchar" />
+        <column name="value_date" type="date" />
+        
+        <behavior name="sortable"> 	</behavior> 
+	</table>  
+</database>
+

@@ -1,0 +1,8 @@
+{% set DocListF =  form.DocList %}
+{% set return =  'project' %}
+{% set id1 = project_id %}
+{% set id2 = tab_id %}
+{% set Project = form.vars.value %}
+{% set project_id = Project.id %}
+	
+{% include 'AppBundle:Doc:list2.html.twig' %}

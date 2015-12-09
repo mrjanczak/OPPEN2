@@ -1,0 +1,30 @@
+{% extends "layout.html.twig" %}
+{% form_theme form 'AppBundle:Form:fields.html.twig' %}
+
+{% block content %}
+{{ form_start(form, {'method': 'post'}) }}
+
+<div class="content-header">
+	<div class='title'> Kat. Kosztu {{form.name.vars.value}} </div> 
+	<div class='toolbar'>
+	{% for button in buttons %}
+		<span>{{ form_widget(form[button]) }}</span>	
+	{% endfor %}			
+	</div>
+</div>
+
+	{{ form_errors(form) }}
+	
+	<div class="form">
+		{{ form_row(form.name) }} 
+		{{ form_row(form.value) }}
+		{{ form_row(form.comment) }} 
+		{{ form_row(form.File) }}
+		{{ form_row(form.BankAcc) }}
+		{{ form_row(form.CostAcc) }} 		
+	</div>        
+ 
+<div style="display: none;">{{ form_rest(form) }}</div>
+		
+{{ form_end(form) }}
+{% endblock %}

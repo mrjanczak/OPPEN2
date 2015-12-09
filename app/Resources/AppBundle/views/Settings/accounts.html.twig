@@ -1,0 +1,70 @@
+{% form_theme form 'AppBundle:Form:fields_inline.html.twig' %}
+
+<div class='filter' >		
+	<div class="search">{{ form_widget(form.search) }}</div>
+	<div class="fields">{{ form_row(form.Year) }}	  </div>
+</div>
+
+<table class="form list">
+<tbody>
+
+		<tr><th>{%trans%}headers.common.number{%endtrans%} </th> 
+			<th>{%trans%}headers.common.name{%endtrans%} </th> 
+			<th>{%trans%}headers.common.files{%endtrans%} </th> 
+			<th>{%trans%}headers.common.group{%endtrans%} </th> 
+			<th>{%trans%}headers.accounts.balance{%endtrans%} </th> 
+			<th>{%trans%}headers.common.options{%endtrans%} </th> </tr>
+
+		{% for AccountF in form.Accounts %}
+			{% set Account = AccountF.vars.value %}
+			{% set parent_id = Account.Parent is not null ? Account.Parent.id : 0 %}
+			<tr class="treegrid-{{ Account.id }} treegrid-parent-#{{ parent_id }} ">
+				
+				<td> {{ Account.accNo }} </td>
+				<td>
+					{% if Account.level > 0 %}
+						<a href={{ path('oppen_account_edit',  {'parent_id' : parent_id, 'account_id': Account.id}) }}>{{ Account.name }} </a>
+					{% else %}
+						{{ Account.name }} 
+					{% endif %}			
+				</td>				
+				
+				<td> 
+					{% if not Account.FileCatLev1 is empty %}
+						{{ Account.FileCatLev1.symbol}}
+					{% endif %}
+					{% if not Account.FileCatLev2 is empty %}
+						- {{ Account.FileCatLev2.symbol}}
+					{% endif %}
+					{% if not Account.FileCatLev3 is empty %}
+						- {{ Account.FileCatLev3.symbol}}
+					{% endif %}								
+				</td>
+				<td> {{ Account.asBankAcc ?'labels.accounts.bank'|trans : '' }} 
+				     {{ Account.asIncome ? 'labels.accounts.income'|trans : ''}} 
+				     {{ Account.asCost ?   'labels.accounts.cost'|trans : ''}} </td>
+				<td> {{ Account.incOpenB ? 'labels.accounts.balance.in_open'|trans : ''}} 
+				     {{ Account.incCloseB ?'labels.accounts.balance.in_close'|trans : ''}} 
+				     {{ Account.asCloseB ? 'labels.accounts.balance.result'|trans : ''}}</td>
+				<td>
+					{% if Account.id is not empty %}
+						<a href={{ path('oppen_account_edit', {'account_id' : 0, 'parent_id' : Account.id}) }}>(+)  </a> 			
+						
+						{% if Account.hasPrevSibling() %}
+						<a href={{ path('oppen_account_move', {'account_id' : Account.id, 'dir' : 'up'  }) }}>  (&#8593;) </a> 
+						{% endif %}
+						{% if Account.hasNextSibling() %}
+						<a href={{ path('oppen_account_move', {'account_id' : Account.id, 'dir' : 'down' }) }}> (&#8595;) </a> 	
+						{% endif %}
+					{% endif %}
+				</td>
+			</tr>
+
+		{% endfor %}
+
+</tbody>
+</table>	
+
+
+
+

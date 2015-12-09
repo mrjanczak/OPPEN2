@@ -1,0 +1,75 @@
+{% form_theme form 'AppBundle:Form:fields.html.twig' %}
+
+<table class="form list">
+<tbody>
+	
+	{% set Project = form.vars.value %}
+	<tr><th></th>
+		<th>{%trans%} headers.common.category {%endtrans%} / {%trans%} headers.common.contract {%endtrans%}</th>
+		<th>{%trans%} headers.contracts.gross_nett_cost_tax {%endtrans%}</th>
+	</tr>	
+
+{% set Totalsum = 0 %}
+{% for CostF in form.Costs %}
+	{% set Cost = CostF.vars.value %}
+	{% set sumGross = 0 %}
+	<tr class='even' >
+		<td>{{Cost.sortableRank }}.</td>   
+		<td>{{Cost.name }}
+			<a href={{ path('oppen_contract', { 'contract_id' : 0, 'cost_id' : Cost.id}) }}> (+) </a>  </td>
+	{% for ContractF in CostF.Contracts %}
+		{% set Contract = ContractF.vars.value %}
+	<tr><td></td>
+		<td width="300"> {{ form_widget(ContractF.select, {'attr': {'class': 'item'}}) }}
+						<a href={{ path('oppen_contract', { 'contract_id' : Contract.id, 'cost_id' : Cost.id}) }}>
+							{{ Contract.contractNo }} </a> 
+							<span {% if Contract.comment[:1] == '!' %} class='red'	{% endif %}>
+							{{ Contract.File.name }} </span>
+		</td> 
+		<td>{{ form_widget(ContractF.gross, {'attr': {'class': 'value'}}) }} / {{ Contract.netto }}	/ {{ Contract.IncomeCost }} / {{ Contract.tax }} </td>
+			
+		<td><a href={{ path('oppen_contract_copy', { 'contract_id' : Contract.id, 'cost_id' : Cost.id}) }}> (c) </a> 
+			<a href={{ path('oppen_files', { 'file_cat_id' : FileCat_asContractor.id,
+						'return' : 'project','id1' : Project.id, 'id2': 4, 'id3' : Contract.id}) }}> (cc) </a> 
+			<a href={{ path('oppen_contract_delete', { 'contract_id' : Contract.id}) }}> (x) </a> 	</td>		
+		</td> 
+	</tr>
+	{% set sumGross = sumGross + ContractF.gross.vars.value %}
+	{% endfor %}
+	
+	<tr><td></td><td width="300"><span class="b">Suma:</span></td><td> <span class="b">{{ sumGross }}</span> </td></tr>
+
+{% set Totalsum = Totalsum + sumGross %}
+{% endfor %}
+
+	<tr  class='even' ><td></td>
+		<td colspan="3"> 
+			<div class="s"></div>
+			<div class="form-row">
+				<input type="checkbox" value="IncomeDocs" class="toggle_items">  
+				{%trans%} labels.common.select_deselect {%endtrans%} </div> 
+			{#
+			<div class="form-row">
+				<div class="label i">   {{ form_label(form.payment_period) }} </div>
+				<div class="widget i">  {{ form_widget(form.payment_period ) }} 
+										{{ form_widget(form.setPaymentPeriod) }}</div>
+			</div>
+			#}
+			<div class="form-row"> 
+				{{ form_row(form.document_date,{'attr':{'class':'date'}} ) }}
+				{{ form_row(form.operation_date,{'attr':{'class':'date'}} ) }}
+				{{ form_row(form.receipt_date,{'attr':{'class':'date'}} ) }}
+				
+				{{ form_row(form.DocMonth) }}
+			</div>
+			<div class="form-row">{{ form_widget(form.generateDocs) }}
+									{{ form_widget(form.printContracts) }}
+			</div>
+		</td>
+	</tr>		
+</tbody>
+</table>	
+
+
+
+

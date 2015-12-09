@@ -1,0 +1,22 @@
+{% form_theme form 'AppBundle:Form:fields_inline.html.twig' %}
+
+<table class="form list">
+<tbody>
+	<tr><th>{%trans%}headers.common.name{%endtrans%} </th> 
+		<th>{%trans%}headers.common.symbol{%endtrans%} </th>  
+		<th>{%trans%}headers.common.value{%endtrans%} </th></tr>	
+
+	{% for Parameter in form.Parameters %}
+	<tr><td> {{ Parameter.label.vars.value }}  </td> 
+		<td> {{ Parameter.name.vars.value }}  </td> 
+		<td > {{ form_widget(Parameter["value_"~Parameter.field_type.vars.value],
+					{'attr':{'class':Parameter.field_type.vars.value}}) }} </td>
+	</tr>
+	{% endfor %}
+		
+</tbody>
+</table>	
+
+
+
+

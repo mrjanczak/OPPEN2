@@ -1,0 +1,88 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+{{ form_start(form, {'method': 'post'}) }}
+
+<div class="content-header">
+	<div class='title'> Raporty</div> 	
+	
+	<div class='toolbar'>
+	{% for button in buttons %}
+		<span>{{ form_widget(form[button]) }}</span>	
+	{% endfor %}			
+	</div>			
+</div>
+
+{% form_theme form 'AppBundle:Form:fields_inline.html.twig' %}
+
+<div class='filter'>		
+	<div class="search">{{ form_widget(form.search) }}</div>
+	<div class="fields">{{ form_row(form.Year) }}	  </div>
+</div>
+
+<table class="form"><tbody>	
+
+{% if form.Reports|length == 0 %}
+	Brak pozycji
+{% else %}
+
+{% form_theme form 'AppBundle:Form:fields.html.twig' %}
+
+	<tr> <th>Raporty</th></tr>
+
+	<tr><td> 
+		<ul>	
+	{% for ReportF in form.Reports %}
+		{% set Report = ReportF.vars.value %}	
+		<li><a href={{ path('oppen_report', {'report_id' : Report.id, 'method_id' : 1 }) }} class="report"> {{Report.name}} ({{Report.shortname}}) </a> </li>
+	{% endfor %}		
+		</ul>
+		</td>
+		<td> {{ form_row(form.reportMethod ) }} </td>
+	</tr>
+
+
+{% endif %}
+
+	<tr><td> </td></tr>
+	<tr><th>Raporty księgowe</th></tr>
+
+	<tr><td>
+		<ul>
+			<li>{{ form_widget(form.generateTurnOver,{'attr':{'class':'show_as_link'}} ) }} </li>
+			<li>{{ form_widget(form.generateRecords,{'attr':{'class':'show_as_link'}} ) }}  </li>
+			<li>{{ form_widget(form.generateRegister,{'attr':{'class':'show_as_link'}} ) }} </li>
+		</ul>
+	</td>
+	
+	<td>
+		{{ form_row(form.Month,{'attr':{'data-url' :  path("oppen_month_update", {"month_id" : "__month_id__"})  }}) }} 
+		{{ form_row(form.FromDate,{'attr':{'class':'date'}} ) }} 
+		{{ form_row(form.ToDate,{'attr':{'class':'date'}} ) }} 
+		{{ form_row(form.accNo) }}
+		{{ form_row(form.Account,{'attr':{'data-url' :  path("oppen_account_update", {"account_id" : "__account_id__"})  }}) }}
+		{{ form_row(form.FileLev1) }}
+		{{ form_row(form.FileLev2) }}
+		{{ form_row(form.FileLev3) }}
+	</td></tr>
+	
+	<tr><th>Operacje księgowe</th></tr>
+
+	<tr><td>
+		<ul>
+			<li>{{ form_widget(form.generateOpenBalance,{'attr':{'class':'show_as_link'}} ) }} </li>
+			<li>{{ form_widget(form.generateCloseBalance,{'attr':{'class':'show_as_link'}} ) }}  </li>
+		</ul>
+	</td></tr>
+	
+</tbody> </table> 
+
+{{ form_errors(form) }}
+<div class="h">{{ form_rest(form) }}</div>
+{{ form_end(form) }}
+
+{% endblock %}
+
+{% block jquery %}
+	{% include 'AppBundle:Report:list.js.twig' %}
+{% endblock %}

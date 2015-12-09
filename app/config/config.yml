@@ -3,7 +3,6 @@ imports:
     - { resource: parameters.php }
     - { resource: security.yml }
     - { resource: services.yml }
-    - { resource: "@OppenProjectBundle/Resources/config/services.yml" }
 
 framework:
     # esi:             ~
@@ -35,14 +34,14 @@ twig:
     strict_variables: "%kernel.debug%"
     form:
         resources:
-            - 'OppenProjectBundle:Form:fields.html.twig'
-            - 'OppenProjectBundle:Form:label.html.twig'
+            - 'AppBundle:Form:fields.html.twig'
+            - 'AppBundle:Form:label.html.twig'
             
 # Assetic Configuration
 assetic:
     debug:          "%kernel.debug%"
     use_controller: false
-    bundles:        [ OppenProjectBundle ]
+    bundles:        [ AppBundle ]
     # java: /usr/bin/java
     filters:
         cssrewrite: ~
@@ -98,4 +97,4 @@ oneup_uploader:
         gallery:
             frontend: blueimp 
             enable_progress: true
-            namer: oppen_project.cat_namer
+            namer: app.cat_namer

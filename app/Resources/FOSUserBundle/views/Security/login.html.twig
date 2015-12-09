@@ -23,9 +23,5 @@
 
     <input type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />
 </form>
-</br>
-</br>
-host={{database_host}}:{% if database_port is not null %} {{database_port}} {% endif %}; 
-{{database_name}}@{{database_user}}:{{database_password}}
 
 {% endblock fos_user_content %}

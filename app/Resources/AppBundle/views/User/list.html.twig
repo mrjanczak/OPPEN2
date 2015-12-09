@@ -1,0 +1,21 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+
+<div class="content-header">
+	<div class='title'>  
+		 Użytkownicy
+	</div> 
+	
+	<div class='toolbar'>
+		<span><input type="submit" value="Zapisz" id="submit" /></span>				
+	</div>
+</div>
+
+    <ul>
+    {% for user in users %}
+        <li><a href="{{ path('fos_user_profile_edit2', {'userName': user.getUsername()} ) }}">{{ user.getUsername() }}</a></li>
+    {% endfor %}
+    </ul>
+
+{% endblock %}

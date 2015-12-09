@@ -1,0 +1,68 @@
+{% extends "layout.html.twig" %}
+{% form_theme form 'AppBundle:Form:fields.html.twig' %}
+
+{% block content %}
+{{ form_start(form, {'method': 'post', attr:{ 'id':'Year-form'}}) }}
+
+<div class="content-header">
+	<div class='title'> Raport: {{form.name.vars.value}} {{Year.name}} </div> 
+
+	<div class='toolbar'>
+	{% for button in buttons %}
+		<span>{{ form_widget(form[button]) }}</span>	
+	{% endfor %}			
+	</div>		
+</div>	
+
+	<div class="form">
+		{{ form_row(form.name) }}
+		{{ form_row(form.shortname) }}
+		{{ form_row(form.Template) }}
+	</div>	
+	
+<table class="form list">
+<tbody>
+	<tr><th class="col_no">Pozycja</th> <th>Nazwa</th> <th>Symbol</th> <th>Dane</th> <th class="col_no">Opcje</th> </tr>	
+
+	{% for Entry in ReportEntries %}
+
+	<tr>
+		<td class="item_level_{{ Entry.level }}">
+			{% for i in 0..Entry.level %} &nbsp; {% endfor %} {{ Entry.no }} 
+		</td>		
+		<td>
+			{% if Entry.id is not empty and Entry.level > 0 %}
+				<a href={{ path('oppen_report_entry_edit', {'report_entry_id' : Entry.id, 'parent_id' : 0}) }}>{{ Entry.name }} </a>
+			{% else %}
+				{{ Entry.name }} 
+			{% endif %}			
+	    </td> 
+		<td>{{ Entry.symbol }} </td>
+		<td>{{ Entry.formula }} </td>
+		<td>
+			{% if Entry.id is not empty %}
+				<a href={{ path('oppen_report_entry_edit', {'report_entry_id' : 0, 'parent_id' : Entry.id}) }}>(+)  </a> 			
+				{% if Entry.hasPrevSibling() %}
+				<a href={{ path('oppen_report_entry_move', {'report_entry_id' : Entry.id, 'dir' : 'up'  }) }}>  (&#8593;) </a> 
+				{% endif %}
+				{% if Entry.hasNextSibling() %}
+				<a href={{ path('oppen_report_entry_move', {'report_entry_id' : Entry.id, 'dir' : 'down' }) }}> (&#8595;) </a> 
+				{% endif %}
+		    {% endif %}
+		</td>
+	</tr>
+	{% endfor %}
+		
+</tbody>
+</table>	
+
+<div class="h">
+	{{ form_rest(form) }}
+</div>
+		
+{{ form_end(form) }}
+{% endblock %}
+
+{% block jquery %}
+{% include 'AppBundle:Report:edit.js.twig' %}
+{% endblock %}
