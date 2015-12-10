@@ -44,6 +44,9 @@ git push heroku master
 # Heroku
 
 heroku login
+
+heroku config:set SWIFTMAILER_URL=smtp://mail.latempesta.pl:vespers1@mail.latempesta.pl
+
 heroku git:clone -a oppen-project
 
 heroku git:remote -a 
@@ -53,6 +56,8 @@ heroku run php app/console propel:model:build
 
 heroku run composer install -dev --optimize-autoloader
 heroku run composer update -prod 
+
+
 
 ### Changes
 
@@ -78,6 +83,7 @@ heroku run php app/console propel:schema:create
 
 heroku config:get CLEARDB_DATABASE_URL
 mysql://b39453a823acea:94b8b6ef@eu-cdbr-west-01.cleardb.com/heroku_09a29fcafd1c0c7?reconnect=true
+
 
 
 ### PostgreSQL
