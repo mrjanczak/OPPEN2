@@ -12,17 +12,17 @@ php composer.phar install --no-dev --optimize-autoloader
 
 # Console
 
-php app/console cache:clear
 php app/console cache:clear --env=prod --no-debug
 php app/console cache:warmup --env=prod --no-debug
 php app/console assetic:dump --env=prod --no-debug
 php app/console assets:install web
-php app/console router:debug --env=prod
+
+php app/console propel:model:build
+php app/console propel:fixtures:load @AppBundle
 
 php app/console propel:migration:generate-diff
 php app/console propel:migration:migrate
-php app/console propel:model:build
-
+php app/console router:debug --env=prod
 # Linux
 
 sudo chmod -R 777 app
@@ -38,6 +38,8 @@ git add *
 git commit -a -m 'xxx'
 git push mh 2.0
 git push heroku master
+
+
 
 # Heroku
 

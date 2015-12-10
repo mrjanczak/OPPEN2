@@ -20,14 +20,7 @@ Manual installation step by step
         ...
         "symfony-assets-install": "symlink",
         "incenteev-parameters": {
-            "file": "app/config/parameters.yml",
-			"env-map": {
-				"database_host": "DATABASE_HOST",
-				"database_port": "DATABASE_PORT",
-				"database_name": "DATABASE_NAME",
-				"database_user": "DATABASE_USER",
-				"database_password": "DATABASE_PASSWORD"
-			}            
+            "file": "app/config/parameters.yml"           
         },
         ...
         "heroku": {
@@ -132,6 +125,8 @@ public function registerBundles()
     oneup_uploader:
         resource: .
         type: uploader
+        
+    ...
 ```
 
 ### Step 5: Update security.yml
@@ -191,20 +186,33 @@ parameters:
     locale: pl
 ```
 
-### Step 7: Copy views of UserBundle to app/Resources
-
-    $> cp src/FOS/UserBundle/Resources/views/* app/Resources/FOSUserBundle
-
-and set new template in UserBundle layout:
-
-    $> echo "{% extends 'OppenProjectBundle::layout.html.twig' %}" > app/Resources/FOSUserBundle/layout.html.twig
-
-### Step 8: Finally create model and warm up application
+### Step 7: Use app/console to configure application
     
-    $> php app/console propel:model:build
-    $> php app/console cache:clear --env=prod --no-debug
-    $> php app/console cache:warmup --env=prod --no-debug
-    $> php app/console assetic:dump --env=prod --no-debug
-    
+Prepare production enviroment:
+
+	$> php app/console cache:clear --env=prod --no-debug
+	$> php app/console cache:warmup --env=prod --no-debug
+	$> php app/console assets:install web
+	$> php app/console assetic:dump --env=prod --no-debug
+	$> chmod 777 -R app/cache app/logs
+	
+Prepare database:
+
+	$> php app/console propel:model:build
+	$> php app/console propel:sql:build
+	$> php app/console propel:sql:insert
+	$> php app/console propel:schema:create
+	$> php app/console propel:fixtures:load @AppBundle
+
+And create user:
+
+	$> php app/console fos:user:create
+	$> user_name
+	$> user_email
+	$> user_pass
+	
+	$> php app/console fos:user:promote
+	$> user_name
+	$> ROLE_SUPER_ADMIN
 
 

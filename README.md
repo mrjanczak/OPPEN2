@@ -27,30 +27,63 @@ You can download OppenProject from GitHub:
 
     $> git clone https://github.com/musicahumana/Oppen.git
 
-Then install all vendors with Composer and build model
+Install all vendors with Composer
 
 	$> curl -s https://getcomposer.org/installer | php
 	$> composer install
-	
-Copy views of UserBundle to app/Resources
 
-    $> cp vendor/friendsofsymfony/user-bundle/FOS/UserBundle/Resources/views/* app/Resources/FOSUserBundle
+Update parameters.yml file
 
-and set new template in UserBundle layout:
+```yaml
+# app/config/parameters.yml
 
-    $> echo "{% extends 'OppenProjectBundle::layout.html.twig' %}" > app/Resources/FOSUserBundle/layout.html.twig
+parameters:
+    database_driver: pdo_pgsql
+    database_host: 127.0.0.1
+    database_port: null
+    database_name: xxxxxxx
+    database_user: xxxxxxx
+    database_password: xxxxxxxxx
+    mailer_transport: smtp
+    mailer_host: xxxx.xxx
+    mailer_user: xxxx@xxxxxx.xxx
+    mailer_password: xxxxxxx
+    locale: pl
+```
 
-Update your project:
+Prepare production enviroment:
 
-	$> php bin/vendors update
+	$> php app/console cache:clear --env=prod --no-debug
+	$> php app/console cache:warmup --env=prod --no-debug
 	$> php app/console assets:install web
-	$> php app/console propel:model:build
-	$> php app/console propel:schema:create
-	$> php app/console propel:fixtures:load
+	$> php app/console assetic:dump --env=prod --no-debug
 	$> chmod 777 -R app/cache app/logs
+	
+Prepare database:
 
-Access the `config.php` script from a browser:
+	$> php app/console propel:model:build
+	$> php app/console propel:sql:build
+	$> php app/console propel:sql:insert
+	$> php app/console propel:schema:create
+	$> php app/console propel:fixtures:load @AppBundle
 
-    http://localhost/path/to/symfony/app/web/config.php
+And create user:
+
+	$> php app/console fos:user:create
+	$> user_name
+	$> user_email
+	$> user_pass
+	
+	$> php app/console fos:user:promote
+	$> user_name
+	$> ROLE_SUPER_ADMIN
+
+Open the `config.php`page:
+
+    http:///.../web/config.php
 
 If you get any warnings or recommendations, fix them before moving on.
+
+Now application is ready to use:
+
+    http://.../web/app.php

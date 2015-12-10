@@ -29,7 +29,9 @@ fos_user_change_password:
     resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
     prefix: /profile
 
-
+oppen_config:
+    path:  /config
+    defaults: { _controller: AppBundle:Settings:config }
 ############### Ajax Update Routes ##############
 
 oppen_month_update:

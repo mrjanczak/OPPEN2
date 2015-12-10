@@ -51,11 +51,25 @@ class SettingsController extends Controller
 	public function homeAction()
 	{
 		$Year  = YearQuery::getFirstActive();
+		
+		if($Year == null) {
+			return $this->redirect($this->generateUrl('oppen_config'));
+		}
 
 		return $this->redirect($this->generateUrl('oppen_projects', array(
 			'year_id' => $Year->getId(),
 			'search_name' => '*'	)));
 	}
+
+    public function configAction()
+    { 
+		$Year  = new Year();
+		
+		//Parameters = ...
+		
+        return $this->render('AppBundle:Settings:config.html.twig',array(
+			'step' => 1));
+    }
 
     public function menuAction()
     { 
