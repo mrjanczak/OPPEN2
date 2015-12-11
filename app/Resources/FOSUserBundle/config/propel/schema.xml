@@ -5,16 +5,18 @@
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="username" type="varchar" size="255" primaryString="true" />
         <column name="username_canonical" type="varchar" size="255" />
+        <!--
         <unique>
             <unique-column name="username_canonical" />
         </unique>
-
+        -->
         <column name="email" type="varchar" size="255" />
         <column name="email_canonical" type="varchar" size="255" />
+        <!--
         <unique>
             <unique-column name="email_canonical" />
         </unique>
-
+        -->
         <column name="enabled" type="boolean" defaultValue="false" />
         <column name="salt" type="varchar" size="255" required="true" />
         <column name="password" type="varchar" size="255" required="true" />

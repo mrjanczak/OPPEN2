@@ -51,9 +51,16 @@ class SettingsController extends Controller
 	public function homeAction()
 	{
 		$Year  = YearQuery::getFirstActive();
+		$msg = array('errors' => array(), 'messages' => array());
 		
 		if($Year == null) {
-			return $this->redirect($this->generateUrl('oppen_config'));
+			
+			$msg['errors'][] = 'Brak aktywnego roku';
+			$msg['messages'][] = 'Uruchom php app/console propel:fixtures:load @AppBundle';
+				
+			return $this->render('AppBundle:Settings:empty_layout.html.twig', array(
+				'errors' => $msg['errors'],
+				'messages' => $msg['messages']));
 		}
 
 		return $this->redirect($this->generateUrl('oppen_projects', array(
@@ -61,33 +68,29 @@ class SettingsController extends Controller
 			'search_name' => '*'	)));
 	}
 
-    public function configAction()
-    { 
-		$Year  = new Year();
-		
-		//Parameters = ...
-		
-        return $this->render('AppBundle:Settings:config.html.twig',array(
-			'step' => 1));
-    }
-
     public function menuAction()
     { 
 		$Year  = YearQuery::getFirstActive();
-		$Month = MonthQuery::getFirstActive($Year);
+		
+		if ($Year instanceOf Year) {
 			
-		$DocCat = DocCatQuery::create()->orderByName()->findOneByYear($Year);
-		if (!($DocCat instanceOf DocCat)) { $DocCat = DocCatQuery::create()->findOne(); }
+			$Month = MonthQuery::getFirstActive($Year);
+			$DocCat = DocCatQuery::create()->orderByName()->findOneByYear($Year);
+			if (!($DocCat instanceOf DocCat)) { $DocCat = DocCatQuery::create()->findOne(); }
 
-		$FileCat = FileCatQuery::create()->orderByName()->findOneByYear($Year);
-		if (!($FileCat instanceOf FileCat)) { $FileCat = FileCatQuery::create()->findOne(); }
-						
-        return $this->render('AppBundle:Settings:menu.html.twig',array(
-			'Year' => $Year,
-			'Month' => $Month,
-			'DocCat' => $DocCat,
-			'FileCat' => $FileCat,
-			'settings_tab_id' => 1));
+			$FileCat = FileCatQuery::create()->orderByName()->findOneByYear($Year);
+			if (!($FileCat instanceOf FileCat)) { $FileCat = FileCatQuery::create()->findOne(); }
+							
+			return $this->render('AppBundle:Settings:menu.html.twig',array(
+				'Year' => $Year,
+				'Month' => $Month,
+				'DocCat' => $DocCat,
+				'FileCat' => $FileCat,
+				'settings_tab_id' => 1));
+		}
+		else { 
+			return $this->render('AppBundle:Settings:empty.html.twig');
+		}
     }
     
     public function editAction($tab_id, $year_id,  Request $request)

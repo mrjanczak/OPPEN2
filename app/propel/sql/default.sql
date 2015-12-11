@@ -4,64 +4,6 @@
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ---------------------------------------------------------------------
--- fos_user
--- ---------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `fos_user`;
-
-CREATE TABLE `fos_user`
-(
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `username` VARCHAR(255),
-    `username_canonical` VARCHAR(255),
-    `email` VARCHAR(255),
-    `email_canonical` VARCHAR(255),
-    `enabled` TINYINT(1) DEFAULT 0,
-    `salt` VARCHAR(255) NOT NULL,
-    `password` VARCHAR(255) NOT NULL,
-    `last_login` DATETIME,
-    `locked` TINYINT(1) DEFAULT 0,
-    `expired` TINYINT(1) DEFAULT 0,
-    `expires_at` DATETIME,
-    `confirmation_token` VARCHAR(255),
-    `password_requested_at` DATETIME,
-    `credentials_expired` TINYINT(1) DEFAULT 0,
-    `credentials_expire_at` DATETIME,
-    `roles` TEXT,
-    PRIMARY KEY (`id`),
-    UNIQUE INDEX `fos_user_U_1` (`username_canonical`),
-    UNIQUE INDEX `fos_user_U_2` (`email_canonical`)
-) ENGINE=MyISAM;
-
--- ---------------------------------------------------------------------
--- fos_group
--- ---------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `fos_group`;
-
-CREATE TABLE `fos_group`
-(
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(255) NOT NULL,
-    `roles` TEXT,
-    PRIMARY KEY (`id`)
-) ENGINE=MyISAM;
-
--- ---------------------------------------------------------------------
--- fos_user_group
--- ---------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `fos_user_group`;
-
-CREATE TABLE `fos_user_group`
-(
-    `fos_user_id` INTEGER NOT NULL,
-    `fos_group_id` INTEGER NOT NULL,
-    PRIMARY KEY (`fos_user_id`,`fos_group_id`),
-    INDEX `fos_user_group_FI_2` (`fos_group_id`)
-) ENGINE=MyISAM;
-
--- ---------------------------------------------------------------------
 -- year
 -- ---------------------------------------------------------------------
 
@@ -557,43 +499,6 @@ CREATE TABLE `contract`
 ) ENGINE=MyISAM;
 
 -- ---------------------------------------------------------------------
--- temp_contract
--- ---------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `temp_contract`;
-
-CREATE TABLE `temp_contract`
-(
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `contract_no` VARCHAR(20),
-    `contract_date` DATE,
-    `contract_place` VARCHAR(20),
-    `event_desc` VARCHAR(1000),
-    `event_date` DATE,
-    `event_place` VARCHAR(100),
-    `event_name` VARCHAR(100),
-    `event_role` VARCHAR(100),
-    `gross` FLOAT,
-    `income_cost` FLOAT,
-    `tax` FLOAT,
-    `netto` FLOAT,
-    `first_name` VARCHAR(50),
-    `last_name` VARCHAR(50),
-    `PESEL` VARCHAR(50),
-    `NIP` VARCHAR(50),
-    `street` VARCHAR(50),
-    `house` VARCHAR(5),
-    `flat` VARCHAR(5),
-    `code` VARCHAR(6),
-    `city` VARCHAR(50),
-    `district` VARCHAR(50),
-    `country` VARCHAR(50),
-    `bank_account` VARCHAR(32),
-    `bank_name` VARCHAR(50),
-    PRIMARY KEY (`id`)
-) ENGINE=MyISAM;
-
--- ---------------------------------------------------------------------
 -- task
 -- ---------------------------------------------------------------------
 
@@ -633,6 +538,62 @@ CREATE TABLE `parameter`
     `value_date` DATE,
     `sortable_rank` INTEGER,
     PRIMARY KEY (`id`)
+) ENGINE=MyISAM;
+
+-- ---------------------------------------------------------------------
+-- fos_user
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `fos_user`;
+
+CREATE TABLE `fos_user`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `username` VARCHAR(255),
+    `username_canonical` VARCHAR(255),
+    `email` VARCHAR(255),
+    `email_canonical` VARCHAR(255),
+    `enabled` TINYINT(1) DEFAULT 0,
+    `salt` VARCHAR(255) NOT NULL,
+    `password` VARCHAR(255) NOT NULL,
+    `last_login` DATETIME,
+    `locked` TINYINT(1) DEFAULT 0,
+    `expired` TINYINT(1) DEFAULT 0,
+    `expires_at` DATETIME,
+    `confirmation_token` VARCHAR(255),
+    `password_requested_at` DATETIME,
+    `credentials_expired` TINYINT(1) DEFAULT 0,
+    `credentials_expire_at` DATETIME,
+    `roles` TEXT,
+    PRIMARY KEY (`id`)
+) ENGINE=MyISAM;
+
+-- ---------------------------------------------------------------------
+-- fos_group
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `fos_group`;
+
+CREATE TABLE `fos_group`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(255) NOT NULL,
+    `roles` TEXT,
+    PRIMARY KEY (`id`)
+) ENGINE=MyISAM;
+
+-- ---------------------------------------------------------------------
+-- fos_user_group
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `fos_user_group`;
+
+CREATE TABLE `fos_user_group`
+(
+    `fos_user_id` INTEGER NOT NULL,
+    `fos_group_id` INTEGER NOT NULL,
+    PRIMARY KEY (`fos_user_id`,`fos_group_id`),
+    INDEX `fos_user_group_FI_2` (`fos_group_id`)
 ) ENGINE=MyISAM;
 
 -- ---------------------------------------------------------------------

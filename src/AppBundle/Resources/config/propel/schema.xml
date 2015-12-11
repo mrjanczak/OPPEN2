@@ -558,43 +558,6 @@
 		</behavior>  
 	</table>       
 
-	<table name="temp_contract">
-        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
-
-        <column name="contract_no" type="varchar" size="20" />        
-        <column name="contract_date" type="date" />
-        <column name="contract_place" type="varchar" size="20" />
-        
-        <column name="event_desc" type="varchar"  size="1000" />
-        <column name="event_date" type="date" />
-        <column name="event_place" type="varchar" size="100" />
-        <column name="event_name" type="varchar" size="100" />        
-        <column name="event_role" type="varchar" size="100" />
-                        		
-        <column name="gross" type="float"/> 
-        <column name="income_cost" type="float"/> 
-        <column name="tax" type="float"/>         
-        <column name="netto" type="float"/> 
-
-       <column name="first_name" type="varchar" size="50" />        
-       <column name="last_name" type="varchar" size="50" />        
-       <column name="PESEL" type="varchar" size="50" />        
-       <column name="NIP" type="varchar" size="50" />        
-              
-       <column name="street" type="varchar" size="50" />  
-       <column name="house" type="varchar" size="5" />  
-       <column name="flat" type="varchar" size="5" />  
-       <column name="code" type="varchar" size="6" />  
-       <column name="city" type="varchar" size="50" />  
-       <column name="district" type="varchar" size="50" />  
-       <column name="country" type="varchar" size="50" />
-         
-       <column name="bank_account" type="varchar" size="32" />  
-       <column name="bank_name" type="varchar" size="50" />                
-	</table>       
-
-
-
 	<table name="task">
 		<behavior name="sortable" /> 
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />

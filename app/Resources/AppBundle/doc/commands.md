@@ -14,8 +14,8 @@ php composer.phar install --no-dev --optimize-autoloader
 
 php app/console cache:clear --env=prod --no-debug
 php app/console cache:warmup --env=prod --no-debug
-php app/console assetic:dump --env=prod --no-debug
 php app/console assets:install web
+php app/console assetic:dump --env=prod --no-debug
 
 php app/console propel:model:build
 php app/console propel:fixtures:load @AppBundle
@@ -46,6 +46,9 @@ git push heroku master
 heroku login
 
 heroku config:set SWIFTMAILER_URL=smtp://mail.latempesta.pl:vespers1@mail.latempesta.pl
+
+heroku run php app/console cache:clear --env=prod --no-debug
+heroku run php app/console cache:warmup --env=prod --no-debug
 
 heroku git:clone -a oppen-project
 

@@ -19,10 +19,6 @@ class AppKernel extends Kernel
             new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle(),
             
             new Propel\PropelBundle\PropelBundle(),
-            new Bmatzner\JQueryBundle\BmatznerJQueryBundle(),
-            new Bmatzner\JQueryUIBundle\BmatznerJQueryUIBundle(),
-            new PunkAve\FileUploaderBundle\PunkAveFileUploaderBundle(),
-            new Stfalcon\Bundle\TinymceBundle\StfalconTinymceBundle(),
             new Oneup\UploaderBundle\OneupUploaderBundle(),
 
             new AppBundle\AppBundle(),

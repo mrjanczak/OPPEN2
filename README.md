@@ -44,11 +44,13 @@ parameters:
     database_name: xxxxxxx
     database_user: xxxxxxx
     database_password: xxxxxxxxx
+    
     mailer_transport: smtp
     mailer_host: xxxx.xxx
     mailer_user: xxxx@xxxxxx.xxx
     mailer_password: xxxxxxx
     locale: pl
+    secret: xxxxxxxxxxxxxxxxxx
 ```
 
 Prepare production enviroment:
@@ -61,9 +63,8 @@ Prepare production enviroment:
 	
 Prepare database:
 
-	$> php app/console propel:model:build
 	$> php app/console propel:sql:build
-	$> php app/console propel:sql:insert
+	$> php app/console propel:sql:insert --force
 	$> php app/console propel:schema:create
 	$> php app/console propel:fixtures:load @AppBundle
 

@@ -22,10 +22,6 @@
         "propel/propel-bundle": "1.4.*",
         "willdurand/propel-typehintable-behavior": "~1.0",
         "oneup/uploader-bundle": "^1.3",
-        "bmatzner/jquery-bundle": "~1.9",
-        "bmatzner/jquery-ui-bundle": "*",
-        "stfalcon/tinymce-bundle": "dev-master",
-        "punkave/symfony2-file-uploader-bundle": "dev-master",
         "ext-mbstring": "*",
         "ext-intl": "*"
     },

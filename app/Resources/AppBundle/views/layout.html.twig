@@ -7,23 +7,22 @@
 			{% block title %}{% endblock %}</title>
 		<link rel="icon" sizes="16x16" href="{{ asset('favicon.ico') }}" />  
 
-
-
 {% stylesheets  
 	'bundles/framework/css/*.css'
-	'bundles/bmatznerjqueryui/css/smoothness/jquery-ui.css'	
-	'bundles/bmatznerjqueryui/css/smoothness/jquery.ui.theme.css'
-	'css/style.css'			 		 		 		 	
+	'css/style.css'	
+	'jquery/ui/jquery-ui.min.css' 	
+	'fileupload/css/jquery.fileupload.css' 	 		 		 		 	
+	'treegrid/css/jquery.treegrid.css' 		 		 		 	
 	filter='cssrewrite' output='css/compiled.css' %}
     <link rel="stylesheet" href="{{ asset_url }}" />
 {% endstylesheets %}		      
 
 {% javascripts
     'js/oppen-form.js'	
-    'bundles/bmatznerjquery/js/jquery.min.js'
-    'bundles/bmatznerjqueryui/js/minified/jquery-ui.min.js'    
-    'bundles/punkavefileuploader/js/jquery.fileupload.js'
-    'bundles/punkavefileuploader/js/jquery.iframe-transport.js'
+    'jquery/*.min.js'
+    'jquery/ui/jquery-ui.min.js'    
+	'fileupload/js/jquery.iframe-transport.js' 
+	'fileupload/js/jquery.fileupload.js' 
 	output='js/compiled.js'%}
     <script src="{{ asset_url }}"></script>
 {% endjavascripts %}
@@ -67,18 +66,20 @@
 						{% endfor %}
 					{% endfor %}
 					
-					{% if messages is defined %}
-						{% for k,message in messages %}
-							<div id='message-{{k}}'>{{ message }}</div>
-						{% endfor %}
-					{% endif %} 	
-												
+	
 					{% if errors is defined %}
 						{% for k,error in errors %}
 							<div id='error-{{k}}' class='error'>{{ error }} </div>
 						{% endfor %}
-					{% endif %} 		
-										
+					{% endif %} 	
+									
+					{% if messages is defined %}
+						{% for k,message in messages %}
+							<div id='message-{{k}}' class='message'>{{ message }}</div>
+						{% endfor %}
+					{% endif %} 	
+		
+	
 					<div>
 						{% block fos_user_content %}
 						{% endblock fos_user_content %}

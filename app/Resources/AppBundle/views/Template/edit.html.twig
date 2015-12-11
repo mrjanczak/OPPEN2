@@ -32,11 +32,6 @@
 <b>{{ form_label(form.contents) }}</b>
 {{ form_widget(form.contents,{'attr':{'class': 'tinymce' }} ) }}
 
-{{ tinymce_init({
-	theme: {'simple':{'language': app.request.locale, 'height': 600 }},
-	toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"})
-}}
-
 <div class="h">
 	{{ form_rest(form) }}
 </div>

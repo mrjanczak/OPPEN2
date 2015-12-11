@@ -41,15 +41,15 @@ function form_init() {
 			+'<p style="margin:1em 0"><span class="ui-icon ui-icon-alert" style="float: left; margin-right:.3em;"></span>'
 			+$(this).html()+'</p></div>');	
 	});	
-	$('div[id*="highlight"]').each(function () {
+	$('div[id*="message"]').each(function () {
 		$(this).addClass('ui-widget');	
-		$(this).html('<div class="ui-state-highlight ui-corner-all"  style="padding: 0px 0.7em">'
-			+'<p><span class="ui-icon ui-icon-info" style="float: left; margin-right:.3em;"></span>'
-			+$(this).html()+'</p></div>');	
+		$(this).html('<div class="ui-state-highlight ui-corner-all" style="padding: 0px 0.7em">'
+			+'<p style="margin:1em 0"><span class="ui-icon ui-icon-info" style="float: left; margin-right:.3em;"></span>'
+			+$(this).html()+'</p></div>');
 	});	
 
 	$( document ).tooltip();
-/*
+
 	tinymce.init({
 		selector: "textarea.tinymce",
 		inline: false,
@@ -62,7 +62,7 @@ function form_init() {
 		pagebreak_separator: "<div class='page-break'></div>",
 		toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
 	 });
-*/
+
 }
 
 function form_datepicker() {
