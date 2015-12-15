@@ -84,3 +84,7 @@ If you get any warnings or recommendations, fix them before moving on.
 Now application is ready to use:
 
     http://.../web/app.php
+
+## Instalation on Heroku
+
+

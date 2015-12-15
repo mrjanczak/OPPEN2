@@ -4,7 +4,7 @@
     "type": "project",
     "description": "Project management for NGO",
     "autoload": {
-        "psr-0": { "": "src/" }
+        "psr-4": { "": "src/" }
     },     
     "require": {
         "php": ">=5.3.9",
@@ -60,7 +60,7 @@
 
         "heroku": {
             "compile": [
-                "chmod 777 /cache"
+                "chmod -R 777 app/cache"
             ],
             "document-root": "web",
             "php-config": [

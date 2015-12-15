@@ -60,7 +60,8 @@ heroku run php app/console propel:model:build
 heroku run composer install -dev --optimize-autoloader
 heroku run composer update -prod 
 
-
+php app/console cache:clear
+php app/console cache:warmup --no-optional-warmers
 
 ### Changes
 
