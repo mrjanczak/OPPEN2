@@ -60,7 +60,7 @@
 
         "heroku": {
             "compile": [
-                "chmod 777 /app/cache"
+                "chmod 777 /cache"
             ],
             "document-root": "web",
             "php-config": [
