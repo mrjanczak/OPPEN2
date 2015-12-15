@@ -2,6 +2,7 @@
 
 namespace AppBundle\Model;
 
+use \PropelPDO;
 use AppBundle\Model\om\BaseCostDoc;
 
 class CostDoc extends BaseCostDoc

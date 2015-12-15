@@ -2,8 +2,9 @@
 
 namespace AppBundle\Model;
 
-use AppBundle\Model\om\BaseBookk;
+use \PropelPDO;
 use \PropelObjectCollection;
+use AppBundle\Model\om\BaseBookk;
 
 class Bookk extends BaseBookk
 {

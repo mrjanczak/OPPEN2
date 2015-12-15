@@ -2,6 +2,7 @@
 
 namespace AppBundle\Model;
 
+use \PropelPDO;
 use AppBundle\Model\om\BaseCost;
 
 class Cost extends BaseCost

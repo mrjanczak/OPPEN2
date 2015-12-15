@@ -2,6 +2,7 @@
 
 namespace AppBundle\Model;
 
+use \PropelPDO;
 use AppBundle\Model\om\BaseProject;
 
 class Project extends BaseProject

@@ -2,9 +2,10 @@
 
 namespace AppBundle\Model;
 
-use AppBundle\Model\om\BaseDoc;
+use \PropelPDO;
 use \PropelObjectCollection;
 use \Criteria;
+use AppBundle\Model\om\BaseDoc;
 
 use AppBundle\Model\ParameterQuery;
 
