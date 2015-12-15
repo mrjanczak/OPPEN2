@@ -53,7 +53,7 @@ class SettingsController extends Controller
 		$Year  = YearQuery::getFirstActive();
 		$msg = array('errors' => array(), 'messages' => array());
 		
-		if($Year == null) {
+		if (!($Year instanceOf Year)) {
 			
 			$msg['errors'][] = 'Brak aktywnego roku';
 			$msg['messages'][] = 'Uruchom php app/console propel:fixtures:load @AppBundle';

@@ -5,21 +5,19 @@ The OppenProject is an application for NGO to manage projects.
 
 ## Prerequisites
 
-This app is tested using Symfony2 versions 2.4+. It uses follwing bundles:
+This app is tested using Symfony2 versions 2.4+. It uses follwing bundles and assets:
 
 * [**PropelBundle**][1]
 * [**User Bundle by FriendsOfSymfony**][2]
 * [**Uploader Bundle by OneUp**][3]
-* [**Jquery file upload by mrj**][4]
-* [**JQuery & JQuery UI bundles by BMatzner**][5]
-* [**TintMCE bundle by Stfalcon**][6]
+* [**JQuery UI**][4]
+* [**TintMCE**][5]
 
 [1]: https://packagist.org/packages/propel/propel-bundle
 [2]: https://packagist.org/packages/friendsofsymfony/user-bundle
 [3]: https://packagist.org/packages/oneup/uploader-bundle
-[4]: https://packagist.org/packages/mrj/symfony-jquery-file-upload
-[5]: https://packagist.org/packages/bmatzner/jquery-ui-bundle
-[6]: https://packagist.org/packages/stfalcon/tinymce-bundle
+[4]: http://jqueryui.com/
+[5]: https://www.tinymce.com/
 
 ## Installation
 
@@ -59,13 +57,11 @@ Prepare production enviroment:
 	$> php app/console cache:warmup --env=prod --no-debug
 	$> php app/console assets:install web
 	$> php app/console assetic:dump --env=prod --no-debug
-	$> chmod 777 -R app/cache app/logs
+	$> sudo chmod 777 -R app/cache app/logs
 	
 Prepare database:
 
-	$> php app/console propel:sql:build
 	$> php app/console propel:sql:insert --force
-	$> php app/console propel:schema:create
 	$> php app/console propel:fixtures:load @AppBundle
 
 And create user:

@@ -291,10 +291,10 @@ class ContractController extends Controller
 					
 					$c = str_replace('--document--' ,'', $c);
 					
-					$c = str_replace('__gross__' ,$Contract->getGross(), $c);
-					$c = str_replace('__income_cost__' ,$Contract->getIncomeCost(), $c);
-					$c = str_replace('__tax__' ,$Contract->getTax(), $c);
-					$c = str_replace('__netto__',$Contract->getNetto(), $c);
+					$c = str_replace('__gross__' ,      number_format($Contract->getGross(), 2, ',', ' '), $c);
+					$c = str_replace('__income_cost__' ,number_format($Contract->getIncomeCost(), 2, ',', ' '), $c);
+					$c = str_replace('__tax__' ,        number_format($Contract->getTax(), 2, ',', ' '), $c);
+					$c = str_replace('__netto__',       number_format($Contract->getNetto(), 2, ',', ' '), $c);
 					$c = str_replace('__gross_text__' ,AmountInWords::get($Contract->getGross()), $c);
 					
 					$pages[] = $c;
