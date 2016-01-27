@@ -35,7 +35,7 @@
 {% else %}
 	
 <table class="form list"><tbody>
-	<tr> <th></th> <th> Numer </th> <th> Nazwa </th> </tr>
+	<tr> <th></th> <th> Numer </th> <th> Nazwa </th> <th> Adres </th> </tr>
 			
 	{% for FileF in form.Files %}
 	{% set File = FileF.vars.value %}
@@ -46,10 +46,17 @@
 		{% endif %}
 		</td>		
 		<td> {{ File.__AccNo() }} </td>
-		<td> 
-			<a href={{ path('oppen_file', {'file_cat_id' : FileCat.id, 'file_id' : File.id}) }}> {{ File.name }} </a>
-			{{ File.PESEL }} 
-			{{ File.postOffice }} 
+		<td> <a href={{ path('oppen_file', {'file_cat_id' : FileCat.id, 'file_id' : File.id}) }}> {{ File.name }} </a> </td>
+		<td>
+			{% if FileCat.symbol == 'ZB' %} 
+				{{ File.Address1 }}, {{ File.Address2 }} {{ File.country }} | {{ File.PESEL }} | 
+				{% if File.SubFile.name is defined %}  {{ File.SubFile.name }} 
+				{% else %} <span class="red">Brak US</span>
+				{% endif %} |
+				{% if File.email is not empty %}  {{ File.email }} 
+				{% else %} <span class="red">Brak email-a</span>
+				{% endif %} 
+			{% endif %} 
 		</td>
 	</tr>
 	{% endfor %}

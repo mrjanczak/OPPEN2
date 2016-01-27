@@ -52,8 +52,58 @@ class FileType extends AbstractType
             ->add('city', 'text', array('label' => 'Miasto','required' => false))
             ->add('district2', 'text', array('label' => 'Gmina','required' => false))
             ->add('district', 'text', array('label' => 'Powiat','required' => false))
-            ->add('province', 'text', array('label' => 'Województwo','required' => false))
-            ->add('country', 'text', array('label' => 'Kraj','required' => false))
+			->add('province', 'choice', array(
+				'label' => 'Województwo', 'required' => false, 'choices' => array( 
+				'dolnośląskie' => 'dolnośląskie',
+				'kujawsko-pomorskie' => 'kujawsko-pomorskie',
+				'lubelskie' => 'lubelskie',
+				'lubuskie' => 'lubuskie',
+				'łódzkie' => 'łódzkie',
+				'małopolskie' => 'małopolskie',
+				'mazowieckie' => 'mazowieckie',
+				'opolskie' => 'opolskie',
+				'podkarpackie' => 'podkarpackie',
+				'podlaskie' => 'podlaskie',
+				'pomorskie' => 'pomorskie',
+				'śląskie' => 'śląskie',
+				'świętokrzyskie' => 'świętokrzyskie',
+				'Warminsko-mazurskie' => 'Warminsko-mazurskie',
+				'wielkopolskie' => 'wielkopolskie',
+				'zachodniopomorskie' => 'zachodniopomorskie',
+				) ))            
+
+			->add('country', 'choice', array(
+				'label' => 'Kraj', 'required' => false, 'choices' => array( 
+				'AT' => 'Austria',
+				'BE' => 'Belgia',
+				'BG' => 'Bułgaria',
+				'HR' => 'Chorwacja',
+				'CY' => 'Cypr',
+				'CZ' => 'Czechy',
+				'DK' => 'Dania',
+				'EE' => 'Estonia',
+				'FI' => 'Finlandia',
+				'FR' => 'Francja',
+				'GR' => 'Grecja',
+				'ES' => 'Hiszpania',
+				'IE' => 'Irlandia',
+				'LT' => 'Litwa',
+				'LU' => 'Luksemburg',
+				'LV' => 'Łotwa',
+				'MT' => 'Malta',
+				'NL' => 'Holandia',
+				'DE' => 'Niemcy',
+				'PL' => 'Polska',
+				'PT' => 'Portugalia',
+				'RO' => 'Rumunia',
+				'SK' => 'Słowacja',
+				'SI' => 'Słowenia',
+				'SE' => 'Szwecja',
+				'HU' => 'Węgry',
+				'GB' => 'Wielka Brytania',
+				'IT' => 'Włochy',
+				) )) 
+
             ->add('post_office', 'text', array('label' => 'Poczta','required' => false))
             
 			->add('bankAccount', 'text', array('label' => 'Konto bankowe','required' => false, 'attr' => array('size' => 30)) )

@@ -5,6 +5,7 @@ namespace AppBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -83,7 +84,7 @@ class ProjectType extends AbstractType
 
 			->add('status', 'choice', array(
 				'label' => 'Status',
-				'choices' => array('-1' => 'w przygotowaniu', '0' => 'rozpoczęty', '1' => 'zamknięty') ))			
+				'choices' => array('-1' => 'w przygotowaniu', '0' => 'rozpoczęty', '1' => 'zamknięty'), ))			
 
 			->add('IncomeAcc', 'model', array(
 				'label' => 'Konto przychodów',

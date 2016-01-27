@@ -24,7 +24,7 @@ class File extends BaseFile
     public function getPfxStreet()
     {	
 		$street = $this->getStreet();
-		return (string) in_array(strtolower(substr($street,0,3)),array('ul.','al.','pl.','os.'))?'':'ul.'.$street; 
+		return (string) (in_array(strtolower(substr($street,0,3)),array('ul.','al.','pl.','os.'))?'':'ul.').$street; 
     }
 
     public function getPfxFlat()
