@@ -432,6 +432,9 @@ span.dialog-icon {
 table.list tbody tr.odd {
 	background-color : #eee;
 }
+table.list tbody tr.header {
+	background-color : #fff !important;
+}
 table.form tbody tr th {
 	font-weight:   bold;
 	padding:5px;
@@ -441,7 +444,8 @@ table.form tbody tr td {
 	padding:5px;
 }
 th.col_no {
-	width:70px;}
+	width:70px;
+}
 td.right-border {
 	border-right:solid #000 thin;
 }
@@ -460,7 +464,7 @@ td.item_level_0 {
 	font-size:14px;
 }
 .item, .checkbox {
-	width:30px;	
+	width:40px;	
 }
 .item, .toggle_items, .checkbox {
 	text-align:center;

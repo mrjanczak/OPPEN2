@@ -30,13 +30,13 @@ abstract class BaseParameterPeer
     const TM_CLASS = 'AppBundle\\Model\\map\\ParameterTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 9;
+    const NUM_COLUMNS = 10;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 9;
+    const NUM_HYDRATE_COLUMNS = 10;
 
     /** the column name for the id field */
     const ID = 'parameter.id';
@@ -55,6 +55,9 @@ abstract class BaseParameterPeer
 
     /** the column name for the value_int field */
     const VALUE_INT = 'parameter.value_int';
+
+    /** the column name for the value_bool field */
+    const VALUE_BOOL = 'parameter.value_bool';
 
     /** the column name for the value_varchar field */
     const VALUE_VARCHAR = 'parameter.value_varchar';
@@ -91,12 +94,12 @@ abstract class BaseParameterPeer
      * e.g. ParameterPeer::$fieldNames[ParameterPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'Label', 'FieldType', 'ValueFloat', 'ValueInt', 'ValueVarchar', 'ValueDate', 'SortableRank', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'label', 'fieldType', 'valueFloat', 'valueInt', 'valueVarchar', 'valueDate', 'sortableRank', ),
-        BasePeer::TYPE_COLNAME => array (ParameterPeer::ID, ParameterPeer::NAME, ParameterPeer::LABEL, ParameterPeer::FIELD_TYPE, ParameterPeer::VALUE_FLOAT, ParameterPeer::VALUE_INT, ParameterPeer::VALUE_VARCHAR, ParameterPeer::VALUE_DATE, ParameterPeer::SORTABLE_RANK, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'NAME', 'LABEL', 'FIELD_TYPE', 'VALUE_FLOAT', 'VALUE_INT', 'VALUE_VARCHAR', 'VALUE_DATE', 'SORTABLE_RANK', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'label', 'field_type', 'value_float', 'value_int', 'value_varchar', 'value_date', 'sortable_rank', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'Label', 'FieldType', 'ValueFloat', 'ValueInt', 'ValueBool', 'ValueVarchar', 'ValueDate', 'SortableRank', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'label', 'fieldType', 'valueFloat', 'valueInt', 'valueBool', 'valueVarchar', 'valueDate', 'sortableRank', ),
+        BasePeer::TYPE_COLNAME => array (ParameterPeer::ID, ParameterPeer::NAME, ParameterPeer::LABEL, ParameterPeer::FIELD_TYPE, ParameterPeer::VALUE_FLOAT, ParameterPeer::VALUE_INT, ParameterPeer::VALUE_BOOL, ParameterPeer::VALUE_VARCHAR, ParameterPeer::VALUE_DATE, ParameterPeer::SORTABLE_RANK, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'NAME', 'LABEL', 'FIELD_TYPE', 'VALUE_FLOAT', 'VALUE_INT', 'VALUE_BOOL', 'VALUE_VARCHAR', 'VALUE_DATE', 'SORTABLE_RANK', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'label', 'field_type', 'value_float', 'value_int', 'value_bool', 'value_varchar', 'value_date', 'sortable_rank', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
     );
 
     /**
@@ -106,12 +109,12 @@ abstract class BaseParameterPeer
      * e.g. ParameterPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'Label' => 2, 'FieldType' => 3, 'ValueFloat' => 4, 'ValueInt' => 5, 'ValueVarchar' => 6, 'ValueDate' => 7, 'SortableRank' => 8, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'label' => 2, 'fieldType' => 3, 'valueFloat' => 4, 'valueInt' => 5, 'valueVarchar' => 6, 'valueDate' => 7, 'sortableRank' => 8, ),
-        BasePeer::TYPE_COLNAME => array (ParameterPeer::ID => 0, ParameterPeer::NAME => 1, ParameterPeer::LABEL => 2, ParameterPeer::FIELD_TYPE => 3, ParameterPeer::VALUE_FLOAT => 4, ParameterPeer::VALUE_INT => 5, ParameterPeer::VALUE_VARCHAR => 6, ParameterPeer::VALUE_DATE => 7, ParameterPeer::SORTABLE_RANK => 8, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'NAME' => 1, 'LABEL' => 2, 'FIELD_TYPE' => 3, 'VALUE_FLOAT' => 4, 'VALUE_INT' => 5, 'VALUE_VARCHAR' => 6, 'VALUE_DATE' => 7, 'SORTABLE_RANK' => 8, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'label' => 2, 'field_type' => 3, 'value_float' => 4, 'value_int' => 5, 'value_varchar' => 6, 'value_date' => 7, 'sortable_rank' => 8, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'Label' => 2, 'FieldType' => 3, 'ValueFloat' => 4, 'ValueInt' => 5, 'ValueBool' => 6, 'ValueVarchar' => 7, 'ValueDate' => 8, 'SortableRank' => 9, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'label' => 2, 'fieldType' => 3, 'valueFloat' => 4, 'valueInt' => 5, 'valueBool' => 6, 'valueVarchar' => 7, 'valueDate' => 8, 'sortableRank' => 9, ),
+        BasePeer::TYPE_COLNAME => array (ParameterPeer::ID => 0, ParameterPeer::NAME => 1, ParameterPeer::LABEL => 2, ParameterPeer::FIELD_TYPE => 3, ParameterPeer::VALUE_FLOAT => 4, ParameterPeer::VALUE_INT => 5, ParameterPeer::VALUE_BOOL => 6, ParameterPeer::VALUE_VARCHAR => 7, ParameterPeer::VALUE_DATE => 8, ParameterPeer::SORTABLE_RANK => 9, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'NAME' => 1, 'LABEL' => 2, 'FIELD_TYPE' => 3, 'VALUE_FLOAT' => 4, 'VALUE_INT' => 5, 'VALUE_BOOL' => 6, 'VALUE_VARCHAR' => 7, 'VALUE_DATE' => 8, 'SORTABLE_RANK' => 9, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'label' => 2, 'field_type' => 3, 'value_float' => 4, 'value_int' => 5, 'value_bool' => 6, 'value_varchar' => 7, 'value_date' => 8, 'sortable_rank' => 9, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
     );
 
     /**
@@ -191,6 +194,7 @@ abstract class BaseParameterPeer
             $criteria->addSelectColumn(ParameterPeer::FIELD_TYPE);
             $criteria->addSelectColumn(ParameterPeer::VALUE_FLOAT);
             $criteria->addSelectColumn(ParameterPeer::VALUE_INT);
+            $criteria->addSelectColumn(ParameterPeer::VALUE_BOOL);
             $criteria->addSelectColumn(ParameterPeer::VALUE_VARCHAR);
             $criteria->addSelectColumn(ParameterPeer::VALUE_DATE);
             $criteria->addSelectColumn(ParameterPeer::SORTABLE_RANK);
@@ -201,6 +205,7 @@ abstract class BaseParameterPeer
             $criteria->addSelectColumn($alias . '.field_type');
             $criteria->addSelectColumn($alias . '.value_float');
             $criteria->addSelectColumn($alias . '.value_int');
+            $criteria->addSelectColumn($alias . '.value_bool');
             $criteria->addSelectColumn($alias . '.value_varchar');
             $criteria->addSelectColumn($alias . '.value_date');
             $criteria->addSelectColumn($alias . '.sortable_rank');

@@ -23,10 +23,10 @@ use FOS\UserBundle\Propel\UserGroup;
 use FOS\UserBundle\Propel\UserGroupQuery;
 use FOS\UserBundle\Propel\UserPeer;
 use FOS\UserBundle\Propel\UserQuery;
-use Oppen\ProjectBundle\Model\Doc;
-use Oppen\ProjectBundle\Model\DocQuery;
-use Oppen\ProjectBundle\Model\Task;
-use Oppen\ProjectBundle\Model\TaskQuery;
+use AppBundle\Model\Doc;
+use AppBundle\Model\DocQuery;
+use AppBundle\Model\Task;
+use AppBundle\Model\TaskQuery;
 
 abstract class BaseUser extends BaseObject implements Persistent
 {

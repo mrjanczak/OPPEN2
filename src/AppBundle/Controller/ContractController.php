@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Yaml\Parser;
 
 use AppBundle\Model\Year;
 use AppBundle\Model\Month;
@@ -41,7 +42,7 @@ class ContractController extends Controller
 		$buttons = array('cancel','save');
 		
 		$cost_coef = ParameterQuery::create()->getOneByName('default_cost_coef');
-		$tax_coef = ParameterQuery::create()->getOneByName('default_tax_coef');
+		$tax_coef =  ParameterQuery::create()->getOneByName('default_tax_coef');
 		
 		// create new one
 		if($contract_id == 0) {
@@ -49,13 +50,15 @@ class ContractController extends Controller
 			$Contract->setCost($Cost);
 			$Contract->setContractNo('');
 			$Contract->setCostCoef($cost_coef);
-			$Contract->setTaxCoef($tax_coef);		
+			$Contract->setTaxCoef($tax_coef);
+			$Contract->setPaymentPeriod('+2 weeks');		
 		}
 		// copy existing contract
 		elseif ($request->attributes->get('_route') == 'oppen_contract_copy') {
 			$Contract = ContractQuery::create()->findPk($contract_id);
 			$Month = $Contract->getMonth();
 			$Contract = $Contract->copy();
+			$Contract->setContractNo(null);
 			$Contract->setFile(null);
 			$Contract->setDoc(null);
 			
@@ -92,8 +95,8 @@ class ContractController extends Controller
 				$gross = $form->get('gross')->getData();
 				$cost_coef = $form->get('cost_coef')->getData();
 				$tax_coef = $form->get('tax_coef')->getData();
-				$income_cost = round( $gross * $cost_coef, 2);
-				$tax = round( $income_cost * $tax_coef, 0);
+				$income_cost = round( $gross * $cost_coef/100, 2);
+				$tax = round( $income_cost * $tax_coef/100, 0);
 				
 				$Contract->setIncomeCost( $income_cost );
 				$Contract->setTax( $tax );
@@ -108,10 +111,11 @@ class ContractController extends Controller
 				array('project_id' =>$Project->getId(),
 					  'tab_id'  => 4,
 					  'year_id' => $Year->getId() )));				
-		} 		
+		} 	
+					
 		return $this->render('AppBundle:Contract:edit.html.twig',
-			array('form' => $form->createView(),
-				  'buttons' => $buttons));
+			array('form' => $form->createView(),		
+				'buttons' => $buttons));
 	}
 
     public function deleteAction($contract_id, Request $request)
@@ -197,10 +201,13 @@ class ContractController extends Controller
 		$Project = $form->getData();
 		$Year = $Project->getYear();		
         $Params = ParameterQuery::create()->getAll();
+		$Parser = new Parser;
 		
+		/*
 		// delete all temporary contracts - this table in db can be used by external programs to generate contracts
 		foreach(TempContractQuery::create()->find() as $TempContract) {
 			$TempContract->delete();}
+		*/
 		
 		$pages = array();
 		foreach ($form->get('Costs') as $FCost) {
@@ -210,9 +217,20 @@ class ContractController extends Controller
 					$Template = $Contract->getTemplate();
 					$File = $Contract->getFile();
 					$Doc = $Contract->getDoc();					
-					$c = $Template->getContents();
-		
-					mb_internal_encoding('UTF-8');
+					
+					$comment = $Contract->getComment();					
+					/*
+					$instalments = $comment.'';
+					if(substr($comment,1,strlen('instalments:')) == 'instalments:') {
+						$items = $Parser->parse($comment);
+						foreach ($items as $item) {
+							$instalments .=  $item['amount'].' PLN do '.$item['date'].',';
+						}	
+					}
+					*/
+					
+					mb_internal_encoding('UTF-8');					
+					$c = $Template->getContents();					
 					$c = str_replace('__contract_no__',$Contract->getContractNo(), $c);
 					$c = str_replace('__contract_date__',$Contract->getContractDate()->format('d-m-Y'), $c); 
 					$c = str_replace('__contract_place__',$Contract->getContractPlace(), $c);
@@ -221,7 +239,10 @@ class ContractController extends Controller
 					$c = str_replace('__organization_address1__',$Params['organization_address1'], $c);
 					$c = str_replace('__organization_address2__',$Params['organization_address2'], $c);
 					$c = str_replace('__organization_KRS__',$Params['organization_KRS'], $c);
-					$c = str_replace('__organization_REGON__',$Params['organization_REGON'], $c);								
+					$c = str_replace('__organization_REGON__',$Params['organization_REGON'], $c);	
+												
+					$c = str_replace('__comment__',$comment, $c);								
+					//$c = str_replace('__instalments__',$instalments, $c);								
 					
 					$contractor_name = $File->getFirstName().' '.$File->getLastName();
 					$approver_name = $contractor_name != $Params['organization_board1'] ? 
@@ -298,7 +319,7 @@ class ContractController extends Controller
 					$c = str_replace('__gross_text__' ,AmountInWords::get($Contract->getGross()), $c);
 					
 					$pages[] = $c;
-					
+					/*
 					// add temporary contract
 					$TempContract = new TempContract;
 
@@ -334,6 +355,7 @@ class ContractController extends Controller
 					$TempContract->setBankName(   $File->getBankName());
 					
 					$TempContract->save(); 
+					*/
 				}
 			}
 		}

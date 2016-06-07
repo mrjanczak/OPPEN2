@@ -18,6 +18,7 @@
 {{ form_errors(form) }}
 <div class="form">
 	<div class='form-column'>
+	
 		{{ form_row(form.File) }} 
 		{{ form_row(form.Month) }} 
 		
@@ -37,6 +38,11 @@
 		{{ form_row(form.comment) }} 
 		<div class="comment">Wstaw na początku <span class="red">!</span>, aby wyróżnić umowę. </div>
 		{{ form_row(form.gross,{'attr':{'class':'value'}}) }} 
+		
+		{{ form_row(form.gross,{'attr':{'class':'value'}}) }} 
+		{{ form_row(form.netto,{'attr':{'class':'value'}}) }} 
+		{{ form_row(form.tax,{'attr':{'class':'value'}}) }} 
+		
 		{{ form_row(form.tax_coef,{'attr':{'class':'value'}}) }} 
 		{{ form_row(form.cost_coef,{'attr':{'class':'value'}}) }} 
 

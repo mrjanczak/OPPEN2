@@ -22,7 +22,8 @@ php app/console propel:fixtures:load @AppBundle
 
 php app/console propel:migration:generate-diff
 php app/console propel:migration:migrate
-php app/console router:debug --env=prod
+php app/console debug:router --env=prod
+
 # Linux
 
 sudo chmod -R 777 app

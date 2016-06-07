@@ -31,11 +31,6 @@ class ReportType extends AbstractType
 
             ->add('downloadZIP', 'submit', array('label' => 'Ściągnij dane'))  
 			
-			->add('mail_subject',         'text', array('label' => 'Tytuł','required'  => false, 'mapped' => false))
-			->add('mail_body',            'textarea', array('label' => 'Treść','required'  => false, 'mapped' => false))
-			->add('mail_attach_report',   'checkbox', array('label' => 'Załącz raport','empty_data' => true, 'required'  => false, 'mapped' => false))
-			->add('mail_summary',         'checkbox', array('label' => 'Wyślij podsumowanie','empty_data' => true, 'required'  => false, 'mapped' => false))
-            ->add('sendMails', 'submit', array('label' => 'Wyślij Deklaracje'))            
             ->add('report_date', 'date'     , array('label' => 'Data', 'required' => false, 'widget' => 'single_text', 'mapped' => false))
 
 			->add('Template', 'model', array(

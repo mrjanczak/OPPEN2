@@ -28,7 +28,7 @@ headers:
     account:    Konto
     book:       Dekretacja
     books:      Dekretacje
-    bookking_date: Data księgowania
+    bookking_date: Data księgow.
     category:   Kategoria
     contract:   Umowa
     contracts:  Umowy

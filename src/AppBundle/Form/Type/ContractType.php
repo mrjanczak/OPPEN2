@@ -29,8 +29,10 @@ class ContractType extends AbstractType
         $builder
 			->add('select', 'checkbox', array('required'  => false, 'mapped' => false))         
 			->add('id', 'text', array('required' => false)) 
+			->add('comment', 'textarea', array('label' => 'Komentarz', 'required' => false)) 
 			->add('gross', 'number', array('label' => 'Brutto', 'precision' => 2, 'required' => true))
-			->add('comment', 'textarea', array('label' => 'Komentarz', 'required' => false)) ; 
+			->add('netto', 'number', array('label' => 'Netto', 'precision' => 2, 'required' => true,'disabled'=>true))
+			->add('tax',   'number', array('label' => 'PDOF', 'precision' => 2, 'required' => true,'disabled'=>true)); 
 			
         if ($this->full) {
 			$builder			       
@@ -47,10 +49,10 @@ class ContractType extends AbstractType
 				->add('event_date', 'date', array('label' => 'Data imprezy', 'required' => false, 'widget' => 'single_text'))
 				->add('event_name', 'text', array('label' => 'Nazwa imprezy', 'required' => false))
 				->add('event_place','text', array('label' => 'Miejsce imprezy', 'required' => false))
-				->add('event_role', 'text', array('label' => 'Udział w imprezie jako...', 'required' => false))   
-						 
-				->add('tax_coef', 'percent', array('label' => 'PDOF%','required' => false)) 
-				->add('cost_coef', 'percent', array('label' => 'Koszt uzyskania przychodu','required' => false))    
+				->add('event_role', 'text', array('label' => 'Udział w imprezie jako...', 'required' => false)) 
+				  
+				->add('cost_coef', 'number', array('label' => 'Koszt uzys. przych. [%]', 'precision' => 0,'required' => false))    		 
+				->add('tax_coef', 'number', array('label' => 'PDOF [%]', 'precision' => 0,'required' => false)) 
 				
 				->add('payment_period', 'text', array('label' => 'Okres płatności', 'empty_data'=> '+2w', 'required' => false))
 				->add('payment_method', 'choice', array(

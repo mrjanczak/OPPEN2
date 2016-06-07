@@ -405,132 +405,34 @@ class ProjectController extends Controller
 			
 			// Download transfers
 			if (($tab_id == 3) && ($form->get('downloadTransfers')->isClicked() )) {
-				
-				$msg = CostController::generateData($form, $msg);
-				$Data = $msg['Data'];
-				
-				$form_data = array(
-					'payment_date'=>$form->get('payment_date')->getData(),
-					'doc_no'=>$form->get('doc_no')->getData(),	);
-									
-				$env = new \Twig_Environment(new \Twig_Loader_String());
-				
+													
+				$path = realpath($this->get('kernel')->getRootDir() . '/../web').'/';
 				$zipName = "transfers.zip";
-				$path = $this->get('kernel')->getRootDir().'/../web/zip/';
-				$zip = new \ZipArchive();	
-				$zip->open($path.$zipName,  ZipArchive::CREATE | ZipArchive::OVERWRITE);
-				
-				// Generate .csv for each selected Transfer Template 
-				foreach($TransferTemplates as $Symbol => $Template) {
-					if($form->get($Symbol)->getData()) {
-						
-						$for = explode('|',$Template['for']);
-						
-						foreach($Data[0]['IBA'] as $IBA => $IBA_Data) {
-							
-							if(!($IBA_Data['IncomeBankAcc'] instanceOf Account)) {
-								$msg['errors'][] = 'Brak IncomeBankAcc dla IBA '.$IBA; 
-								//return $msg;
-							}
-							
-							$IBA_name = $IBA_Data['IncomeBankAcc']->getName();	
-							$IBA_accNo = $IBA_Data['IncomeBankAcc']->getAccNo();	
-							if(strpos($IBA_name,'|') === false){
-								$msg['errors'][] = 'Błąd formatu nazwy konta '.$IBA_accNo.' '.$IBA_name;
-								//return $msg;
-							}
-							list($bank, $name) = explode('|',$IBA_name);
-							if(!array_key_exists($bank,$Template)){
-								$msg['errors'][] = 'Brak szablonu przelewu dla banku '.$bank;
-								//return $msg;
-							}	
-								
-							// transfers to tax office
-							if(($for[0] == 'SUM') && ($for[1] == 'IBA')) {
-								
-								$filename = $IBA."_".$bank."_".$Symbol.".csv";
-								$contents = $env->render($Template[$bank],
-										array('form' => $form_data,
-											  'param'=> $Params,
-											  'value' => $IBA_Data, ));
-								$zip->addFromString($filename,  $contents);									
-							}
-							
-							// transfers to contractors
-							if(($for[0] == 'EACH') && ($for[1] == 'IBA')) {
-								
-								$filename = $IBA."_".$bank."_".$Symbol.".csv";
-								$contents = '';
-								foreach($Data as $D => $B) {
-									if(($D > 0) && (array_key_exists($IBA,$B['IBA']))) {
-										
-										$B_IBA_Data = $B['IBA'][$IBA];
-										
-										if(array_key_exists('Doc', $B['SUM'][0])) {
-											$SelDoc = $B['SUM'][0]['Doc'];
-											if(!($SelDoc instanceOf Doc)) {
-												$msg['errors'][] = 'Brak dokumentu id '.$D;
-												//return $msg;	
-											}
-										}						
 
-										if(array_key_exists('SelDocFile', $B['SUM'][0])) {
-											$SelDocFile = $B['SUM'][0]['SelDocFile'];
-											if(!($SelDocFile instanceOf File)) {
-												$msg['errors'][] = 'Brak kartoteki przy dok. id '.$D; 
-												//return $msg;
-											}
-										}										
-										
-										$IF = FileQuery::create()
-											->select('Id')
-											->useIncomeQuery()
-												->filterByProject($Project)
-												->orderByRank()
-											->endUse()
-											->findOne(); 
-										
-										if(array_key_exists($IF,$B['IF'])) {
-											$FirstIF = $B['IF'][$IF]; }
-										else { $FirstIF = array('accNo' => 0); }
-																
-										$contents .= SettingsController::utf_win(
-											$env->render($Template[$bank],
-													array('form' =>  $form_data,
-														  'param' => $Params,
-														  'doc' =>   $SelDoc,
-														  'file' =>  $SelDocFile,
-														  'project'=>$Project,
-														  'IBA' =>   $B['IBA'][$IBA],
-														  'FirstIF'=>$FirstIF,
-														   )).PHP_EOL
-											); 
-									}
-								}
-								$zip->addFromString($filename,  $contents);									
-							}					
-						}
-					}
-				}					
-				$zip->close();
+				$msg = $this->createZIP($form, $msg, $zipName, $path, $TransferTemplates, $Project, $Params);
 				
-				if(empty($msg['errors'])) {	
+				if(empty($msg['errors'])) {
+					
 					$response = new Response();
-					$response->setContent(readfile($path.$zipName));
+					$response->setContent(readfile($zipName));
 					$response->headers->set('Content-Type', 'application/zip');
 					$response->headers->set('Content-Disposition', 'attachment; filename='.$zipName );
-					$response->headers->set('Content-Length', filesize($path.$zipName));
-					return $response;	
+					$response->headers->set('Content-Length', filesize($zipName));
+
+					return $response;
 				}
+				
 			}
 			
 			// Download Costs
 			if (($tab_id == 3) && ($form->get('downloadCosts')->isClicked() )) {
+				
 				$filename = $Project->getName()."_koszty.csv"; 
 				$filename = str_replace(' ','_',$filename);
 				$response = $this->render('AppBundle:Project:costs.csv.twig', array('Project' => $Project));
 				$response->headers->set('Content-Type', 'text/csv');
-				$response->headers->set('Content-Disposition', 'attachment; filename='.$filename);				
+				$response->headers->set('Content-Disposition', 'attachment; filename='.$filename);	
+							
 				return $response;	
 			}
 			
@@ -553,7 +455,7 @@ class ProjectController extends Controller
 			return $this->redirect($this->generateUrl('oppen_projects', array(
 				'year_id' => $Year->getId() )));				
 		} 		
-//var_dump($form->createView());				
+
 		return $this->render('AppBundle:Project:edit.html.twig',array(
 			'form' => $form->createView(),
 			'Tform' => $TformView,
@@ -574,6 +476,130 @@ class ProjectController extends Controller
 			'BookingTemplates' => $BookingTemplates,
 			'TransferTemplates' => $TransferTemplates, ));
 	}		
+
+	public function createZIP($form, $msg, $zipName, $path, $TransferTemplates, $Project, $Params) {
+		
+		$msg = CostController::generateData($form, $msg);
+		$Data = $msg['Data'];
+		
+		$form_data = array(
+			'payment_date'=>$form->get('payment_date')->getData(),
+			'doc_no'=>$form->get('doc_no')->getData(),	);
+		
+		$addFromString = FALSE;
+		
+		$env = new \Twig_Environment(new \Twig_Loader_String());
+		
+		$zip = new \ZipArchive();
+			
+		if(!($zip->open($zipName,  ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE)) {
+			$msg['errors'][] = 'Archiwum nie utworzone ani nie nadpisane.'; }
+			
+		else {			
+			// Generate .csv for each selected Transfer Template 
+			foreach($TransferTemplates as $Symbol => $Template) {
+				if($form->get($Symbol)->getData()) {
+					
+					$for = explode('|',$Template['for']);
+					
+					foreach($Data[0]['IBA'] as $IBA => $IBA_Data) {
+						
+						if(!($IBA_Data['IncomeBankAcc'] instanceOf Account)) {
+							$msg['errors'][] = 'Brak IncomeBankAcc dla IBA '.$IBA; 
+							//return $msg;
+						}
+						
+						$IBA_name = $IBA_Data['IncomeBankAcc']->getName();	
+						$IBA_accNo = $IBA_Data['IncomeBankAcc']->getAccNo();	
+						if(strpos($IBA_name,'|') === false){
+							$msg['errors'][] = 'Błąd formatu nazwy konta '.$IBA_accNo.' '.$IBA_name;
+							//return $msg;
+						}
+						list($bank, $name) = explode('|',$IBA_name);
+						if(!array_key_exists($bank,$Template)){
+							$msg['errors'][] = 'Brak szablonu przelewu dla banku '.$bank;
+							//return $msg;
+						}	
+							
+						// transfers to tax office
+						if(($for[0] == 'SUM') && ($for[1] == 'IBA')) {
+							
+							$filename = $IBA."_".$bank."_".$Symbol.".csv";
+							$contents = $env->render($Template[$bank],
+									array('form' => $form_data,
+										  'param'=> $Params,
+										  'value' => $IBA_Data, ));
+							$zip->addFromString($filename,  $contents);									
+						}
+					
+						// transfers to contractors
+						if(($for[0] == 'EACH') && ($for[1] == 'IBA')) {
+							
+							$filename = $IBA."_".$bank."_".$Symbol.".csv";
+							$contents = '';
+							
+							foreach($Data as $D => $B) {
+								
+								if(($D > 0) && (array_key_exists($IBA,$B['IBA']))) {
+									
+									$B_IBA_Data = $B['IBA'][$IBA];
+									
+									if(array_key_exists('Doc', $B['SUM'][0])) {
+										$SelDoc = $B['SUM'][0]['Doc'];
+										if(!($SelDoc instanceOf Doc)) {
+											$msg['errors'][] = 'Brak dokumentu id '.$D;
+										}
+									}						
+
+									if(array_key_exists('SelDocFile', $B['SUM'][0])) {
+										$SelDocFile = $B['SUM'][0]['SelDocFile'];
+										if(!($SelDocFile instanceOf File)) {
+											$msg['errors'][] = 'Brak kartoteki przy dok. id '.$D; 
+										}
+									}										
+									
+									$IF = FileQuery::create()
+										->select('Id')
+										->useIncomeQuery()
+											->filterByProject($Project)
+											->orderByRank()
+										->endUse()
+										->findOne(); 
+									
+									if(array_key_exists($IF,$B['IF'])) {
+										$FirstIF = $B['IF'][$IF]; }
+									else { $FirstIF = array('accNo' => 0); }
+														
+									$contents .= SettingsController::utf_win(
+										$env->render($Template[$bank],
+												array('form' =>  $form_data,
+													  'param' => $Params,
+													  'doc' =>   $SelDoc,
+													  'file' =>  $SelDocFile,
+													  'project'=>$Project,
+													  'IBA' =>   $B['IBA'][$IBA],
+													  'FirstIF'=>$FirstIF,
+													   )).PHP_EOL
+										);
+										
+								}
+								
+							}
+							$zip->addFromString($filename,  $contents);
+							$addFromString = TRUE;									
+						}	
+						 				
+					}
+				}
+			}	
+							
+			$zip->close();
+		}
+		if(!$addFromString) {
+			$msg['errors'][] = 'Brak przelewów do ściągnięcia;';}
+		
+		return $msg;
+	}	
 
 	public function compareById($Old, $New) {
 			if ($Old->getId() === $New->getId()) {

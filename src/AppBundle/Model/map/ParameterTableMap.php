@@ -49,6 +49,7 @@ class ParameterTableMap extends TableMap
         $this->addColumn('field_type', 'FieldType', 'VARCHAR', true, 10, null);
         $this->addColumn('value_float', 'ValueFloat', 'FLOAT', false, null, null);
         $this->addColumn('value_int', 'ValueInt', 'INTEGER', false, null, null);
+        $this->addColumn('value_bool', 'ValueBool', 'BOOLEAN', false, 1, null);
         $this->addColumn('value_varchar', 'ValueVarchar', 'VARCHAR', false, 255, null);
         $this->addColumn('value_date', 'ValueDate', 'DATE', false, null, null);
         $this->addColumn('sortable_rank', 'SortableRank', 'INTEGER', false, null, null);

@@ -178,10 +178,7 @@ class ReportController extends Controller
 				
 				$DocList = $this->newDocList($Year, $Month, $DocCat, $showBookks, $desc, $page, $as_doc_select, $as_bookk_accept);										
 				$form = $this->createForm(new DocListType($Year, null, null, $this->get('security.context')), $DocList);
-				
-				$helper = $this->container->get('oneup_uploader.templating.uploader_helper');
-				$endpoint = $helper->endpoint('gallery');
-				
+								
 				return $this->render('AppBundle:Doc:list.html.twig',array(
 					'Year' => $Year,   
 					'Month' => $Month,
@@ -343,38 +340,24 @@ class ReportController extends Controller
 		
 		$zipName = null;
 		if ($form->get('downloadZIP')->isClicked()) {
-			//$return = false; 
 
 			$ReportShortname = $Report->getShortname();
         	$path = realpath($this->get('kernel')->getRootDir() . '/../web').'/';
         	$zipName = $ReportShortname.".zip";	
-        	$zip = $this->createZIP($Report, $Entries, $Params, $form, $Template, $zipName);
+        	
+        	$msg = $this->createZIP($form, $msg, $zipName, $path, $Report, $Entries, $Params, $Template);
+        	if(empty($msg['errors'])) {
     		
-    		
-     		$response = new Response();
-    		$response->setContent(readfile($zipName));
-    		$response->headers->set('Content-Type', 'application/zip');
-			$response->headers->set('Content-Disposition', 'attachment; filename='.$zipName );
-    		$response->headers->set('Content-Length', filesize($zipName));
-    		
-    		return $response;
-    		
-    					
-			/*					
-			$response = $this->render('AppBundle:Template:raw.html.twig',array(
-				'contents' => $this->createSHScript($Report, $Entries, $Params, $form, $Template)));
-			$response->headers->set('Content-Type', 'text/sh');
-			$response->headers->set('Content-Disposition', 'attachment; filename='.$Report->getShortname().".sh");
-			
-			return $response;
-			*/			
+				$response = new Response();
+				$response->setContent(readfile($zipName));
+				$response->headers->set('Content-Type', 'application/zip');
+				$response->headers->set('Content-Disposition', 'attachment; filename='.$zipName );
+				$response->headers->set('Content-Length', filesize($zipName));
+
+				return $response;
+			}		
 		}	
-		
-		$summary = null;
-		if ($form->get('sendMails')->isClicked()) {
-			$summary = $this->sendMails($Report, $Entries, $Params, $form, $Template, $path);
-		}
-		
+				
 		if ($form->get('cancel')->isClicked()) {
 			return $this->redirect($this->generateUrl('oppen_reports', array(
 			'year_id' => $Year->getId()) ));
@@ -386,7 +369,6 @@ class ReportController extends Controller
 					  'Report' => $Report,
 					  'total' =>$total,
 					  'errors' => $msg['errors'],
-					  'summary' => $summary,
 					  'Params' => $Params,
 					  'zipName' => $zipName,));}
 	}
@@ -762,136 +744,67 @@ class ReportController extends Controller
 		return $total;
 	}
 
-	public function createZIP($Report, $Entries, $Params, $form, $Template, $zipName) {
+	public function createZIP( $form, $msg, $zipName, $path, $Report, $Entries, $Params,$Template) {
 		$env = new \Twig_Environment(new \Twig_Loader_String());
 		$form_data = array('objective' => $form->get('objective')->getData());
 		$ReportShortname = $Report->getShortname();
 		
         $zip = new \ZipArchive();	
-		$zip->open($zipName,  ZipArchive::CREATE | ZipArchive::OVERWRITE);
-		
-		if($Report->ItemColls != null) {
-			foreach($Report->ItemColls as $ItemColl) {
-				
-				$filename = $this->ItemColl2Filename($ReportShortname, $ItemColl->data).".xml";
+        
+		if(!($zip->open($zipName,  ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE)) {
+			$msg['errors'][] = 'Archiwum nie utworzone ani nadpisane.'; }
+			
+		else {
+			
+			$list= 'First Name; Second Name; Email; Filename'.PHP_EOL;
+			
+			if($Report->ItemColls != null) {
+				foreach($Report->ItemColls as $ItemColl) {
+					
+					$tagged_items = '';
+					foreach($ItemColl->Items as $Item) {
+						$tag = $Item->data['symbol'];
+						$val = $Item->data['value'];
+						$tagged_items .= '<'.$tag.'>'.$val.'</'.$tag.'>'.PHP_EOL;
+					}
+					
+					$filename = $this->ItemColl2Filename($ReportShortname, $ItemColl->data).".xml";
+					$contents = $env->render($Template->getData(),
+							array('year' => $Report->getYear()->getName(),
+								  'form' => $form_data,
+								  'data' => $ItemColl->data,
+								  'items'=> $ItemColl->Items,
+								  'tagged_items' => $tagged_items,
+								  'params'=> $Params));
+					$zip->addFromString($filename,  $contents); 
+					
+					$list .= $ItemColl->data['first_name'].';'.
+							 $ItemColl->data['last_name'].';'.
+						 	 $ItemColl->data['email'].';'.
+							 $filename.PHP_EOL;					
+				}
+			}
+
+			elseif($Report->Items != null) {
+				$filename = $ReportShortname.".xml";
 				$contents = $env->render($Template->getData(),
-						array('year' => $Report->getYear()->getName(),
-							  'form' => $form_data,
-							  'data' => $ItemColl->data,
-							  'items'=> $ItemColl->Items,
-							  'params'=> $Params));
+							array('year' => $Report->getYear()->getName(),
+								  'form' => $form_data,
+								  'items'=> $Report->Items,
+								  'params'=> $Params));
 				$zip->addFromString($filename,  $contents); 
 			}
-		}
-
-		elseif($Report->Items != null) {
-			$filename = $ReportShortname.".xml";
-			$contents = $env->render($Template->getData(),
-						array('year' => $Report->getYear()->getName(),
-							  'form' => $form_data,
-							  'items'=> $Report->Items,
-							  'params'=> $Params));
-			$zip->addFromString($filename,  $contents); 
-		}
+			
+			if(!empty($list)) {
+				$zip->addFromString('list.csv',  $list); 
+			}
 		
-		$zip->close();
-		return $zip;
+			$zip->close();
+		} 
+		
+		return $msg;
 	}	
 	
-	public function createSHScript($Report, $Entries, $Params, $form, $Template) {
-		$env = new \Twig_Environment(new \Twig_Loader_String());
-		$form_data = array('objective' => $form->get('objective')->getData());
-		$ReportShortname = $Report->getShortname();
-		
-		$contents = '';
-		if($Report->ItemColls != null) {
-			foreach($Report->ItemColls as $ItemColl) {
-				$filename = $this->ItemColl2Filename($ReportShortname, $ItemColl->data);
-				$contents .= 
-					'cat <<EOT > '.$filename.'.xml'.PHP_EOL.					
-					$env->render($Template->getData(),
-						array('year' => $Report->getYear()->getName(),
-							  'form' => $form_data,
-							  'data' => $ItemColl->data,
-							  'items'=> $ItemColl->Items,
-							  'params'=> $Params)).
-					PHP_EOL.'EOT'.PHP_EOL;
-			}
-		}
-		elseif($Report->Items != null) {
-				$contents .= 
-					'cat <<EOT > '.$ReportShortname.'.xml'.PHP_EOL.					
-					$env->render($Template->getData(),
-						array('year' => $Report->getYear()->getName(),
-							  'form' => $form_data,
-							  'items'=> $Report->Items,
-							  'params'=> $Params)).
-					'EOT'.PHP_EOL;
-		}
-		return $contents;
-	}	
-
-	public function sendMails($Report, $Entries, $Params, $form, $Template, $path) {
-		$ReportShortname = $Report->getShortname();
-		$mailer_user = $this->container->getParameter('mailer_user');
-		$translator = $this->get('translator');
-				
-		if($Report->ItemColls != null) {
-			foreach($Report->ItemColls as $ItemColl) {
-				$attachment = $path.$ItemColl->data['filename'];
-
-				$message = \Swift_Message::newInstance()
-					->setSubject($form->get('mail_subject')->getData())
-					->setFrom($mailer_user)
-					->setTo($ItemColl->data['email'])
-					->setBody($form->get('mail_body')->getData());
-							
-				if($form->get('mail_attach_report')->getData()) {
-					$attachment = $path.$ItemColl->data['filename'];
-					if(file_exists($attachment)) {
-						$message->attach(Swift_Attachment::fromPath($attachment)); 
-					} 
-				}	
-				$this->get('mailer')->send($message);
-			}
-		}
-		
-		$data = array(array($translator->trans('headers.common.name'), 
-							$translator->trans('headers.common.email'),
-							$translator->trans('headers.contracts.gross'),
-							$translator->trans('headers.contracts.netto'),
-							$translator->trans('headers.contracts.income_cost'),
-							$translator->trans('headers.contracts.tax'),
-							$translator->trans('headers.common.filename'), ));
-		
-		foreach($Report->ItemColls as $ItemColl) {
-			
-			$d = $ItemColl->data;
-			
-			$data[] = array('name' => $d['first_name'].' '.$d['last_name'],
-							'email' => $d['email'],
-							'gross' => $d['gross'],
-							'netto' => $d['netto'],
-							'income_cost' => $d['income_cost'],
-							'tax' => $d['tax'],
-							'filename' => $d['filename'], );
-		}
-		
-		$summary = $this->renderView(':Template:table.html.twig',
-									  array('data' => $data ) );
-		
-		if($form->get('mail_summary')->getData()) {
-			$message = \Swift_Message::newInstance()
-				->setSubject('Wysyłka '.$Report->getName().' '.$Report->getYear())
-				->setFrom($mailer_user)
-				->setTo($this->get('security.context')->getToken()->getUser()->getEmail())
-				->setBody($summary, 'text/html');	
-			$this->get('mailer')->send($message);
-		}
-		
-		return $summary;
-	}	
-
 	public function ItemColl2Filename($ReportShortname, $ICdata) {
 		return str_replace(array('ą','Ą','ć','Ć','ę','Ę','ł','Ł','ń','Ń','ó','Ó','ś','Ś','ż','Ż','ź','Ź'),
 						   array('a','A','c','C','e','E','l','L','n','N','o','O','s','S','z','Z','z','Z'),

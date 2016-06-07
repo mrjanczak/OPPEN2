@@ -196,6 +196,9 @@ class DocController extends Controller
 		}
 										
 		if ( ($form->get('save')->isClicked() )) { 
+			
+			$User = $securityContext->getToken()->getUser();
+			$Doc->setUser($User);
 					
 			//search Bookks & BookkEntries to remove
 			$BookksNew = array();
@@ -234,7 +237,9 @@ class DocController extends Controller
 			$ToDate = $Doc->getMonth()->getToDate();
 			foreach ($Doc->getBookks() as $B => $Bookk) {
 				if($Bookk->getBookkingDate() < $FromDate || $Bookk->getBookkingDate() > $ToDate ) {
-					$msg['errors'][] = 'Data księgowania dekretacji musi zawierać się w miesiącu dokumentu';}}
+//$msg['errors'][] = 'Data księgowania dekretacji musi zawierać się w miesiącu dokumentu';
+					}
+				}
 					
 			if(empty($msg['errors'])) {
 				//save Doc and set new DocNo

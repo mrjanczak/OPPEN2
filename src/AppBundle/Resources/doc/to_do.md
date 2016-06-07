@@ -1,10 +1,9 @@
 To do
 =====
 
-Changes in ver.3.0
+Changes in ver.2.7
 ------------------
-* Symfony 2.6
-* Doctrine 
+* Symfony 2.7
 * PSR-2
 * Translation
 * Tests

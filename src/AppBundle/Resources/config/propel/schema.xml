@@ -181,6 +181,11 @@
         <column name="is_accepted" type="boolean" defaultValue="false"/>
         <column name="bookking_date" type="date" />
 
+        <column name="year_id" type="integer" />
+        <foreign-key foreignTable="year" onDelete = "cascade">
+            <reference local="year_id" foreign="id" />
+        </foreign-key>  
+
 		<column name="doc_id" type="integer" />
 		<foreign-key foreignTable="doc" onDelete = "cascade">
 			<reference local="doc_id" foreign="id" />
@@ -586,6 +591,7 @@
         <column name="field_type" type="varchar"  size="10" required="true" />
         <column name="value_float" type="float"/> 
         <column name="value_int" type="integer" />
+        <column name="value_bool" type="boolean" />
         <column name="value_varchar" type="varchar" />
         <column name="value_date" type="date" />
         

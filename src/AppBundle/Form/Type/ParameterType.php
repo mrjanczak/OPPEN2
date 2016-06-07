@@ -15,15 +15,15 @@ class ParameterType extends AbstractType
  				->add('label', 'text'  , array('label' => 'Nazwa' ))
  				->add('name', 'text'  , array('label' => 'Symbol' ))
  				->add('field_type','text', array('label' => 'Typ' ))
- 				
- 				//'choice', array(
-				//	'label' => 'Typ',
-				//	'choices' => array('float', 'int', 'varchar', 'date') ))
 					
 				->add('value_float', 'number'    , array('label' => 'float'  ,'required'  => false))
 				->add('value_int', 'text'        , array('label' => 'float'  ,'required'  => false))
+				->add('value_bool', 'choice'     , array('label' => 'bool', 'required' => false, 
+					'choices' => array('1' => 'tak', '0' => 'nie'))) 
 				->add('value_varchar', 'text'    , array('label' => 'varchar','required'  => false))
-				->add('value_date', 'date'       , array('label' => 'date'   ,'required'  => false, 'widget' => 'single_text'));           
+				->add('value_date', 'date'       , array('label' => 'date'   ,'required'  => false, 
+					'widget' => 'single_text'));
+         
     }
 
 	public function setDefaultOptions(OptionsResolverInterface $resolver)

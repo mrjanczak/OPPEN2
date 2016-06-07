@@ -12,8 +12,9 @@
 			{% set Income = IncomeF.vars.value %}
 			{% set totalIncome = totalIncome + Income.value %}
 			<th></th>
-			<th class='income_label' data-income="{{I}}">{{ Income.shortname}}
-				<!-- <small>({{ Income.File.accNo}})</small> -->
+			<th class='income_label' data-income="{{I}}">
+				<a href={{ path('oppen_income', {'project_id' : project_id, 'income_id' : Income.id}) }}> 
+				{{ Income.shortname }} </a>
 			</th>
 		{% endfor %}
 		<th class="option-column">Opcje</th>

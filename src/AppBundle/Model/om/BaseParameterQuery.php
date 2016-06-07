@@ -21,6 +21,7 @@ use AppBundle\Model\ParameterQuery;
  * @method ParameterQuery orderByFieldType($order = Criteria::ASC) Order by the field_type column
  * @method ParameterQuery orderByValueFloat($order = Criteria::ASC) Order by the value_float column
  * @method ParameterQuery orderByValueInt($order = Criteria::ASC) Order by the value_int column
+ * @method ParameterQuery orderByValueBool($order = Criteria::ASC) Order by the value_bool column
  * @method ParameterQuery orderByValueVarchar($order = Criteria::ASC) Order by the value_varchar column
  * @method ParameterQuery orderByValueDate($order = Criteria::ASC) Order by the value_date column
  * @method ParameterQuery orderBySortableRank($order = Criteria::ASC) Order by the sortable_rank column
@@ -31,6 +32,7 @@ use AppBundle\Model\ParameterQuery;
  * @method ParameterQuery groupByFieldType() Group by the field_type column
  * @method ParameterQuery groupByValueFloat() Group by the value_float column
  * @method ParameterQuery groupByValueInt() Group by the value_int column
+ * @method ParameterQuery groupByValueBool() Group by the value_bool column
  * @method ParameterQuery groupByValueVarchar() Group by the value_varchar column
  * @method ParameterQuery groupByValueDate() Group by the value_date column
  * @method ParameterQuery groupBySortableRank() Group by the sortable_rank column
@@ -47,6 +49,7 @@ use AppBundle\Model\ParameterQuery;
  * @method Parameter findOneByFieldType(string $field_type) Return the first Parameter filtered by the field_type column
  * @method Parameter findOneByValueFloat(double $value_float) Return the first Parameter filtered by the value_float column
  * @method Parameter findOneByValueInt(int $value_int) Return the first Parameter filtered by the value_int column
+ * @method Parameter findOneByValueBool(boolean $value_bool) Return the first Parameter filtered by the value_bool column
  * @method Parameter findOneByValueVarchar(string $value_varchar) Return the first Parameter filtered by the value_varchar column
  * @method Parameter findOneByValueDate(string $value_date) Return the first Parameter filtered by the value_date column
  * @method Parameter findOneBySortableRank(int $sortable_rank) Return the first Parameter filtered by the sortable_rank column
@@ -57,6 +60,7 @@ use AppBundle\Model\ParameterQuery;
  * @method array findByFieldType(string $field_type) Return Parameter objects filtered by the field_type column
  * @method array findByValueFloat(double $value_float) Return Parameter objects filtered by the value_float column
  * @method array findByValueInt(int $value_int) Return Parameter objects filtered by the value_int column
+ * @method array findByValueBool(boolean $value_bool) Return Parameter objects filtered by the value_bool column
  * @method array findByValueVarchar(string $value_varchar) Return Parameter objects filtered by the value_varchar column
  * @method array findByValueDate(string $value_date) Return Parameter objects filtered by the value_date column
  * @method array findBySortableRank(int $sortable_rank) Return Parameter objects filtered by the sortable_rank column
@@ -165,7 +169,7 @@ abstract class BaseParameterQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `name`, `label`, `field_type`, `value_float`, `value_int`, `value_varchar`, `value_date`, `sortable_rank` FROM `parameter` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `name`, `label`, `field_type`, `value_float`, `value_int`, `value_bool`, `value_varchar`, `value_date`, `sortable_rank` FROM `parameter` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -465,6 +469,33 @@ abstract class BaseParameterQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ParameterPeer::VALUE_INT, $valueInt, $comparison);
+    }
+
+    /**
+     * Filter the query on the value_bool column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByValueBool(true); // WHERE value_bool = true
+     * $query->filterByValueBool('yes'); // WHERE value_bool = true
+     * </code>
+     *
+     * @param     boolean|string $valueBool The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ParameterQuery The current query, for fluid interface
+     */
+    public function filterByValueBool($valueBool = null, $comparison = null)
+    {
+        if (is_string($valueBool)) {
+            $valueBool = in_array(strtolower($valueBool), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(ParameterPeer::VALUE_BOOL, $valueBool, $comparison);
     }
 
     /**

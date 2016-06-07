@@ -14,8 +14,6 @@
 	</div>			
 </div>	
 
-<h2>1. Sprawdź deklaracje</h2>
-
 {% if form.ItemColls|length == 0 %}
 	Brak pozycji
 {% else %}
@@ -47,7 +45,6 @@
 		     PESEL {{ ItemColl.data.PESEL }}, ur. {{ ItemColl.data.birth_date }}</br>
 		     {{ ItemColl.data.US_name }} ({{ ItemColl.data.US_accNo }}) </br>
 		     {{ ItemColl.data.email }} | {{ ItemColl.data.phone }} </br>
-		     <a href={{ asset('uploads/gallery/' ~ ItemColl.data.filename ) }} > {{ ItemColl.data.filename }}</a>
 		</td>
 		
 		<td> 
@@ -103,44 +100,8 @@
 	    
 <div class="s"></div>	
 
-<div class="form-row">
-  <div class="label i"> Złożenie/Korekta deklaracji </div>
-  <div class="widget i">{{ form_widget(form.objective) }} </div>
-</div>	
-
-</br></br>
-<h2>2. Wygeneruj dane deklaracji</h2>
-<div class="s"></div>
-{{ form_widget(form.downloadZIP) }}
-<a href={{ asset( zipName ) }}> {{ zipName }}</a>
-
-</br></br>
-<h2>3. Wczytaj podpisane deklaracje</h2>
-<div class="s"></div>
-<!-- The fileinput-button span is used to style the file input field as button -->
-<span class="fileinput-button">
-	<span>Wczytaj pliki...</span>
-	<input id="fileupload" type="file" name="files[]" data-url="{{ oneup_uploader_endpoint('gallery') }}" multiple>
-</span>
-<!-- The global file processing state -->
-<div id="progressbar"></div>
-    
-</br></br>
-<h2>4. Wyślij wiadomości</h2>
-<div class="s"></div>
-{{ form_row(form.mail_subject,{'attr':{'class': 'text' }}) }}
-{{ form_row(form.mail_body,   {'attr':{'class': 'text' }}) }}
-{{ form_row(form.mail_attach_report) }}
-{{ form_row(form.mail_summary) }}
-{{ form_widget(form.sendMails) }}
-			
-{% if summary %}
-</br></br>
-<h2>5. Podsumowanie</h2>
-<div class="s"></div>
-{{ summary|raw }}	
-{% endif %}			
-			
+{{ form_row(form.objective) }}
+{{ form_widget(form.downloadZIP) }}	
 			
 {{ form_errors(form) }}
 	

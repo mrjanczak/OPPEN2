@@ -356,6 +356,12 @@ class CostController extends Controller
 							$msg['errors'][] = 'Brak kartoteki dla grupy przychodów '.$Income->getName(); 
 							return $msg;
 						}
+						
+						$IncomeAcc = $Income->getIncomeAcc();
+						if(!($IncomeAcc instanceOf Account)) {
+							$msg['errors'][] = 'Brak konta dla grupy przychodów '.$Income->getName(); 
+							return $msg;
+						}						
 						$IF = $IncomeFile->getId();
 						
 						$CDIgross = $CDI->getValue();
@@ -386,7 +392,7 @@ class CostController extends Controller
 								'gross'=>0,'netto'=>0,'tax'=>0, 
 								'IncomeFile' => $IncomeFile, 
 								'IName' => $Income->getName(),
-								'IAAccNo' => $Income->getIncomeAcc()->getAccNo(),);}						
+								'IAAccNo' => $IncomeAcc->getAccNo(),);}						
 						$Data[$D]['IF'][$IF]['gross'] += $CDIgross;
 						$Data[$D]['IF'][$IF]['netto'] += $CDInetto;
 						$Data[$D]['IF'][$IF]['tax']   += $CDItax;
