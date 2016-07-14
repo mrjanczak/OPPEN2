@@ -10,7 +10,7 @@ class CostDocIncomeType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('value', 'number', array('required' => false)); 		
+        $builder->add('value', 'number', array('scale' => 2, 'required' => false)); 		
     }
 
 	public function setDefaultOptions(OptionsResolverInterface $resolver)

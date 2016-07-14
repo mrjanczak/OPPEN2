@@ -32,7 +32,7 @@ class CostType extends AbstractType
         $builder
 			->add('select', 'checkbox', array('required'  => false, 'mapped' => false))        
             ->add('id', 'text', array('required' => false))   
-            ->add('value', 'number', array('label' => 'Wartość', 'required' => false)); 
+            ->add('value', 'number', array('label' => 'Wartość','scale' => 2,  'required' => false)); 
             
         if ($this->full) {
 			$builder  

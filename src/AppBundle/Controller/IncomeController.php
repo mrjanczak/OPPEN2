@@ -162,6 +162,7 @@ class IncomeController extends Controller
 		$securityContext = $this->get('security.context');
 		$disable_accepted_docs = ParameterQuery::create()->getOneByName('disable_accepted_docs');
 		//$this->container->getParameter('disable_accepted_docs');
+		
 		$form = $this->createForm(new DocListType($Year, null, true, false, 
 			$securityContext, $disable_accepted_docs), $DocList);						
 		$return = 'doc_list';
@@ -202,9 +203,12 @@ class IncomeController extends Controller
 				'Year' => $Year,
 				'Month' => $Month,
 				'DocCat' => $DocCat,
+				'as_income_docs' => 1,			
 				'form' => $form->createView(),
 				'buttons' => array('cancel'),
 				'project_id' => $project_id,
+                'errors' => $msg['errors'], 
+                				
 				'return' => 'project',
 				'id1' => $project_id,
 				'id2' => 2,				

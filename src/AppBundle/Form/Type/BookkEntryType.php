@@ -34,7 +34,7 @@ class BookkEntryType extends AbstractType
 				->add('id', 'text', array('required' => false))  
 				->add('side', 'number', array('required' => true))
 				
-				->add('account_id', 'number', array('required' => false))  
+				->add('account_id', 'number', array('scale' => 2, 'required' => false))  
 				->add('file_lev1_id', 'number', array('required' => false))
 				->add('file_lev2_id', 'number', array('required' => false)) 
 				->add('file_lev3_id', 'number', array('required' => false)); 						

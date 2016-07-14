@@ -131,15 +131,25 @@ class YearController extends Controller
 					'errors' => $errors ));		
 	}
 
-    public function updateDocListAction($year_id) {
+    public function updateDocListAction($year_id, $as_income_docs, $as_cost_docs) {
 		$Year = YearQuery::create()->findPk($year_id);
 
 		$months = array('<option value>Wszystkie</option>');
 		foreach ($Year->getMonths() as $Month) {
 			$months[] = '<option value="'.$Month->getId().'">'.$Month->__toString().'</option>'; }
-		 
+		 	
+		$DocCats = DocCatQuery::create()
+			->filterByYear($Year)
+			->_if($as_income_docs == 1) 
+				->filterByAsIncome(1)	
+			->_elseif($as_cost_docs == 1) 
+				->filterByAsCost(1)
+			->_endif()
+			->orderById()
+			->find();
+			
 		$doc_cats = array('<option value>Wszystkie</option>');
-		foreach ($Year->getDocCats() as $DocCat) {
+		foreach ($DocCats as $DocCat) {
 			$doc_cats[] = '<option value="'.$DocCat->getId().'">'.$DocCat->getName().'</option>'; }
 				
 		$response = new JsonResponse();

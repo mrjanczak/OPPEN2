@@ -40,11 +40,11 @@ oppen_account_update:
     defaults: { _controller: AppBundle:Account:update }
 
 oppen_docs_year_update:
-    path:  /doc/list/year/{year_id}/update
+    path:  /doc/list/year/{year_id}/{as_income_docs}/{as_cost_docs}/update
     defaults: { _controller: AppBundle:Year:updateDocList }
 
 oppen_docs_month_update:
-    path:  /doc/list/month/{month_id}/project/{project_id}/update
+    path:  /doc/list/month/{month_id}/project/{project_id}/{as_income_docs}/{as_cost_docs}/update
     defaults: { _controller: AppBundle:Month:updateDocList }
 
 oppen_doc_update_files:

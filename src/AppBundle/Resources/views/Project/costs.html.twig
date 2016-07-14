@@ -8,9 +8,13 @@
 		<th>Łącznie</th>
 		
 		{% set totalIncome = 0 %}
-		{% for I, IncomeF in form.Incomes if IncomeF.vars.value.show == 1%}
+		{% for I, IncomeF in form.Incomes %} <!-- if IncomeF.vars.value.show == 1 -->
 			{% set Income = IncomeF.vars.value %}
 			{% set totalIncome = totalIncome + Income.value %}
+		{% endfor %}
+
+		{% for I, IncomeF in form.Incomes if IncomeF.vars.value.show == 1 %}
+			{% set Income = IncomeF.vars.value %}
 			<th></th>
 			<th class='income_label' data-income="{{I}}">
 				<a href={{ path('oppen_income', {'project_id' : project_id, 'income_id' : Income.id}) }}> 
@@ -28,9 +32,10 @@
 	{% set totalCost = totalCost + Cval %}	
 		
 	{% set CDsum = 0 %}	
-	{% for CostDocF in CostF.CostDocs %}
-		{% set CDsum = CDsum + CostDocF.value.vars.value %}
+	{% for CostDoc in Cost.CostDocs %}
+		{% set CDsum = CDsum + CostDoc.value %}
 	{% endfor %}	
+	
 	{% if Cval > 0 %} 
 		{% set ratio = CDsum/Cval*100 %}
 	{% elseif Cval == 0 and CDsum > 0 %} 
@@ -44,9 +49,9 @@
 		<td colspan="2"><a href={{ path('oppen_cost', {'project_id' : project_id, 'cost_id' : Cost.id}) }}>
 			{{Cost.name }} </a>  </td>
 						
-		<td> {{ form_widget(CostF.value, {'attr' : {'class' : 'value'}}) }} </br>
-			<span class= {{ ratio <= 100 ? "'green b'" : "'red b'"}} > {{ ratio|number_format(0) }}% </span>
-			<span>({{ CDsum|number_format(2) }})</span>				
+		<td> {{ form_widget(CostF.value, {'attr' : {'class' : 'value'}}) }} 
+			<div class='nl b {{ ratio <= 100.01 ? "green" : "red"}}' > {{ ratio|number_format(0) }}% </div> 
+			<div>({{ CDsum|number_format(2,',','') }})</div>				
 		</td>
 	
 		{% for CI, CostIncomeF in CostF.CostIncomes if CostIncomeF.vars.value.Income.show == 1 %}
@@ -54,11 +59,13 @@
 			{% set CDIsum = 0 %}	
 			{% for CostDocF in CostF.CostDocs %}
 				{% for CDI, CostDocIncomeF in CostDocF.CostDocIncomes if CI == CDI %}
-					{% set CDIsum = CDIsum + CostDocIncomeF.value.vars.value %}
+					{% set CostDocIncome = CostDocIncomeF.vars.value %}
+					{% set CDIsum = CDIsum + CostDocIncome.value %}
 				{% endfor %}
 			{% endfor %}
 			
-			{% set CIval = CostIncomeF.value.vars.value %}			
+			{% set CostIncome = CostIncomeF.vars.value %}
+			{% set CIval = CostIncome.value %}			
 			{% if CIval > 0 %} 
 				{% set ratio = CDIsum/CIval*100 %}
 			{% elseif CIval == 0 and CDIsum > 0 %} 
@@ -69,8 +76,8 @@
 				
 			<td></td>	
 			<td> {{ form_widget(CostIncomeF.value, {'attr' : {'class' : 'value'}} ) }}	</br>
-				<span class= {{ ratio <= 100 ? "'green'" : "'red'"}} > {{ ratio|number_format(0) }}% </span>
-				<span>({{ CDIsum|number_format(2) }})</span>
+				<div class='nl b {{ ratio <= 100.01 ? "green" : "red"}}' > {{ ratio|number_format(0) }}% </div> 
+				<div>({{ CDIsum|number_format(2,',','') }})</div>
 			</td>
 		{% endfor %}
 
@@ -119,14 +126,14 @@
 	<tr class="even"><td colspan="100%"><div class="s"></div></td></tr>
 	<tr class="even">
 		<td colspan="3" class=" b"> {%trans%} headers.common.total {%endtrans%}</td> 
-		<td> <span class='b'>{{ totalCost|number_format(2) }} </span> </br>
-			 <span class= {{ ratio <= 100 ? "'green b'" : "'red b'"}} > {{ ratio|number_format(0) }}% </span>
+		<td> <div class='b'>{{ totalCost|number_format(2,',','') }} </div> 
+			 <div class= {{ ratio <= 100.01 ? "'green b'" : "'red b'"}} > {{ ratio|number_format(0) }}% </div>
 		</td>				
 				
-		{% for I, IncomeF in form.Incomes if IncomeF.vars.value.show == 1 %}
+		{% for I, IncomeF in form.Incomes if IncomeF.vars.value.show == 1%} 
 			{% set Income = IncomeF.vars.value %}		
 			{% set totalCI = 0 %}
-			{% for CostIncome in Income.CostIncomes if Income.show == 1 %}
+			{% for CostIncome in Income.CostIncomes %}  <!-- if Income.show == 1 -->
 				{% set totalCI = totalCI + CostIncome.value %}
 			{% endfor %}
 			
@@ -137,8 +144,8 @@
 				{% set ratio = 0 %} 
 			{% endif %}	
 			<td></td>	
-			<td> <span class='b'>{{ totalCI }} </span></br> 
-				 <span class= {{ ratio <= 100 ? "'green b'" : "'red b'"}} > {{ ratio|number_format(0) }}% </span>
+			<td> <div class='b'>{{ totalCI|number_format(2,',','') }} </div>
+				 <div class= {{ ratio <= 100.01 ? "'green b'" : "'red b'"}} > {{ ratio|number_format(0) }}% </div>
 			</td>	
 		{% endfor %}
 	</tr>

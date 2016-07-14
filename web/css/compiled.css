@@ -391,15 +391,14 @@ div.comment {
 	font-size: 10px;
 	color: #999;
 }
-span.b {
-	font-weight:   bold;}
-span.orange {
+
+.orange {
 	color:orange;}
-span.green {
+.green {
 	color:green;}
-span.red {
+.red {
 	color:red;}
-	
+
 li.i {
 	display: inline;
 }

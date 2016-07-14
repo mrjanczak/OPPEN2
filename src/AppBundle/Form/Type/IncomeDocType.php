@@ -30,7 +30,7 @@ class IncomeDocType extends AbstractType
 			->add('select', 'checkbox', array('required'  => false, 'mapped' => false))
 			
 			->add('id', 'text', array('required' => false))                       
-            ->add('value', 'number', array()) 
+            ->add('value', 'number', array('scale' => 2, )) 
             ->add('desc', 'text', array('label' => 'Opis', 'required' => false))
                         
 			->add('Doc', new DocType($this->Year, false, false, 

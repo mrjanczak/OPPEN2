@@ -33,7 +33,7 @@ class MonthController extends Controller
 		return $response;
 	}
 	
-    public function updateDocListAction($month_id, $project_id) {
+    public function updateDocListAction($month_id, $project_id, $as_income_docs, $as_cost_docs) {
 		$Project = ProjectQuery::create()->findPk($project_id);
 		$Month = MonthQuery::create()->findPk($month_id);
 		if($Month instanceOf Month) {
@@ -46,15 +46,23 @@ class MonthController extends Controller
 								->filterByProject($Project)
 							->endUse()
 						->endUse()
+
 					->_elseif($Year instanceOf Year)
 						->filterByYear($Year)
 					->_endif()
 					
+					->_if($as_income_docs == 1) 
+						->filterByAsIncome(1)	
+					->_elseif($as_cost_docs == 1) 
+						->filterByAsCost(1)
+					->_endif()
+					
+					->groupById() 										
 					->orderById() 
 					->find();
 		 
 		$doc_cats = array('<option value>Wszystkie</option>');
-		foreach ($Year->getDocCats() as $DocCat) {
+		foreach ($DocCats as $DocCat) {
 			$doc_cats[] = '<option value="'.$DocCat->getId().'">'.$DocCat->getName().'</option>'; }
 				
 		$response = new JsonResponse();

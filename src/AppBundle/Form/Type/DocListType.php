@@ -77,10 +77,10 @@ class DocListType extends AbstractType
 				'class' => 'AppBundle\Model\DocCat',			
 				'query' => DocCatQuery::create()
 							->filterByYear($this->Year)
-							->_if($this->as_income_docs !== null) 
-								->filterByAsIncome($this->as_income_docs)	
-							->_elseif($this->as_cost_docs !== null) 
-								->filterByAsCost($this->as_cost_docs)
+							->_if($this->as_income_docs == 1) 
+								->filterByAsIncome(1)	
+							->_elseif($this->as_cost_docs == 1) 
+								->filterByAsCost(1)
 							->_endif()
 							->orderById()  ))
 

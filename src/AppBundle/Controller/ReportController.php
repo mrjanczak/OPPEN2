@@ -495,6 +495,7 @@ class ReportController extends Controller
 																		
 									->useBookkQuery()
 										->filterByIsAccepted(1)  // to be activated in prod. ver
+										
 										->useDocQuery()
 	
 											->_if($method_id == 1)     //metoda kasowa
@@ -507,6 +508,11 @@ class ReportController extends Controller
 												->filterByDocCat($DocCats)
 											->_endif()
 											
+											// ****************************** Added 7/7/2016 **********************
+											->useDocCatQuery()
+												->filterByYear($Year)
+											->endUse()
+											// ******************************************************************
 										->endUse()
 										
 										->_if($p4 != '0')

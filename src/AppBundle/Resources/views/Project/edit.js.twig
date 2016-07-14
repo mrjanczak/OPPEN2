@@ -1,7 +1,7 @@
 $('.income_label').each( function(e) {
-	$copy_link = $(' <a href="#">(c)</a>');
+	$copy_link = $(' <a class="copy" href="#">(c)</a>');
 	$(this).append($copy_link);
-	$(this).find('a').click( function(e) {
+	$(this).find('a.copy').click( function(e) {
 		e.preventDefault();		
 		var I = $(this).parent().data('income');
 		$('input[id*="Incomes_'+I+'_value"]').each(  function(e) {
@@ -20,6 +20,7 @@ $('.switch_values').click( function(e) {
 	left.val(right_val);
 	right.val(left_val);
 });	
+
 $('.copy_values').click( function(e) {
 	e.preventDefault();		
 	var td = $(this).parent('td');

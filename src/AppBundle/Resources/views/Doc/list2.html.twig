@@ -1,8 +1,17 @@
 {% form_theme form 'AppBundle:Form:fields_inline.html.twig' %}
 {% set DocList = DocListF.vars.value %}
 
-<div class='filter' data-url-year='{{ path("oppen_docs_year_update", {"year_id" : "__year_id__"}) }}'
-					data-url-month='{{ path("oppen_docs_month_update", {"month_id" : "__month_id__", "project_id" : project_id}) }}'>		
+{% if as_income_docs is not defined %}
+	{% set as_income_docs = 0 %}
+{% endif %} 
+{% if as_cost_docs is not defined %}
+	{% set as_cost_docs = 0 %}
+{% endif %} 
+	
+<div class='filter' data-url-year='{{ path("oppen_docs_year_update", {"year_id" : "__year_id__", 
+										"as_income_docs" : as_income_docs, "as_cost_docs" : as_cost_docs }) }}'
+					data-url-month='{{ path("oppen_docs_month_update", {"month_id" : "__month_id__", "project_id" : project_id, 
+										"as_income_docs" : as_income_docs, "as_cost_docs" : as_cost_docs}) }}'>		
 					
 	<div class="search">{{ form_widget(DocListF.search) }}</div>
 	<div class="form-row">
