@@ -10,13 +10,17 @@
 	<tr><td> {{ form_widget(Year.select) }} </td>
 		<td> <a href={{ path('oppen_year_edit', { 'year_id' : Year.id.vars.value}) }}> 
 				{{ Year.name.vars.value }} </a>   </td> 
-		<td class='center'>{% if Year.is_active.vars.checked %} X {% endif %} </td>
-		<td class='center'>{% if Year.is_closed.vars.checked %} X {% endif %} </td>	 
+		<td class='c'>{% if Year.is_active.vars.checked %} X {% endif %} </td>
+		<td class='c'>{% if Year.is_closed.vars.checked %} X {% endif %} </td>	 
 	</tr>
 	{% endfor %}
 		
 </tbody>
 </table>	
+
+<div class="form-row">
+	{{ form_widget(form.delete) }}
+</div>
 
 <div class="s"></div>
 
@@ -38,8 +42,8 @@
 		{% for FileCatF in form.FileCats %}
 			{% set FileCat = FileCatF.vars.value %}
 			<tr>
-				<td> {{ form_widget(FileCatF.select) }}</td>
-				<td>{{ form_widget(FileCatF.select2) }} </td>
+				<td class='c'> {{ form_widget(FileCatF.select) }}</td>
+				<td class='c'> {{ form_widget(FileCatF.select2) }} </td>
 				<td> {{ FileCat.symbol }} </td>
 				<td> {{ FileCat.name }}	</td> 					
 			</tr>
@@ -56,8 +60,8 @@
 		{% for DocCatF in form.DocCats %}
 			{% set DocCat = DocCatF.vars.value %}
 			<tr>
-				<td> {{ form_widget(DocCatF.select) }}</td>
-				<td> {{ form_widget(DocCatF.select2) }} </td>
+				<td class='c'> {{ form_widget(DocCatF.select) }}</td>
+				<td class='c'> {{ form_widget(DocCatF.select2) }} </td>
 				<td> {{ DocCat.symbol }} </td>
 				<td> {{ DocCat.name }}	</td>	
 			</tr>

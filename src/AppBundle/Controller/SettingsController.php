@@ -119,7 +119,7 @@ class SettingsController extends Controller
 					if(in_array($DocCat->getSymbol(),array('FV','PK','Ra','RaW','Uch','Um'))) {
 						$DocCats[$k]->select2 = false; }};				
 				$form = $this->createForm(new YearListType($Year), new YearList($Years, $FileCats, $DocCats));
-				$buttons[] = 'delete';			
+				//$buttons[] = 'delete';			
 				break;
 			case 2: 
 				$Root = AccountQuery::create()->findRoot($Year->getId());

@@ -102,15 +102,16 @@ class YearController extends Controller
 						$errors[] = 'Poprzedni miesiąc nie jest ani aktywny ani zamknięty';}
 					if($Month->getIsClosed()) {	
 						$errors[] = 'Miesiąc jest już zamknięty';}
+						
 					if(count($errors) == 0) { 
 						$Month->setIsActive(true)->save(); 
-						$Year->setIsActive(true); 	
+						$Year->setIsActive(true)->save(); 	
 						$refresh = true; 
 					}
 				} 
 			}
-			if(count($errors) == 0) { 
-				$Year -> save();
+			if(count($errors) == 0) {  
+				$Year->save();
 				if($form->get('save')->isClicked()) { $redirect = true; }
 			}
 		}
