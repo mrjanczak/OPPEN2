@@ -4,29 +4,38 @@
 <tbody>
 	
 	{% set Project = form.vars.value %}
-	<tr><th></th>
+	<tr><th></th><th></th>
 		<th>{%trans%} headers.common.category {%endtrans%} / {%trans%} headers.common.contract {%endtrans%}</th>
 		<th>{%trans%} headers.contracts.gross_nett_cost_tax {%endtrans%}</th>
 	</tr>	
 
 {% set Totalsum = 0 %}
-{% for CostF in form.Costs %}
+{% for C, CostF in form.Costs %}
 	{% set Cost = CostF.vars.value %}
 	{% set sumGross = 0 %}
 	<tr class='even' >
 		<td>{{Cost.sortableRank }}.</td>   
-		<td>{{Cost.name }}
-			<a href={{ path('oppen_contract', { 'contract_id' : 0, 'cost_id' : Cost.id}) }}> (+) </a>  </td>
+		<td colspan="3">{{Cost.name }}
+			<a href={{ path('oppen_contract', { 'contract_id' : 0, 'cost_id' : Cost.id}) }}> (+) </a>  </td></tr>
+			
+	<tr class="even"><td></td>
+					<td class="item"><input type="checkbox" id='project_Costs_{{C}}' class="toggle_items"> </td>
+					<td >{%trans%} labels.common.select_deselect {%endtrans%}</td></tr>	
+	<tr class="even"><td colspan="100%"><div class="s"></div></td></tr>	
+				
 	{% for ContractF in CostF.Contracts %}
 		{% set Contract = ContractF.vars.value %}
 	<tr><td></td>
-		<td width="300"> {{ form_widget(ContractF.select, {'attr': {'class': 'item'}}) }}
-						<a href={{ path('oppen_contract', { 'contract_id' : Contract.id, 'cost_id' : Cost.id}) }}>
+		<td > {{ form_widget(ContractF.select, {'attr': {'class': 'item'}}) }} </td>
+		<td> <a href={{ path('oppen_contract', { 'contract_id' : Contract.id, 'cost_id' : Cost.id}) }}>
 							{{ Contract.contractNo }} </a> 
 							<span {% if Contract.comment[:1] == '!' %} class='red'	{% endif %}>
 							{{ Contract.File.name }} </span>
 		</td> 
-		<td>{{ form_widget(ContractF.gross, {'attr': {'class': 'value'}}) }} / {{ Contract.netto }}	/ {{ Contract.IncomeCost }} / {{ Contract.tax }} </td>
+		<td>{{ form_widget(ContractF.gross, {'attr': {'class': 'value'}}) }} 
+		/ {{ Contract.netto|     number_format(2, '.', '') }}	
+		/ {{ Contract.IncomeCost|number_format(2, '.', '') }} 
+		/ {{ Contract.tax|       number_format(2, '.', '') }} </td>
 			
 		<td><a href={{ path('oppen_contract_copy', { 'contract_id' : Contract.id, 'cost_id' : Cost.id}) }}> (c) </a> 
 			<a href={{ path('oppen_files', { 'file_cat_id' : FileCat_asContractor.id,
@@ -37,17 +46,15 @@
 	{% set sumGross = sumGross + ContractF.gross.vars.value %}
 	{% endfor %}
 	
-	<tr><td></td><td width="300"><span class="b">Suma:</span></td><td> <span class="b">{{ sumGross }}</span> </td></tr>
-
+	<tr class="even"><td colspan="100%"><div class="s"></div></td></tr>
+	<tr class="even"><td colspan="3" class=" b"> {%trans%} headers.common.total {%endtrans%}</td><td> <span class="b">{{ sumGross }}</span> </td></tr> 	
+	<tr class="even"><td colspan="100%"><div class="s"></div></td></tr>	
+						
 {% set Totalsum = Totalsum + sumGross %}
 {% endfor %}
 
-	<tr  class='even' ><td></td>
-		<td colspan="3"> 
-			<div class="s"></div>
-			<div class="form-row">
-				<input type="checkbox" value="IncomeDocs" class="toggle_items">  
-				{%trans%} labels.common.select_deselect {%endtrans%} </div> 
+	<tr class="even">
+		<td colspan="100%">
 			{#
 			<div class="form-row">
 				<div class="label i">   {{ form_label(form.payment_period) }} </div>

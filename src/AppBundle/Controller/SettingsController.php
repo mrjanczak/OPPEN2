@@ -328,9 +328,20 @@ class SettingsController extends Controller
 		}
 		$DocCats = DocCatQuery::create()->filterByYear($Year)->filterBySymbol($DCSymbols)->find();
 		foreach($DocCats as $DocCat) {
-			$NYDocCat = $DocCat->copy()
-				->setYear($NewYear)
-				->save();
+			
+			$FCSymbol = $DocCat->getFileCat()->getSymbol();
+			$NYFileCat = FileCatQuery::create()->filterByYear($NewYear)->filterBySymbol($FCSymbol)->find();
+			
+			if($NYFileCat instanceOf FileCat) {
+				$NYDocCat = $DocCat->copy()
+					->setYear($NewYear)
+					->setFileCat($NYFileCat)
+					->save();
+			}
+			else {
+				throw new \Exception('NYFileCat not exists in new year');
+			}
+			
 		}
 						
 		// copy Docs form selected DocCats	

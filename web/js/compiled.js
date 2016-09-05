@@ -44,11 +44,14 @@ function form_init() {
 	$("tr[class!='even']:odd").addClass("odd");	
 
 	$('.toggle_items').change(function() {
+		var id = $(this).attr("id");
+		
 		if ($(this).is(':checked')) {
-			$('input[type="checkbox"][class="item"]').not('[disabled]').prop('checked', true);}
+			$('input[type="checkbox"][class="item"][id^="'+id+'"]').not('[disabled]').prop('checked', true);}
 		else {
-			$('input[type="checkbox"][class="item"]').not('[disabled]').prop('checked', false);}
+			$('input[type="checkbox"][class="item"][id^="'+id+'"]').not('[disabled]').prop('checked', false);}
 	});
+
 
 	$('div[id*="error"]').each(function () {
 		$(this).addClass('ui-widget');	
@@ -56,15 +59,15 @@ function form_init() {
 			+'<p style="margin:1em 0"><span class="ui-icon ui-icon-alert" style="float: left; margin-right:.3em;"></span>'
 			+$(this).html()+'</p></div>');	
 	});	
-	$('div[id*="message"]').each(function () {
+	$('div[id*="highlight"]').each(function () {
 		$(this).addClass('ui-widget');	
-		$(this).html('<div class="ui-state-highlight ui-corner-all" style="padding: 0px 0.7em">'
-			+'<p style="margin:1em 0"><span class="ui-icon ui-icon-info" style="float: left; margin-right:.3em;"></span>'
-			+$(this).html()+'</p></div>');
+		$(this).html('<div class="ui-state-highlight ui-corner-all"  style="padding: 0px 0.7em">'
+			+'<p><span class="ui-icon ui-icon-info" style="float: left; margin-right:.3em;"></span>'
+			+$(this).html()+'</p></div>');	
 	});	
 
 	$( document ).tooltip();
-
+/*
 	tinymce.init({
 		selector: "textarea.tinymce",
 		inline: false,
@@ -77,7 +80,7 @@ function form_init() {
 		pagebreak_separator: "<div class='page-break'></div>",
 		toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
 	 });
-
+*/
 }
 
 function form_datepicker() {

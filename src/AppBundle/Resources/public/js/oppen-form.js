@@ -29,11 +29,14 @@ function form_init() {
 	$("tr[class!='even']:odd").addClass("odd");	
 
 	$('.toggle_items').change(function() {
+		var id = $(this).attr("id");
+		
 		if ($(this).is(':checked')) {
-			$('input[type="checkbox"][class="item"]').not('[disabled]').prop('checked', true);}
+			$('input[type="checkbox"][class="item"][id^="'+id+'"]').not('[disabled]').prop('checked', true);}
 		else {
-			$('input[type="checkbox"][class="item"]').not('[disabled]').prop('checked', false);}
+			$('input[type="checkbox"][class="item"][id^="'+id+'"]').not('[disabled]').prop('checked', false);}
 	});
+
 
 	$('div[id*="error"]').each(function () {
 		$(this).addClass('ui-widget');	

@@ -351,8 +351,8 @@ class ProjectController extends Controller
 							$gross = $Contract->getGross();
 							$cost_coef = $Contract->getCostCoef();
 							$tax_coef = $Contract->getTaxCoef();
-							$income_cost = round( $gross * $cost_coef, 2);
-							$tax = round( $income_cost * $tax_coef, 0);
+							$income_cost = round( $gross * $cost_coef/100, 2);
+							$tax = round( $income_cost * $tax_coef/100, 0);
 							
 							$Contract->setIncomeCost( $income_cost );
 							$Contract->setTax( $tax );
@@ -406,6 +406,7 @@ class ProjectController extends Controller
 			// Download transfers
 			if (($tab_id == 3) && ($form->get('downloadTransfers')->isClicked() )) {
 													
+				/*
 				$path = realpath($this->get('kernel')->getRootDir() . '/../web').'/';
 				$zipName = "transfers.zip";
 
@@ -421,13 +422,25 @@ class ProjectController extends Controller
 
 					return $response;
 				}
+				*/
 				
+				$msg = $this->generateTransfers($form, $msg, $TransferTemplates, $Project, $Params);
+				
+				$filename = $Project->getName()."_transfers.csv"; 
+				$filename = str_replace(' ','_',$filename);
+				
+				$response = new Response();
+				$response->setContent($msg['content']);
+				$response->headers->set('Content-Type', 'text/csv');
+				$response->headers->set('Content-Disposition', 'attachment; filename='.$filename);	
+				
+				return $response;				
 			}
 			
 			// Download Costs
 			if (($tab_id == 3) && ($form->get('downloadCosts')->isClicked() )) {
 				
-				$filename = $Project->getName()."_koszty.csv"; 
+				$filename = $Project->getName()."_costs.csv"; 
 				$filename = str_replace(' ','_',$filename);
 				$response = $this->render('AppBundle:Project:costs.csv.twig', array('Project' => $Project));
 				$response->headers->set('Content-Type', 'text/csv');
@@ -595,6 +608,121 @@ class ProjectController extends Controller
 							
 			$zip->close();
 		}
+		if(!$addFromString) {
+			$msg['errors'][] = 'Brak przelewów do ściągnięcia;';}
+		
+		return $msg;
+	}	
+
+
+	public function generateTransfers($form, $msg, $TransferTemplates, $Project, $Params) {
+		
+		$msg = CostController::generateData($form, $msg);
+		$Data = $msg['Data'];
+		
+		$form_data = array(
+			'payment_date'=>$form->get('payment_date')->getData(),
+			'doc_no'=>$form->get('doc_no')->getData(),	);
+		
+		$addFromString = FALSE;
+		$content = '';
+		
+		$env = new \Twig_Environment(new \Twig_Loader_String());
+			
+		// Generate .csv for each selected Transfer Template 
+		foreach($TransferTemplates as $Symbol => $Template) {
+			
+			if($form->get($Symbol)->getData()) {
+				
+				$for = explode('|',$Template['for']);
+				
+				foreach($Data[0]['IBA'] as $IBA => $IBA_Data) {
+					
+					if(!($IBA_Data['IncomeBankAcc'] instanceOf Account)) {
+						$msg['errors'][] = 'Brak IncomeBankAcc dla IBA '.$IBA; 
+					}
+					
+					$IBA_name = $IBA_Data['IncomeBankAcc']->getName();	
+					$IBA_accNo = $IBA_Data['IncomeBankAcc']->getAccNo();	
+					if(strpos($IBA_name,'|') === false){
+						$msg['errors'][] = 'Błąd formatu nazwy konta '.$IBA_accNo.' '.$IBA_name;
+					}
+					list($bank, $name) = explode('|',$IBA_name);
+					if(!array_key_exists($bank,$Template)){
+						$msg['errors'][] = 'Brak szablonu przelewu dla banku '.$bank;
+					}	
+						
+					// transfers to tax office
+					if(($for[0] == 'SUM') && ($for[1] == 'IBA')) {
+						
+						$filename = $IBA."_".$bank."_".$Symbol.".csv";
+						$content .= $env->render($Template[$bank],
+								array('form' => $form_data,
+									  'param'=> $Params,
+									  'value' => $IBA_Data, )).PHP_EOL;								
+					}
+				
+					// transfers to contractors
+					if(($for[0] == 'EACH') && ($for[1] == 'IBA')) {
+						
+						foreach($Data as $D => $B) {
+							
+							if(($D > 0) && (array_key_exists($IBA,$B['IBA']))) {
+								
+								$B_IBA_Data = $B['IBA'][$IBA];
+								
+								if(array_key_exists('Doc', $B['SUM'][0])) {
+									$SelDoc = $B['SUM'][0]['Doc'];
+									if(!($SelDoc instanceOf Doc)) {
+										$msg['errors'][] = 'Brak dokumentu id '.$D;
+									}
+								}						
+
+								if(array_key_exists('SelDocFile', $B['SUM'][0])) {
+									$SelDocFile = $B['SUM'][0]['SelDocFile'];
+									if(!($SelDocFile instanceOf File)) {
+										$msg['errors'][] = 'Brak kartoteki przy dok. id '.$D; 
+									}
+								}										
+								
+								$IF = FileQuery::create()
+									->select('Id')
+									->useIncomeQuery()
+										->filterByProject($Project)
+										->orderByRank()
+									->endUse()
+									->findOne(); 
+								
+								if(array_key_exists($IF,$B['IF'])) {
+									$FirstIF = $B['IF'][$IF]; }
+								else { $FirstIF = array('accNo' => 0); }
+													
+								$content .= SettingsController::utf_win(
+									$env->render($Template[$bank],
+											array('form' =>  $form_data,
+												  'param' => $Params,
+												  'doc' =>   $SelDoc,
+												  'file' =>  $SelDocFile,
+												  'project'=>$Project,
+												  'IBA' =>   $B['IBA'][$IBA],
+												  'FirstIF'=>$FirstIF,
+												   )).PHP_EOL
+								);
+									
+							}
+							
+						}
+						
+						$addFromString = TRUE;	
+														
+					}	
+				}
+			}
+		}	
+		
+		$msg['content'] = $content.PHP_EOL
+			.implode(PHP_EOL, $msg['errors']);
+		
 		if(!$addFromString) {
 			$msg['errors'][] = 'Brak przelewów do ściągnięcia;';}
 		
