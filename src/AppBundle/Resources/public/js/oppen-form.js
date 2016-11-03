@@ -52,7 +52,7 @@ function form_init() {
 	});	
 
 	$( document ).tooltip();
-/*
+
 	tinymce.init({
 		selector: "textarea.tinymce",
 		inline: false,
@@ -65,7 +65,7 @@ function form_init() {
 		pagebreak_separator: "<div class='page-break'></div>",
 		toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
 	 });
-*/
+
 }
 
 function form_datepicker() {

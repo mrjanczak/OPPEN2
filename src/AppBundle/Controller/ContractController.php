@@ -245,8 +245,8 @@ class ContractController extends Controller
 					//$c = str_replace('__instalments__',$instalments, $c);								
 					
 					$contractor_name = $File->getFirstName().' '.$File->getLastName();
-					$approver_name = $contractor_name != $Params['organization_board1'] ? 
-						$Params['organization_board1'] : $Params['organization_board2']; 
+					$approver_name = $contractor_name != $Params['organization_board2'] ? 
+						$Params['organization_board2'] : $Params['organization_board1']; 
 					$c = str_replace('__approver_name__' ,$approver_name, $c);	
 									
 					$c = str_replace('__contractor_name__',$contractor_name, $c);
