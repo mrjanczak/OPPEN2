@@ -49,13 +49,32 @@
 		<td> <a href={{ path('oppen_file', {'file_cat_id' : FileCat.id, 'file_id' : File.id}) }}> {{ File.name }} </a> </td>
 		<td>
 			{% if FileCat.symbol == 'ZB' %} 
-				{{ File.Address1 }}, {{ File.Address2 }} {{ File.country }} | {{ File.PESEL }} | 
-				{% if File.SubFile.name is defined %}  {{ File.SubFile.name }} 
-				{% else %} <span class="red">Brak US</span>
-				{% endif %} |
-				{% if File.email is not empty %}  {{ File.email }} 
-				{% else %} <span class="red">Brak email-a</span>
+
+				{% if File.country is empty %}  <span class="red">Brak Kraju</span>
 				{% endif %} 
+
+				{% if File.bankAccount is empty %}  <span class="red">Brak konta</span>
+				{% endif %} 
+								
+				{% if File.Address1|length > 6 %}  {{ File.Address1 }}, {{ File.Address2 }} {{ File.country }} 
+				{% elseif File.country == "PL"%} <span class="red">Brak Adresu</span>
+				{% endif %} | 
+				
+				{% if File.PESEL is not empty %}  {{ File.PESEL }} 
+				{% elseif File.country == "PL" %} <span class="red">Brak PESELu</span>
+				{% endif %} |				
+				
+				{% if File.SubFile.name is defined %}  {{ File.SubFile.name }} 
+				{% elseif File.country == "PL" %} <span class="red">Brak US</span>
+				{% endif %} |
+				
+				{% if File.email is not empty %}  {{ File.email }} 
+				{% elseif File.country == "PL" %} <span class="red">Brak email-a</span>
+				{% endif %} |
+				
+				{% if File.profession is not empty %}  {{ File.profession }} 
+				{% else %} <span class="red">Brak zawodu</span>
+				{% endif %} 				
 			{% endif %} 
 		</td>
 	</tr>

@@ -370,7 +370,7 @@ class ProjectController extends Controller
 				$msg = ContractController::generateDocs($form, $msg);
 				$new_tab_id = 3;
 				$redirect = true; 
-			}			
+			}					
 			
 			// Generate Bookks
 			if ((in_array($tab_id,array(2,3))) && ($form->get('generateBookks')->isClicked() )) {
@@ -403,26 +403,11 @@ class ProjectController extends Controller
 			if ((in_array($tab_id,array(4))) && ($form->get('setPaymentPeriod')->isClicked() )) {
 				$msg = ContractController::setPaymentPeriod($form, $msg); }	
 			
+			if ((in_array($tab_id,array(4))) && ($form->get('setEventDesc')->isClicked() )) {
+				$msg = ContractController::setEventDesc($form, $msg); }	
+							
 			// Download transfers
 			if (($tab_id == 3) && ($form->get('downloadTransfers')->isClicked() )) {
-													
-				/*
-				$path = realpath($this->get('kernel')->getRootDir() . '/../web').'/';
-				$zipName = "transfers.zip";
-
-				$msg = $this->createZIP($form, $msg, $zipName, $path, $TransferTemplates, $Project, $Params);
-				
-				if(empty($msg['errors'])) {
-					
-					$response = new Response();
-					$response->setContent(readfile($zipName));
-					$response->headers->set('Content-Type', 'application/zip');
-					$response->headers->set('Content-Disposition', 'attachment; filename='.$zipName );
-					$response->headers->set('Content-Length', filesize($zipName));
-
-					return $response;
-				}
-				*/
 				
 				$msg = $this->generateTransfers($form, $msg, $TransferTemplates, $Project, $Params);
 				
@@ -665,6 +650,8 @@ class ProjectController extends Controller
 					// transfers to contractors
 					if(($for[0] == 'EACH') && ($for[1] == 'IBA')) {
 						
+						$D_max = count($Data)-1;
+						
 						foreach($Data as $D => $B) {
 							
 							if(($D > 0) && (array_key_exists($IBA,$B['IBA']))) {
@@ -697,8 +684,7 @@ class ProjectController extends Controller
 									$FirstIF = $B['IF'][$IF]; }
 								else { $FirstIF = array('accNo' => 0); }
 													
-								$content .= SettingsController::utf_win(
-									$env->render($Template[$bank],
+								$content .= $env->render($Template[$bank],
 											array('form' =>  $form_data,
 												  'param' => $Params,
 												  'doc' =>   $SelDoc,
@@ -706,8 +692,10 @@ class ProjectController extends Controller
 												  'project'=>$Project,
 												  'IBA' =>   $B['IBA'][$IBA],
 												  'FirstIF'=>$FirstIF,
-												   )).PHP_EOL
-								);
+												   )).PHP_EOL;
+								if($D != $D_max) {			   
+									//$content .= PHP_EOL;
+								}
 									
 							}
 							
@@ -720,8 +708,7 @@ class ProjectController extends Controller
 			}
 		}	
 		
-		$msg['content'] = $content.PHP_EOL
-			.implode(PHP_EOL, $msg['errors']);
+		$msg['content'] = $content;//.implode(PHP_EOL, $msg['errors']);
 		
 		if(!$addFromString) {
 			$msg['errors'][] = 'Brak przelewów do ściągnięcia;';}

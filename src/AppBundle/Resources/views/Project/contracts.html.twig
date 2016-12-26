@@ -66,11 +66,14 @@
 				{{ form_row(form.document_date,{'attr':{'class':'date'}} ) }}
 				{{ form_row(form.operation_date,{'attr':{'class':'date'}} ) }}
 				{{ form_row(form.receipt_date,{'attr':{'class':'date'}} ) }}
-				
 				{{ form_row(form.DocMonth) }}
+				{{ form_row(form.event_desc ) }}
+				
+				
 			</div>
 			<div class="form-row">{{ form_widget(form.generateDocs) }}
 									{{ form_widget(form.printContracts) }}
+									{{ form_widget(form.setEventDesc) }}
 			</div>
 		</td>
 	</tr>		

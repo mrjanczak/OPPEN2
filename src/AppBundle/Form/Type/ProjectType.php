@@ -158,7 +158,7 @@ class ProjectType extends AbstractType
 			->add('setPaymentDate', 'submit', array('label' => 'Ustaw datę płatności'))
 			
 			->add('setPaymentDeadlineDate', 'submit', array('label' => 'Ustaw termin płatności'))
-			
+						
 			->add('downloadCosts', 'submit', array('label' => 'Koszty (csv)'))
 			
 			->add('removeDocs', 'submit', array('label' => 'Usuń dokumenty',
@@ -184,10 +184,13 @@ class ProjectType extends AbstractType
 			->add('operation_date', 'date', array('label' => 'Data operacji',   'required' => false, 'widget' => 'single_text', 'mapped' => false))
 			->add('DocMonth', 'model', array('label' => 'Miesiąc dokumentu',	'class' => 'AppBundle\Model\Month', 'mapped' => false,
 				  'query' => MonthQuery::create()->filterByYear($this->Year)->orderByFromDate() ))			  
+			->add('event_desc', 'textarea', array('label' => 'Przedmiot umowy',   'required' => false, 'mapped' => false))
 
-			->add('generateDocs', 'submit', array('label' => 'Utwórz Dokumenty'))
+			->add('generateDocs', 'submit', array('label' => 'Utwórz Dokumenty'))	
 			->add('printContracts', 'submit', array('label' => 'Drukuj Umowy', 
-													   'attr' => array('onclick' => "this.form.target='_blank';return true;")))								              
+													   'attr' => array('onclick' => "this.form.target='_blank';return true;")))
+													   
+			->add('setEventDesc', 'submit', array('label' => 'Ustaw przedmiot umowy'))			   								              
 			->add('setPaymentPeriod', 'submit', array('label' => 'Przypisz do Umów'));
 		}	
 		if ($this->tab_id == 5) {

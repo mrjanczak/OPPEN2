@@ -1,6 +1,22 @@
 Report config
 =============
 
+Bank Transfers
+--------------
+
+# Old
+BGZ : "{{i}}; {{file.bankAccount}}; {{file.name}}; {{file.address1}}; {{file.code}}; {{file.city}}; honorarium dla {{file.name}} zg. z rach. {{doc.docNo}} - projekt {{project.name}} {% if FirstIF.IAAccNo == 700 %}, {{FirstIF.netto}} PLN płatne ze śr. {{FirstIF.IName}} {% endif %}; {{IBA.netto|number_format(2, '.', '')}}"
+
+# New - kw;nazwa;rach;tyt
+BGZ : "{{IBA.netto|number_format(2, ',', '')}}; {{file.name}}; {{file.bankAccount}}; ; honorarium dla {{file.name}} zg. z rach. {{doc.docNo}} - projekt {{project.name}} {% if FirstIF.IAAccNo == 700 %}, {{FirstIF.netto}} PLN płatne ze śr. {{FirstIF.IName}} {% endif %}; "
+
+# Old
+BGZ:  "{{param.TO_PDOF_bank_acc}};N;{{param.organization_NIP}};{{form.payment_date|date('y')}};M;{{form.payment_date|date('m')}};PIT-4R; - ;{{value.tax}}"
+
+# New 
+BGZ:  "{{value.tax|number_format(2, ',', '')}};PIT-4R;N;1132421207;Urząd Skarbowy Warszawa-Mokotów;97 1010 1010 0165 4822 2300 0000;76 2030 0045 1110 0000 0396 5940;{{form.payment_date|date('y')}};M;{{form.payment_date|date('m')}}"
+
+
 Bilans
 ------
 ```yaml

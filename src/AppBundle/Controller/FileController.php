@@ -138,6 +138,8 @@ class FileController extends Controller
 			
 			$File->setFileCat($FileCat);
 			$File->setAccNo($AccNo);
+			$File->setCountry("PL");
+			
 		} else {	
 			$File = FileQuery::create()->findPk($file_id); 
 			$buttons[] = 'delete';			

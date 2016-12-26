@@ -376,5 +376,19 @@ class ContractController extends Controller
 		}
 		return $msg;
 	}
+
+	static public function setEventDesc($form, $msg) {
+			
+		$event_desc =  $form->get('event_desc')->getData();
 		
+		foreach ($form->get('Costs') as $FCost) {
+			foreach ($FCost->get('Contracts') as $FContract) {
+				if($FContract->get('select')->getData() == 1) {
+					$Contract = $FContract->getData();	
+					$Contract->setEventDesc($event_desc)->save();
+				}
+			}
+		}
+		return $msg;
+	}		
 }

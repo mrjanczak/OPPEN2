@@ -475,6 +475,7 @@ class CostController extends Controller
                                     
                     $contents .= $env->render($transfer_temp,
                               array('i' => $i,
+									'myAccount'=>$Cost->getBankAccount()->getName(),
                                     'account' => $File->getBankAccount(), 
                                     'name' =>    $File->getName(), 
                                     'street' =>  SettingsController::street_prefix($File->getStreet()).$File->getStreet(),
