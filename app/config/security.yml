@@ -25,8 +25,8 @@ security:
 
     access_control:
         - { path: ^/login$,   role: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
-        - { path: ^/tasks/,   role: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
         - { path: ^/resetting,role: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
-        - { path: ^/admin/,   role: ROLE_ADMIN, requires_channel: https }        
+        - { path: ^/tasks,    role: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
+        - { path: ^/admin,    role: ROLE_ADMIN, requires_channel: https }        
         - { path: ^/,         role: ROLE_USER,  requires_channel: https }
