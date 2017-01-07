@@ -71,7 +71,7 @@
 				<div class='bookk_form' >
 						{{ form_widget(Bookk.is_accepted,{'attr':{'class':'item'}}) }}
 						{{ form_widget(Bookk.bookking_date,{'attr':{'class':'date date_item'}}) }} 
-						{{ form_widget(Bookk.desc,{'attr':{'class':'desc_wide', 'title':Bookk.desc.vars.value}}) }}
+						{{ form_widget(Bookk.desc,{'attr':{'class':'desc', 'title':Bookk.desc.vars.value}}) }}
 						[{{ Bookk.id.vars.value }}]
 					<span class='h'>
 						{{ form_widget(Bookk.id) }}
@@ -120,7 +120,7 @@
 				<div class="bookk_form"  data-disabled="0">
 						{{ form_widget(form.Bookks.vars.prototype.is_accepted|e,{"attr":{"class":"item"}}) }}
 						{{ form_widget(form.Bookks.vars.prototype.bookking_date|e,{"attr":{"class":"date"}}) }} 
-						{{ form_widget(form.Bookks.vars.prototype.desc|e,{"attr":{"class":"desc_wide"}}) }} 
+						{{ form_widget(form.Bookks.vars.prototype.desc|e,{"attr":{"class":"desc"}}) }} 
 					<span class="h">
 						{{ form_widget(form.Bookks.vars.prototype.id|e) }}
 						{{ form_widget(form.Bookks.vars.prototype.project_id|e) }}

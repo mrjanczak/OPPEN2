@@ -77,7 +77,11 @@ class DocController extends Controller
 					if(array_key_exists('Bookks',$DocR)) {	
 						foreach($DocR['Bookks'] as $BookkR) {
 							if(array_key_exists('is_accepted',$BookkR)) {
-								$Bookk = BookkQuery::create()->findPk($BookkR['id']);	
+								$Bookk = BookkQuery::create()->findPk($BookkR['id']);
+								
+								if(!($Bookk instanceOf Bookk)) 
+									{ throw $this->createNotFoundException('The Bookk (id '.$BookkR['id'].') does not exist'); }			
+	
 								$Bookk->setIsAccepted(1)->save();							
 								if($Bookk->getIsAccepted() && $Bookk->getNo() == NULL) {
 									$Bookk->setNewNo()->save(); 
@@ -140,9 +144,11 @@ class DocController extends Controller
 		
 		if($doc_id == 0) {
 			$Month = MonthQuery::create()->findPk($month_id);
-			if(!($Month instanceOf Month)) { throw $this->createNotFoundException('The Month (id '.$month_id.') does not exist'); }			
+			if(!($Month instanceOf Month)) 
+				{ throw $this->createNotFoundException('The Month (id '.$month_id.') does not exist'); }			
 			$DocCat = DocCatQuery::create()->findPk($doc_cat_id);			
-			if(!($DocCat instanceOf DocCat)) {throw $this->createNotFoundException('The Doc (id '.$doc_id.') does not exist'); }
+			if(!($DocCat instanceOf DocCat)) 
+				{throw $this->createNotFoundException('The Doc (id '.$doc_id.') does not exist'); }
 			
 			$Doc = new Doc();
 			$Doc->setMonth($Month);
@@ -150,7 +156,8 @@ class DocController extends Controller
 			$hasAcceptedBookks = false;			
 		} else {
 			$Doc = DocQuery::create()->findPk($doc_id); 
-			if(!($Doc instanceOf Doc)) { throw $this->createNotFoundException('The Doc (id '.$doc_id.') does not exist'); }			
+			if(!($Doc instanceOf Doc)) 
+				{ throw $this->createNotFoundException('The Doc (id '.$doc_id.') does not exist'); }			
 			
 			$hasAcceptedBookks = BookkQuery::create()->filterByDoc($Doc)->filterByIsAccepted(1)->count() > 0;
 			if(!$hasAcceptedBookks) { $buttons[] = 'delete';}
