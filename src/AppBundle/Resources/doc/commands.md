@@ -87,6 +87,7 @@ heroku addons:create cleardb:ignite
 heroku run php app/console propel:schema:create
 
 heroku config:get CLEARDB_DATABASE_URL
+
 mysql://b39453a823acea:94b8b6ef@eu-cdbr-west-01.cleardb.com/heroku_09a29fcafd1c0c7?reconnect=true
 
 
