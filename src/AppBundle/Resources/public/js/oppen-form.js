@@ -30,11 +30,14 @@ function form_init() {
 
 	$('.toggle_items').change(function() {
 		var id = $(this).attr("id");
+		var id_attr = '';
+		if (typeof id !='undefined') { 
+			id_attr = '[id^="'+id+'"]';
 		
 		if ($(this).is(':checked')) {
-			$('input[type="checkbox"][class="item"][id^="'+id+'"]').not('[disabled]').prop('checked', true);}
+			$('input[type="checkbox"][class="item"]'+id_attr).not('[disabled]').prop('checked', true);}
 		else {
-			$('input[type="checkbox"][class="item"][id^="'+id+'"]').not('[disabled]').prop('checked', false);}
+			$('input[type="checkbox"][class="item"]'+id_attr).not('[disabled]').prop('checked', false);}
 	});
 
 
