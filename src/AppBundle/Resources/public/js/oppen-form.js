@@ -233,8 +233,7 @@ function add_link($root,d) {
 		var $add_link_appendto = $root.find(d.add_link_appendto).not('[disabled]');
 		
 		var $add_link = $('<a href="#" class="add_link">' + d.add_link + '</a>');
-		$add_link_appendto.append($add_link);
-		$add_link_appendto.children('a:last').click( function(e) {
+		$add_link.click( function(e) {
 			e.preventDefault();
 			var form = $(d.new_form).data('prototype');	
 				
@@ -269,20 +268,23 @@ function add_link($root,d) {
 			form_dialog($new_form,d);
 			subform_prepare($new_form,d);
 		});
+		
+		$add_link_appendto.append($add_link);
 	}
 }
 
 function rem_link($root, d) {
 	if(d.hasOwnProperty("rem_link")) {
 		var $rem_link = $('<a href="#" class="rem_link">' + d.rem_link + '</a>');
+		$rem_link.click( function(e) {
+			e.preventDefault();
+			$(this).parents(d.parent_toremove).remove();
+		});
 		
 		var data_attr = '';
 		if(d.hasOwnProperty('side')) { data_attr += '[data-side="' + d.side + '"]';}
 		
-		$root.find(d.rem_link_appendto + data_attr).not('[disabled]').append($rem_link).children('a:last').click( function(e) {
-			e.preventDefault();
-			$(this).parents(d.parent_toremove).remove();
-		});
+		$root.find(d.rem_link_appendto + data_attr).not('[disabled]').append($rem_link);
 	}
 }
 
