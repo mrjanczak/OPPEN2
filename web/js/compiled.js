@@ -47,7 +47,7 @@ function form_init() {
 		var id = $(this).attr("id");
 		var id_attr = '';
 		if (typeof id !='undefined') { 
-			id_attr = '[id^="'+id+'"]';
+			id_attr = '[id^="'+id+'"]'; }
 		
 		if ($(this).is(':checked')) {
 			$('input[type="checkbox"][class="item"]'+id_attr).not('[disabled]').prop('checked', true);}
