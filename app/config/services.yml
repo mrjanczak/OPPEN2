@@ -8,14 +8,8 @@ services:
     app.task_controller:
         class: AppBundle\Controller\TaskController
 
-#    app.heroku_scheduler:
-#        class: AppBundle\EventSubscriber\HerokuSchedulerSubscriber
-#        arguments: [ @app.task_controller ]
-#        tags:
-#            - { name: kernel.event_subscriber }
-
     app.heroku_scheduler:
         class: AppBundle\EventListener\HerokuSchedulerListener
-        arguments: [ @twig, @mailer ]
+        arguments: [ @twig, @mailer, @service_container ]
         tags:
             - { name: kernel.event_listener, event: heroku_daily }
