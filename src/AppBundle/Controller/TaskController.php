@@ -11,7 +11,7 @@ use AppBundle\Model\ParameterQuery;
 class TaskController extends Controller
 {
     public function moveAction($task_id, $dir, Request $request)
-    {
+    {		
 		$Task = TaskQuery::create()->findPk($task_id); 
 		$Project = $Task->getProject();
 		$Year = $Project->getYear(); 
@@ -30,8 +30,8 @@ class TaskController extends Controller
 	public function sendReminderAction() {
 		$now = new \DateTime('now');
 		
-		//$from_email= ParameterQuery::create()->getOneByName('organization_email');
-		$from_email = $this->getParameter('mailer_user');	
+		$from_email= ParameterQuery::create()->getOneByName('organization_email');
+		//$from_email = $this->getParameter('mailer_user');	
 		
 		$Tasks = TaskQuery::create()
 			->filterBySendReminder(1)

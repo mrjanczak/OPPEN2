@@ -46,7 +46,7 @@ git push heroku master
 
 heroku login
 
-heroku config:set SWIFTMAILER_URL=smtp://mail.latempesta.pl:vespers1@mail.latempesta.pl
+heroku config:set SWIFTMAILER_URL=gmail://mail@latempesta.pl:***@smtp.gmail.com
 
 heroku run php app/console cache:clear --env=prod --no-debug
 heroku run php app/console cache:warmup --env=prod --no-debug

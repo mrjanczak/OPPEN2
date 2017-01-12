@@ -18,7 +18,9 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle(),
-            
+      
+            new mCzolko\HerokuSchedulerBundle\mCzolkoHerokuSchedulerBundle(),  
+                     
             new Propel\PropelBundle\PropelBundle(),
             new Oneup\UploaderBundle\OneupUploaderBundle(),
 

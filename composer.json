@@ -18,6 +18,7 @@
         "sensio/framework-extra-bundle": "^3.0.2",
         "incenteev/composer-parameter-handler": "~2.0",
         "sensio/generator-bundle": "~2.3",
+        "mczolko/heroku-scheduler-bundle": "^1.0",
         
         "propel/propel-bundle": "1.4.*",
         "willdurand/propel-typehintable-behavior": "~1.0",

@@ -1,8 +1,21 @@
 # Learn more about services, parameters and containers at
 # http://symfony.com/doc/current/book/service_container.html
-parameters:
-#    parameter_name: value
 
 services:
-    oppen_project.cat_namer:
+    app.cat_namer:
         class: AppBundle\DependencyInjection\CatNamerInterface
+
+    app.task_controller:
+        class: AppBundle\Controller\TaskController
+
+#    app.heroku_scheduler:
+#        class: AppBundle\EventSubscriber\HerokuSchedulerSubscriber
+#        arguments: [ @app.task_controller ]
+#        tags:
+#            - { name: kernel.event_subscriber }
+
+    app.heroku_scheduler:
+        class: AppBundle\EventListener\HerokuSchedulerListener
+        arguments: [ @twig, @mailer ]
+        tags:
+            - { name: kernel.event_listener, event: heroku_daily }

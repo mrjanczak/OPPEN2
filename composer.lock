@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "26c6f9a413ae4cfa205e76b5ce603c8e",
-    "content-hash": "c37e2b5e643de70801e7ffd3266a14de",
+    "hash": "7bf3134d8892de0b3d31b74de5329177",
+    "content-hash": "db112a46c7188ed55b8b8d7d723077ef",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -952,6 +952,45 @@
                 "minification"
             ],
             "time": "2015-11-12 13:51:40"
+        },
+        {
+            "name": "mczolko/heroku-scheduler-bundle",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mCzolko/HerokuSchedulerBundle.git",
+                "reference": "251bca3c41319b63193654ecfff45a9e284d4244"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mCzolko/HerokuSchedulerBundle/zipball/251bca3c41319b63193654ecfff45a9e284d4244",
+                "reference": "251bca3c41319b63193654ecfff45a9e284d4244",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.9"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "mCzolko\\HerokuSchedulerBundle\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Czolko",
+                    "email": "michael@czolko.cz"
+                }
+            ],
+            "description": "Symfony HerokuSchedulerBundle",
+            "keywords": [
+                "Heroku Scheduler"
+            ],
+            "time": "2016-03-17 13:51:37"
         },
         {
             "name": "monolog/monolog",
@@ -1951,6 +1990,7 @@
             ],
             "description": "Symfony Propel1 Bridge",
             "homepage": "https://symfony.com",
+            "abandoned": "propel/propel-bundle",
             "time": "2015-05-02 15:18:45"
         },
         {
