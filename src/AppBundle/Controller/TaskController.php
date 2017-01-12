@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 use AppBundle\Model\TaskQuery;
+use AppBundle\Model\ParameterQuery;
 
 class TaskController extends Controller
 {
@@ -29,6 +30,8 @@ class TaskController extends Controller
 	public function sendReminderAction() {
 		$now = new \DateTime('now');
 		
+		$organization_email= ParameterQuery::create()->getOneByName('organization_email');
+		
 		$Tasks = TaskQuery::create()
 			->filterBySendReminder(1)
 			->filterByFromDate(array('max' => $now))
@@ -41,14 +44,14 @@ class TaskController extends Controller
 		foreach ($Tasks as $Task) {
 			$message = \Swift_Message::newInstance()
 				->setSubject('Oppen Project remainder')
-				->setFrom($mailer_user)
+				->setFrom($organization_email)
 				->setTo($Task->getUser()->getEmail())
 				->setBody(
 					$this->renderView(
-						':Template:remainder.txt.twig',array('Task' => $Task)) );
+						'AppBundle:Template:remainder.txt.twig',array('Task' => $Task)) );
 			$this->get('mailer')->send($message);
 			
-			$contents .= $Task->getDesc().'|';
+			$contents .= $Task->getProject()->getName().' - '.$Task->getDesc().' > '.$Task->getUser()->getEmail().' | ';
 		}
 		
 		return $this->render('AppBundle:Template:raw.html.twig',array('contents' => $contents));	

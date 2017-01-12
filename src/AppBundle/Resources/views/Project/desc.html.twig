@@ -47,14 +47,14 @@
 
 		<div class='tasks_list'>	
 		{% for T, Task in form.Tasks if form.Tasks is not empty %}
+			{% set id = Task.vars.value.id %}
 			<div id='Tasks_{{T}}' class='task' data-idx0='{{T}}' >
 				<div class='task_form' >
 					{{ form_widget(Task.desc,         {'attr':{'class':'w300'}}) }} 
 					{{ form_widget(Task.from_date,    {'attr':{'class':'from_date'}}) }} 
 					{{ form_widget(Task.to_date,      {'attr':{'class':'to_date'}}) }} 
-					<a href={{ path('oppen_task_move',    {'task_id' : Task.id.vars.value, 'dir' : 'up'   }) }}> (&#8593;) </a> 
-					<a href={{ path('oppen_task_move',    {'task_id' : Task.id.vars.value, 'dir' : 'down' }) }}> (&#8595;) </a> 					
-					
+					<a href={{ path('oppen_task_move',    {'task_id' : id, 'dir' : 'up'   }) }}> (&#8593;) </a> 
+					<a href={{ path('oppen_task_move',    {'task_id' : id, 'dir' : 'down' }) }}> (&#8595;) </a> 					
 					<span class='h'>
 						{{ form_widget(Task.id) }}
 						{{ form_widget(Task.comment) }}
