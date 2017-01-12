@@ -30,28 +30,31 @@ class TaskController extends Controller
 	public function sendReminderAction() {
 		$now = new \DateTime('now');
 		
-		$organization_email= ParameterQuery::create()->getOneByName('organization_email');
+		//$from_email= ParameterQuery::create()->getOneByName('organization_email');
+		$from_email = $this->getParameter('mailer_user');	
 		
 		$Tasks = TaskQuery::create()
 			->filterBySendReminder(1)
 			->filterByFromDate(array('max' => $now))
 			->filterByToDate(array('min' => $now))
 			->find();
-		
-		$mailer_user = $this->container->getParameter('mailer_user');
+
 		
 		$contents = 'sent reminders:';	
 		foreach ($Tasks as $Task) {
+			$to_email = $Task->getUser()->getEmail();
+			
 			$message = \Swift_Message::newInstance()
 				->setSubject('Oppen Project remainder')
-				->setFrom($organization_email)
-				->setTo($Task->getUser()->getEmail())
+				->setFrom($from_email)
+				->setTo($to_email)
 				->setBody(
 					$this->renderView(
 						'AppBundle:Template:remainder.txt.twig',array('Task' => $Task)) );
 			$this->get('mailer')->send($message);
 			
-			$contents .= $Task->getProject()->getName().' - '.$Task->getDesc().' > '.$Task->getUser()->getEmail().' | ';
+			$contents .= $Task->getProject()->getName().' - '.$Task->getDesc().
+				'( '.$from_email.' > '.$to_email.') '.PHP_EOL;
 		}
 		
 		return $this->render('AppBundle:Template:raw.html.twig',array('contents' => $contents));	
