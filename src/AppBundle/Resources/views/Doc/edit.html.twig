@@ -54,14 +54,15 @@
 {% if doc_id > 0 %}
 
 	{% set Doc = form.vars.value %}	
-		
+
 	<div class="bookks" >
 		
-		<div class='bookks_label' > Dekretacje 
+		<div class='bookks_label' > Dekretacje {{ header_sfx }}
 
 			<a class='ajax_init_form' method="POST" title="Dodaj dekretację"
-				 action="{{ path('oppen_bookk', { 'bookk_id' : 0, 'doc_id' : doc_id, 'return' : return, 'id1' : id1, 'id2' : id2}) }}" > ( + ) 
+				 href="{{ path('oppen_bookk', { 'bookk_id' : 0, 'doc_id' : doc_id, 'return' : return, 'id1' : id1, 'id2' : id2}) }}" > ( + ) 
 			</a>			
+
 		</div>
 		
 		<div class='bookks_header'>

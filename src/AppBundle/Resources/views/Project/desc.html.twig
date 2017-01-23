@@ -43,9 +43,9 @@
 		<div class='tasks_label' > Zadania 
 
 			<a class='ajax_init_form' method="POST" title="Dodaj zadanie"
-				 action="{{ path('oppen_task', { 'task_id' : 0, 'project_id' : project_id }) }}" > ( + ) 
+				 href="{{ path('oppen_task', { 'task_id' : 0, 'project_id' : project_id }) }}" > ( + ) 
 			</a>
-						
+									
 		</div>
 		<div class='tasks_header'>
 			<div class="i b w300">{%trans%} headers.common.desc {%endtrans%}</div>

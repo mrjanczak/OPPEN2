@@ -40,7 +40,10 @@ function form_init() {
 	});	
 	
 	$("tr[class!='even']:odd").addClass("odd");	
-
+	
+	$("div[class~='even_odd']:even").removeClass("odd");	
+	$("div[class~='even_odd']:odd").addClass("odd");
+	
 	$('.toggle_items').change(function() {
 		var id = $(this).attr("id");
 		var id_attr = '';
@@ -365,6 +368,8 @@ var ajax_prepare_dialog = function(data_html) {
 						$dialog.dialog( 'destroy' );
 						break;														
 				}
+				$("div[class~='even_odd']:even").removeClass("odd");	
+				$("div[class~='even_odd']:odd").addClass("odd");	
 			}
 		})
 	})
@@ -374,13 +379,16 @@ var ajax_prepare_dialog = function(data_html) {
 
 var ajax_prepare_item = function($item) {
 	
+	$("div[class~='even_odd']:even").removeClass("odd");	
+	$("div[class~='even_odd']:odd").addClass("odd");	
+		
 	$item.find('.ajax_init_form' ).on('click', function(e){
 		
 		e.preventDefault();
 		
 		$.ajax({
 			type        : $(this).attr( 'method' ),
-			url         : $(this).attr( 'action' ),
+			url         : $(this).attr( 'href' ),
 			success     : function(data) {
 				
 				var $dialog = ajax_prepare_dialog( data.html );

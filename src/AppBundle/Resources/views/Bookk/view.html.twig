@@ -1,23 +1,25 @@
 {% set bookk_id = Bookk.id is not empty ?  Bookk.id : 0 %}
+{% set project_id = Bookk.Project is not empty ?  Bookk.Project.id : 0 %}
 
-<div id='Bookk{{Bookk.id}}' class='bookk' 	data-list='.bookks_list' >
-	<div class='ajax_init_form i' method="POST" title="{{ Bookk.desc }}"
+{% if return == 'docs' or (return == 'project' and project_id == id1) %}
 
-		 action="{{ path('oppen_bookk', { 'bookk_id' : bookk_id, 'doc_id' : Bookk.Doc.id, 'return' : return, 'id1' : id1, 'id2' : id2}) }}" >
-		 
+
+<div id='Bookk{{Bookk.id}}' class='bookk even_odd' 	data-list='.bookks_list' >
+	<div class='i black' title="{{ Bookk.desc }}">
+		<a class='ajax_init_form' method="POST" href="{{ path('oppen_bookk', { 'bookk_id' : bookk_id, 'doc_id' : Bookk.Doc.id, 'return' : return, 'id1' : id1, 'id2' : id2}) }}" >
 			{{ Bookk.isAccepted ? '[X]' : '[ ]' }} | {{ Bookk.bookkingDate|date("d/m/Y") }} - {{ Bookk.desc|slice(0, 50) }} {{ Bookk.desc|length > 50 ? '...':'' }}
-			({{ Bookk.Project is not empty ? Bookk.Project.name : ''}}) 											
+			({{ Bookk.Project is not empty ? Bookk.Project.name : ''}}) 													
+		</a>
 	</div>
 	
 	<div class="i">
-		<a class="ajax_init_form" action="{{ path('oppen_bookk_entry', { 'bookk_entry_id' : 0, 'bookk_id' : bookk_id,  'side' : 1, 'return' : return, 'id1' : id1, 'id2' : id2}) }}">
+					
+		<a class="ajax_init_form" href="{{ path('oppen_bookk_entry', { 'bookk_entry_id' : 0, 'bookk_id' : bookk_id,  'side' : 1, 'return' : return, 'id1' : id1, 'id2' : id2}) }}">
 			(Wn+)</a>
 			
-		<a class="ajax_init_form" action="{{ path('oppen_bookk_entry', { 'bookk_entry_id' : 0, 'bookk_id' : bookk_id,  'side' : 2, 'return' : return, 'id1' : id1, 'id2' : id2}) }}">
+		<a class="ajax_init_form" href="{{ path('oppen_bookk_entry', { 'bookk_entry_id' : 0, 'bookk_id' : bookk_id,  'side' : 2, 'return' : return, 'id1' : id1, 'id2' : id2}) }}">
 			(Ma+)</a>
 			
-		<a class="small" action="{{ path('oppen_bookk', { 'bookk_id' : bookk_id, 'doc_id' : Bookk.Doc.id, 'return' : return, 'id1' : id1, 'id2' : id2}) }}">
-			[{{Bookk.id}}]</a>	
 	</div>	
 		
 	<div class='bookk_sides'>	
@@ -35,3 +37,5 @@
 	</div>
 	
 </div>
+
+{% endif %}

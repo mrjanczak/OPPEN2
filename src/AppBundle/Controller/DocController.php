@@ -28,6 +28,7 @@ use AppBundle\Model\AccountQuery;
 use AppBundle\Model\DocQuery;
 use AppBundle\Model\DocCatQuery;
 use AppBundle\Model\FileQuery;
+use AppBundle\Model\ProjectQuery;
 use AppBundle\Model\BookkQuery;
 use AppBundle\Model\ParameterQuery;
 
@@ -166,7 +167,15 @@ class DocController extends Controller
 		}
 		
 		$Year = $Doc->getMonth()->getYear();
-
+		
+		$header_sfx = '';
+		if($return == 'project') {
+			$Project = ProjectQuery::create()->findPk($id1); 
+			if( $Project instanceOf Project) {
+				$header_sfx = '('.$Project->getName().')';
+			} 
+		}
+			
 		$security_context = $this->get('security.context');
 		$disable_accepted_docs = ParameterQuery::create()->getOneByName('disable_accepted_docs');
 		
@@ -260,6 +269,7 @@ class DocController extends Controller
 			'form' => $form->createView(),
 			'errors' => $msg['errors'],
 			'buttons' => $buttons,
+			'header_sfx' => $header_sfx,
 			'return' => $return,
 			'id1' => $id1,
 			'id2' => $id2,			

@@ -393,13 +393,16 @@ div.comment {
 
 .small {
 	font-size: 50%;} 
+	
 .orange {
 	color:orange;}
 .green {
 	color:green;}
 .red {
 	color:red;}
-
+.black {
+	color:black;}
+	
 li.i {
 	display: inline;
 }
@@ -429,7 +432,7 @@ span.dialog-icon {
 
 /* table form */
 
-table.list tbody tr.odd {
+table.list tbody tr.odd, div.odd {
 	background-color : #eee;
 }
 table.list tbody tr.header {
@@ -553,6 +556,7 @@ div.bookk {
 }
 div.bookk_sides{
 	text-align:right;
+	margin: 5px 0;
 }
 div.bookk_side,div.bookk_side1,div.bookk_side2{
 	width:250px;
@@ -561,11 +565,11 @@ div.bookk_side,div.bookk_side1,div.bookk_side2{
 input.desc_wide {
 	width:600px;
 }
-input.accNo, div.accNo {
+input.accNo, div.accNo, span.accNo {
 	width:120px;
 	display: inline-block;	
 }
-input.value, div.value {
+input.value, div.value, span.value {
 	width:80px;
 	display: inline-block;
 }
@@ -636,11 +640,14 @@ div.message, div.error {
     color: #08C;
     text-decoration: none;
 }
-.sf-reset a:hover,
+.sf-reset a:hover, .sf-reset a span:hover,
 .sf-reset li a:hover {
-    color: #08C;
+    //color: #08C;
     text-decoration: underline;
 }
+div.black a.ajax_init_form {
+	color:black;}
+
 .sf-reset .symfony-content pre {
     white-space: pre;
     font-family: monospace;
