@@ -1,0 +1,20 @@
+{% set bookk_entry_id = BookkEntry.id is not empty ? BookkEntry.id : 0 %}
+
+<div id='BookkEntry{{BookkEntry.id}}' class='bookk_entry' 
+		data-side='{{BookkEntry.side}}'
+		data-list='#Bookk{{BookkEntry.Bookk.id}}_side{{BookkEntry.side}}'>
+	
+	<div class='ajax_init_form i' method="POST" 
+		 action="{{ path('oppen_bookk_entry', { 'bookk_entry_id' : bookk_entry_id, 'bookk_id' : BookkEntry.Bookk.id, 'side' : BookkEntry.side, 
+												'return' : return, 'id1' : id1, 'id2' : id2}) }}" >
+			
+		<div class="value">{{ BookkEntry.value|number_format(2,',',' ') }} 	</div> 
+		<div class="accNo">{{ BookkEntry.accNo }} </div> 
+	</div>	
+	<div class="i">	
+		<a class="small" href="{{ path('oppen_bookk_entry', { 'bookk_entry_id' : bookk_entry_id, 'bookk_id' : BookkEntry.Bookk.id, 'side' : BookkEntry.side, 
+																'return' : return, 'id1' : id1, 'id2' : id2}) }}"> 
+			[{{BookkEntry.id}}] </a>
+	</div>							
+
+</div>

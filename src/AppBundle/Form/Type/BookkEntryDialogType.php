@@ -23,6 +23,8 @@ class BookkEntryDialogType extends AbstractType
 	
     public function buildForm(FormBuilderInterface $builder, array $options)
     {					
+		$builder->add('value', 'number', array('label' => 'Kwota', 'precision' => 2));
+
 		$builder->add('Account', 'model', array(
 							'label' => 'Konto',
 							'required' => false,

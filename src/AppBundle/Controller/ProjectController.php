@@ -106,7 +106,6 @@ class ProjectController extends Controller
 		$Project = ProjectQuery::create()->findPk($project_id);
 		$Year = YearQuery::create()->findPk($year_id);
 		$CostFileCat = null;
-		$TformView = null;
 		
 		$buttons = array('cancel','save');
 		$tabs = array(1=>'desc');
@@ -120,14 +119,7 @@ class ProjectController extends Controller
 			$CostFileCat = $Project->getCostFileCat();
 			$tabs = array(1=>'desc', 2=>'incomes', 3=>'costs', 4=>'contracts', 5=>'documents');		
 			if($tab_id == 1) {
-				$buttons[] = 'delete';
-				
-				// Prepare old collection to find items to delete
-				$TasksOld = array();
-				foreach ($Project->getTasks() as $T => $Task) {
-					$TasksOld[$T] = $Task; }
-				$Tform = $this->createForm(new TaskDialogType(), new Task());
-				$TformView = $Tform->createView();				
+				$buttons[] = 'delete';				
 			}			
 		}
 				
@@ -291,31 +283,7 @@ class ProjectController extends Controller
 				}
 				// New project
 				if (($tab_id == 1) && ($Project->getId() == 0)) {
-					$redirect = true; }
-				
-				// Existing project	desc
-				if (($tab_id == 1) && ($Project->getId() > 0)) {
-					
-					//search Tasks to remove
-					$TasksNew = array();
-					foreach ($Project->getTasks() as $T => $Task) {
-						$TasksNew[$T] = $Task;		
-					}	
-					$TasksToDel = array_udiff_assoc($TasksOld, $TasksNew,array($this,'compareById'));
-					
-					if(empty($msg['errors'])) {
-						//remove old Tasks 
-						foreach ($TasksToDel as $TaskToDel) {
-							$Project->removeTask($TaskToDel);
-							$TaskToDel->delete();
-						}
-						
-						//save new Tasks				
-						foreach ($Project->getTasks() as $T => $Task) {
-							$Task->setProject($Project)->save();								
-						}									
-					}					
-				}	
+					$redirect = true; }	
 				
 				// Save incomes
 				if ($tab_id == 2 ) {
@@ -456,7 +424,6 @@ class ProjectController extends Controller
 
 		return $this->render('AppBundle:Project:edit.html.twig',array(
 			'form' => $form->createView(),
-			'Tform' => $TformView,
 			'buttons' => $buttons,
 			'tab_id' => $new_tab_id,
 			'tabs' => $tabs,

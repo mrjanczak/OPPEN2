@@ -1,3 +1,7 @@
+// Desc - tasks
+var $tasks = ajax_prepare_item( $('.tasks') );
+
+// Incomes 
 $('.income_label').each( function(e) {
 	$copy_link = $(' <a class="copy" href="#">(c)</a>');
 	$(this).append($copy_link);
@@ -29,6 +33,7 @@ $('.copy_values').click( function(e) {
 	right.val(left.val());
 });	
 
+/*
 form_collection($('#Tasks'),
 		  {root:'#Tasks',lev:0,form:'.task_form',
 			   add_link:'(+)',add_link_appendto:'.tasks_label',new_form:'#Task_prototype', new_form_appendto:'.tasks_list',  replace_names:['Tasks'],         
@@ -61,3 +66,4 @@ function Tform_ok($form, $dialog_form) {
 	}
 	$form.siblings('.task_comment').html(comment.replace(new RegExp('\r?\n','g'), '<br />'));
 }
+*/

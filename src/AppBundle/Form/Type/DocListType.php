@@ -85,8 +85,7 @@ class DocListType extends AbstractType
 							->orderById()  ))
 
 			->add('Docs', 'collection', array(
-				'type'          => new DocType($this->Year, false, false, 
-					$this->securityContext, $this->disable_accepted_docs),
+				'type'          => new DocType($this->Year, false, false, $this->securityContext, $this->disable_accepted_docs),
 				'allow_add'     => false,
 				'allow_delete'  => false,
 				'by_reference'  => false))

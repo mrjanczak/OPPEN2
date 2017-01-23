@@ -22,13 +22,13 @@ use AppBundle\Model\AccountFiles;
 use AppBundle\Model\Bookk;
 use AppBundle\Model\BookkEntry;
 
-use AppBundle\Model\FileQuery;
-use AppBundle\Model\DocQuery;
-use AppBundle\Model\DocCatQuery;
 use AppBundle\Model\YearQuery;
 use AppBundle\Model\MonthQuery;
-use AppBundle\Model\BookkQuery;
 use AppBundle\Model\AccountQuery;
+use AppBundle\Model\DocQuery;
+use AppBundle\Model\DocCatQuery;
+use AppBundle\Model\FileQuery;
+use AppBundle\Model\BookkQuery;
 use AppBundle\Model\ParameterQuery;
 
 use AppBundle\Form\Type\DocListType;
@@ -99,8 +99,8 @@ class DocController extends Controller
 					//---------------------------------		
 					$Doc = DocQuery::create()->findPk($DocR['id']);
 					if($Doc instanceOf Doc) {
-						$hasAcceptedBookks = BookkQuery::create()->filterByDoc($Doc)->filterByIsAccepted(1)->count() > 0;
-						if($hasAcceptedBookks && $Doc->getRegNo() == NULL) {
+						$has_accepted_bookks = BookkQuery::create()->filterByDoc($Doc)->filterByIsAccepted(1)->count() > 0;
+						if($has_accepted_bookks && $Doc->getRegNo() == NULL) {
 							$Doc->setNewRegIdxNo();
 							
 							$BookkingDate = $Doc->getOperationDate(); //now();
@@ -117,11 +117,11 @@ class DocController extends Controller
 		$DocList = $this->newDocList($Year, $Month, $DocCat, $showBookks, $desc, $page, 
 									 $as_doc_select, $as_bookk_accept);		
 									 								
-		$securityContext = $this->get('security.context');
+		$security_context = $this->get('security.context');
 		$disable_accepted_docs = ParameterQuery::create()->getOneByName('disable_accepted_docs');
 		//$this->container->getParameter('disable_accepted_docs');
 		$form = $this->createForm(new DocListType($Year, null, null, null, 
-			$securityContext, $disable_accepted_docs), $DocList);
+			$security_context, $disable_accepted_docs), $DocList);
 		
         return $this->render('AppBundle:Doc:list.html.twig',array(
 			'Year' => $Year,   
@@ -137,15 +137,17 @@ class DocController extends Controller
 			
     }
 
-    //$return = 'docs', $id1 = 0, $id2 = 0
     public function editAction($doc_id, $month_id, $doc_cat_id, $return, $id1, $id2, Request $request) {
+		
 		$buttons = array('cancel','save');
 		$msg = array('errors' => array(), 'warnings' => array());
 		
-		if($doc_id == 0) {
+		if($doc_id == 0) 
+		{
 			$Month = MonthQuery::create()->findPk($month_id);
 			if(!($Month instanceOf Month)) 
-				{ throw $this->createNotFoundException('The Month (id '.$month_id.') does not exist'); }			
+				{ throw $this->createNotFoundException('The Month (id '.$month_id.') does not exist'); }
+							
 			$DocCat = DocCatQuery::create()->findPk($doc_cat_id);			
 			if(!($DocCat instanceOf DocCat)) 
 				{throw $this->createNotFoundException('The Doc (id '.$doc_id.') does not exist'); }
@@ -153,101 +155,52 @@ class DocController extends Controller
 			$Doc = new Doc();
 			$Doc->setMonth($Month);
 			$Doc->setDocCat($DocCat);					
-			$hasAcceptedBookks = false;			
+			$has_accepted_bookks = false;			
 		} else {
 			$Doc = DocQuery::create()->findPk($doc_id); 
 			if(!($Doc instanceOf Doc)) 
 				{ throw $this->createNotFoundException('The Doc (id '.$doc_id.') does not exist'); }			
 			
-			$hasAcceptedBookks = BookkQuery::create()->filterByDoc($Doc)->filterByIsAccepted(1)->count() > 0;
-			if(!$hasAcceptedBookks) { $buttons[] = 'delete';}
+			$has_accepted_bookks = BookkQuery::create()->filterByDoc($Doc)->filterByIsAccepted(1)->count() > 0;
+			if(!$has_accepted_bookks) { $buttons[] = 'delete';}
 		}
-		$Year = $Doc->getMonth()->getYear();
-				
-		// Prepare old collection to find items to delete
-		$BookksOld = array();
-		$BookkEntriesOld = array();
-		foreach ($Doc->getBookks() as $B => $Bookk) {
-			$BookksOld[$B] = $Bookk;
-			$BookkEntriesOld[$B] = array();
-			foreach ($Bookk->getBookkEntries() as $BE => $BookkEntry)  {
-				$BookkEntriesOld[$B][$BE] = $BookkEntry;
-			}			
-		}
-
-		$Account = AccountQuery::create()->filterByYear($Year)->orderByAccNo()->findOne();
-		$Bookk = new Bookk();
-		$Bform = $this->createForm(new BookkDialogType($Year), $Bookk); 
 		
-		$BookkEntry = new BookkEntry();
-		$BookkEntry->setBE($Bookk, 0, 0, $Account, array(1=>null, 2=>null, 3=>null) );
-		$BEform = $this->createForm(new BookkEntryDialogType($Year, $Account), $BookkEntry); 
+		$Year = $Doc->getMonth()->getYear();
 
-		$securityContext = $this->get('security.context');
+		$security_context = $this->get('security.context');
 		$disable_accepted_docs = ParameterQuery::create()->getOneByName('disable_accepted_docs');
-		//$this->container->getParameter('disable_accepted_docs');	
-		$form = $this->createForm(new DocType($Year, true, $hasAcceptedBookks, 
-			$securityContext, $disable_accepted_docs), $Doc);	
+		
+		$form = $this->createForm(new DocType($Year, true, $has_accepted_bookks, 
+			$security_context, $disable_accepted_docs), $Doc);	
+			
         $form->handleRequest($request); 
 
-		$redirect = false;			
-		if ($form->get('cancel')->isClicked()) { 
-			$redirect = true; }	
-		if ($form->get('delete')->isClicked()) {
-			if($hasAcceptedBookks) {
-				$msg['errors'][] = 'Nie można usunąć dokumentu posiadającego zatwierdzone dekretacje'; }
-			if(empty($msg['errors'])) {		
+		$redirect = false;		
+			
+		if ($form->get('cancel')->isClicked()) 
+		{ 
+			$redirect = true; 
+		}
+			
+		if ($form->get('delete')->isClicked()) 
+		{
+			if($has_accepted_bookks) 
+			{
+				$msg['errors'][] = 'Nie można usunąć dokumentu posiadającego zatwierdzone dekretacje'; 
+			}
+			
+			if(empty($msg['errors'])) 
+			{		
 				$Doc->delete(); 
 				$redirect = true; 
 			} 
 		}
 										
-		if ( ($form->get('save')->isClicked() )) { 
-			
-			$User = $securityContext->getToken()->getUser();
+		if ( ($form->get('save')->isClicked() )) 
+		{			
+			$User = $security_context->getToken()->getUser();
 			$Doc->setUser($User);
-					
-			//search Bookks & BookkEntries to remove
-			$BookksNew = array();
-			$BookkEntriesNew = array();
-			foreach ($Doc->getBookks() as $B => $Bookk) {
-				$BookksNew[$B] = $Bookk;
-				foreach ($Bookk->getBookkEntries() as $BE => $BookkEntry)  {		
-					$BookkEntriesNew[$B][$BE] = $BookkEntry;
-				}			
-			}
-			
-			//remove old Bookks 
-			$BookksToDel = array_udiff_assoc($BookksOld, $BookksNew,array($this,'compareById'));
-			if(empty($msg['errors'])) {
-				foreach ($BookksToDel as $BookkToDel) {
-					$Doc->removeBookk($BookkToDel);
-					$BookkToDel->delete();
-				}
-			}
-			
-			//remove old BookkEntries 
-			$BookkEntriesToDel = array();
-			if(empty($msg['errors'])) {
-				foreach ($BookksOld as $B => $BookkOld) {
-					if (array_key_exists($B, $BookkEntriesNew)) {
-						$BookkEntriesToDel[$B] = array_udiff_assoc($BookkEntriesOld[$B], $BookkEntriesNew[$B], array($this,'compareById'));
-						foreach ($BookkEntriesToDel[$B] as $BE => $BookkEntryToDel) {					
-							$BookkOld->removeBookkEntry($BookkEntryToDel);
-							$BookkEntryToDel->delete();  
-						}	
-					}
-				}					
-			}
-			
-			$FromDate = $Doc->getMonth()->getFromDate();
-			$ToDate = $Doc->getMonth()->getToDate();
-			foreach ($Doc->getBookks() as $B => $Bookk) {
-				if($Bookk->getBookkingDate() < $FromDate || $Bookk->getBookkingDate() > $ToDate ) {
-//$msg['errors'][] = 'Data księgowania dekretacji musi zawierać się w miesiącu dokumentu';
-					}
-				}
-					
+
 			if(empty($msg['errors'])) {
 				//save Doc and set new DocNo
 					
@@ -261,30 +214,16 @@ class DocController extends Controller
 							
 				$Doc->save();				
 				
-				//save new Bookks & BookkEntries				
-				foreach ($Doc->getBookks() as $B => $Bookk) {
-					$Bookk->setDoc($Doc);
-					if($Bookk->getDesc() == NULL || $Bookk->getDesc() == '') {
-						$Bookk->setDesc($Doc->getDesc()); }		
-					$Bookk->save();
-
-					if($Bookk->getIsAccepted() && $Bookk->getNo() == NULL) {
-						$Bookk->setNewNo(); 
-					}	
-						
-					foreach ($Bookk->getBookkEntries() as $BE => $BookkEntry) {
-						$BookkEntry->setBookk($Bookk)->save();
-					}									
-				}
-				
+	
 				//---------------------------------------------
 				// document registration
 				//---------------------------------------------
-				$hasAcceptedBookks = BookkQuery::create()->filterByDoc($Doc)->filterByIsAccepted(1)->count() > 0;
-				if($hasAcceptedBookks && $Doc->getRegNo() == NULL) {
+				$has_accepted_bookks = BookkQuery::create()->filterByDoc($Doc)->filterByIsAccepted(1)->count() > 0;
+				
+				if($has_accepted_bookks && $Doc->getRegNo() == NULL) {
 					$Doc->setNewRegIdxNo();
 					
-					$BookkingDate = $Doc->getOperationDate(); //now();
+					$BookkingDate = $Doc->getOperationDate(); 
 					
 					$Doc->setBookkingDate($BookkingDate)
 						->setUser($this->getUser())
@@ -314,18 +253,44 @@ class DocController extends Controller
 					'cost_id' => $id2) ));
 			}
 		}		
+		
 		return $this->render('AppBundle:Doc:edit.html.twig',array(
-			'Year' => $Year,		
+			'Year' => $Year,	
+			'doc_id' => $doc_id,	
 			'form' => $form->createView(),
-			'Bform' => $Bform->createView(),
-			'BEform' => $BEform->createView(),
 			'errors' => $msg['errors'],
-			'buttons' => $buttons));
+			'buttons' => $buttons,
+			'return' => $return,
+			'id1' => $id1,
+			'id2' => $id2,			
+		));
 						
 	}
 
+    public function updateFilesAction($doc_cat_id)
+    {
+		$DocCat = DocCatQuery::create()->findPk($doc_cat_id);
+		$FileCat = $DocCat->getFileCat();
+		
+		$response = new JsonResponse();
+		$files = array();	
+			
+		if($FileCat instanceOf FileCat) { 	
+
+			foreach ($FileCat->getFiles() as $File) {
+				$files[] = '<option value="'.$File->getId().'">'.$File.'</option>'; }
+					
+			$response->setData(array( $files, $FileCat->getName() ));
+		} else {
+			$response->setData(array( $files, 'Brak kartoteki' ));			
+		}
+		
+		return $response;
+	}
+
 	static public function newDocList($Object, $Month, $DocCat, $is_accepted, $desc, $page,
-									  $as_doc_select, $as_bookk_accept ) {
+									  $as_doc_select, $as_bookk_accept ) 
+	{
 		$Project = null;
 		$Year = null;
 		
@@ -386,7 +351,8 @@ class DocController extends Controller
 						$Docs, $DocsPager);
 	}
 
-	static public function setDate($form, $field, $msg) {
+	static public function setDate($form, $field, $msg) 
+	{
 			
 		$Project = $form->getData();
 							   

@@ -1,0 +1,16 @@
+{% set task_id = Task.id is not empty ? Task.id : 0 %}
+
+<div id='Task{{Task.id}}' class='task' 	data-list='.tasks_list' >
+	<div class='ajax_init_form i' method="POST" title="{{ Task.desc }}"
+		 action="{{ path('oppen_task', { 'task_id' : task_id, 'project_id' : Task.Project.id }) }}" >	 
+										
+			{{ Task.sendReminder ? '[X]' : '[ ]' }} {{ Task.fromDate|date("d/m/Y")  }} - {{ Task.toDate|date("d/m/Y")  }} | {{ Task.desc }} 
+	</div>													
+	<div class="i">
+		<a href={{ path('oppen_task_move',    {'task_id' : task_id, 'dir' : 'up'   }) }}> (&#8593;) </a> 
+		<a href={{ path('oppen_task_move',    {'task_id' : task_id, 'dir' : 'down' }) }}> (&#8595;) </a> 					
+
+		<a href="{{ path('oppen_task', { 'task_id' : task_id, 'project_id' : Task.Project.id}) }}" class="small" >	[{{Task.id}}]</a>
+	</div>
+	<div class='task_comment'>{{ Task.comment|nl2br }} 	</div>
+</div>

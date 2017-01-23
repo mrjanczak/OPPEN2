@@ -9,83 +9,125 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 use AppBundle\Model\Year;
-use AppBundle\Model\Month;
 use AppBundle\Model\Account;
 use AppBundle\Model\AccountFiles;
+use AppBundle\Model\Doc;
 use AppBundle\Model\Bookk;
 use AppBundle\Model\BookkEntry;
-use AppBundle\Model\BookksList;
-use AppBundle\Model\File;
-use AppBundle\Model\FileCat;
-use AppBundle\Model\Doc;
-use AppBundle\Model\DocCat;
-use AppBundle\Model\DocsList;
-use AppBundle\Model\Project;
-use AppBundle\Model\Income;
-use AppBundle\Model\IncomeDoc;
-use AppBundle\Model\Cost;
-use AppBundle\Model\CostIncome;
-use AppBundle\Model\CostDoc;
-use AppBundle\Model\CostDocIncome;
 
 use AppBundle\Model\YearQuery;
-use AppBundle\Model\MonthQuery;
-use AppBundle\Model\BookkQuery;
-use AppBundle\Model\BookkEntryQuery;
 use AppBundle\Model\AccountQuery;
 use AppBundle\Model\FileQuery;
-use AppBundle\Model\FileCatQuery;
-use AppBundle\Model\DocQuery;
-use AppBundle\Model\DocCatQuery;
-use AppBundle\Model\ProjectQuery;
-use AppBundle\Model\IncomeQuery;
-use AppBundle\Model\IncomeDocQuery;
-use AppBundle\Model\CostQuery;
-use AppBundle\Model\CostIncomeQuery;
-use AppBundle\Model\CostDocQuery;
-use AppBundle\Model\CostDocIncomeQuery;
+use AppBundle\Model\BookkQuery;
+use AppBundle\Model\BookkEntryQuery;
+use AppBundle\Model\ParameterQuery;
 
 use AppBundle\Form\Type\AccountType;
 use AppBundle\Form\Type\AccountFilesType;
 use AppBundle\Form\Type\BookkType;
-use AppBundle\Form\Type\BookksListType;
 use AppBundle\Form\Type\BookkEntryType;
-use AppBundle\Form\Type\ProjectType;
-use AppBundle\Form\Type\IncomeType;
-use AppBundle\Form\Type\CostType;
 
 class BookkEntryController extends Controller
 {		
-    public function editAction($bookk_id, $bookk_entry_id, Request $request)
+    public function editAction($bookk_entry_id, $bookk_id, $side, $return, $id1, $id2, Request $request)
     {
-		$Bookk = BookkQuery::create()->findPk($bookk_id);
-		$Month = $Bookk->getMonth();
-		$Year  = $Month->getYear();
 		$buttons = array('cancel','save');
+		$msg = array('errors' => array(), 'warnings' => array());
+				
+		$Bookk = BookkQuery::create()->findPk($bookk_id);
+		if(!($Bookk instanceOf Bookk)) {
+			throw new \exception('No valid Bookk id '. $bookk_id);}	
+
+		$Doc = $Bookk->getDoc();
+		if(!($Doc instanceOf Doc)) {
+			throw new \exception('No valid Doc for Bookk id '. $bookk_id);}		
+				
+		$Month = $Doc->getMonth();
+		$Year  = $Month->getYear();
 		
 		if($bookk_entry_id == 0) {
 			$BookkEntry = new BookkEntry();
 			$BookkEntry->setBookk($Bookk);
+			$BookkEntry->setSide($side);
 		} else {
 			$BookkEntry = BookkEntryQuery::create()->findPk($bookk_entry_id);
+			if(!($BookkEntry instanceOf BookkEntry)) {
+				throw new \exception('No valid BookkEntry id '. $bookk_entry_id);}	
 			$buttons[] = 'delete';
 		}
 				
- 		$form = $this->createForm(new BookkEntryType($Year), new BookkEntry()); 			
+		$security_context = $this->get('security.context');
+		$disable_accepted_docs = ParameterQuery::create()->getOneByName('disable_accepted_docs');
+		
+ 		$form = $this->createForm(new BookkEntryType($Year,$security_context,$disable_accepted_docs), $BookkEntry); 			
         $form->handleRequest($request);  
         		
-		if ($form->isSubmitted()) {
-			if ($form->get('cancel')->isClicked()) {}
-			if ($form->get('delete')->isClicked()) { $BookkEntry->delete(); }						
-			if (($form->get('save')->isClicked()) && ($form->isValid())) { $BookkEntry->save();}	
+ 		$params = array(
+			'BookkEntry'=> $BookkEntry,
+			'bookk_entry_id' => $bookk_entry_id,
+			'form' => $form->createView(),
+			'errors' => $msg['errors'],
+			'buttons' => $buttons,			
+			'return' => $return,
+			'id1' => $id1,
+			'id2' => $id2, );       		
+        		
+		$redirect = true;
+		$html = '';
+		
+		if ( (!$form->isSubmitted()) || (($form->get('save')->isClicked()) && (!$form->isValid())) ) { 	
 			
-			//return new Response('clicked');
+			$params['twig'] = 'AppBundle:BookkEntry:edit.html.twig';
+			$params['js'] =   'AppBundle:BookkEntry:edit.js.twig';
+			$js   = 'REFRESH_FORM'; 	
+			
+			$redirect = false;
+		} 
+						
+		if ($form->isSubmitted()) {
+			
+			$params['twig'] = 'AppBundle:BookkEntry:view.html.twig';	
+			
+			if (($form->get('save')->isClicked()) && ($form->isValid())) 
+			{ 	
+				$BookkEntry->prepareToSave()->save();
+				$js = $bookk_entry_id == 0 ? 'APPEND' : 'REPLACE'; 				
+			}						
+			
+			if ($form->get('delete')->isClicked()) 
+			{ 	
+				$BookkEntry->delete(); 
+				$js = 'REMOVE'; 
+			}
+			
+			if ($form->get('cancel')->isClicked()) 
+			{ 	
+				$js = 'CANCEL';  
+			}			
+		}			
+		
+		if ($request->isXmlHttpRequest()) 
+		{	
+			$html = $this->renderView($params['twig'], $params); 
+			return new JsonResponse(array('status'=>'success', 'html'=>$html, 'js'=>$js, ), 200); 	
+		}
+		
+		if (!$redirect) 
+		{			
+			return $this->render('AppBundle:Template:content.html.twig', $params); 
+		} 
+		else 
+		{
+			return $this->redirect($this->generateUrl('oppen_doc',array(
+				'doc_id' => $Doc->getId(),
+				'month_id' => $Month->getId(),
+				'doc_cat_id'=> $Doc->getDocCat()->getId(),					
+				'return' => $return,
+				'id1' => $id1,
+				'id2' => $id2,
+			) ));						
 		}	
-									
-		return $this->render('AppBundle:BookkEntry:edit.html.twig',array(
-			'Bookk' => $Bookk,	
-			'buttons' => $buttons,		
-			'form' => $form->createView() ));
+
 	}  		 
 	
     //not used

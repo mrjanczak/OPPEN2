@@ -23,47 +23,62 @@ use AppBundle\Model\FileCatQuery;
 
 class BookkType extends AbstractType
 {
-    private $securityContext;
-    private $disable_accepted_docs;
-    protected $disabled;
+	protected $Year;
+	protected $show_details;
+	protected $security_context;
+	protected $disable_accepted_docs;
+	
+	protected $disabled;
 
-	public function __construct (Year $Year, $full, 
-		SecurityContext $securityContext, $disable_accepted_docs)
+	public function __construct (Year $Year, 
+								 $show_details, 
+								 SecurityContext $security_context, 
+								 $disable_accepted_docs)
 	{
 		$this->Year = $Year;
-		$this->full = $full;
-		$this->securityContext = $securityContext;
-		$this->disable_accepted_docs = $disable_accepted_docs;
+		$this->show_details = (bool) $show_details;
+		$this->security_context = $security_context;
+		$this->disable_accepted_docs = (bool) $disable_accepted_docs;
 	}	
     public function buildForm(FormBuilderInterface $builder, array $options)
     {		
-		$isAccepted = false;
+		$builder->add('id', 'text', array('required' => false));
+				//->add('select', 'checkbox', array('required'  => false, 'mapped' => false))
+				
+		if ($this->show_details) {
+			$builder	
+				->add('cancel', 'submit', array('label' => 'Anuluj'))        
+				->add('save', 'submit', array('label' => 'Zapisz'))
+				->add('delete', 'submit', array('label' => 'Usuń',
+					  'attr' => array('class' => 'confirm', 'data-confirm' => 'Czy chcesz usunąć dokument?'))) ;
+		}
+		
 		$builder->addEventListener(FormEvents::POST_SET_DATA, function(FormEvent $event) {
 			$form = $event->getForm();
 			$Bookk = $event->getData();
 			
 			if($Bookk instanceOf Bookk) { 
 				$this->disabled = ($Bookk->getIsAccepted() && $this->disable_accepted_docs) 
-					|| !$this->securityContext->isGranted('ROLE_ADMIN'); }
+					|| !$this->security_context->isGranted('ROLE_ADMIN'); }
 			else { 
 				$this->disabled = false; }			
 				
 			$form 
-				->add('select', 'checkbox', array('required'  => false, 'mapped' => false))
-				->add('id', 'text', array('required' => false))
-				->add('is_accepted', 'checkbox', array('label' => 'Zatw. ','required'  => false, 'disabled' => $this->disabled) )				
-				->add('desc', 'text', array('label' => 'Opis','required' => false, 'disabled' => $this->disabled))
-				->add('bookking_date', 'date', array('label' => 'Data księgowania', 'required' => false, 'widget' => 'single_text', 'disabled' => $this->disabled ))				
-				->add('project_id', 'number', array('required' => false)); 
+				->add('is_accepted', 'checkbox', array('label' => 'Zatw. ','required'  => false, 'disabled' => $this->disabled) );				
 			
-			if($this->full) {
-				$form	                
-					->add('BookkEntries', 'collection', array(
-						'type'          => new BookkEntryType($this->Year, $this->disable_accepted_docs),
-						'allow_add'     => true,
-						'allow_delete'  => true, 
-						));
-			}	
+			if ($this->show_details) {
+				$form
+					->add('desc', 'text', array('label' => 'Opis','required' => false, 'disabled' => $this->disabled))
+					->add('bookking_date', 'date', array('label' => 'Data księgowania', 'required' => false, 'widget' => 'single_text', 'disabled' => $this->disabled ))				 
+					->add('Project', 'model', array(
+						'label' => 'Projekt',
+						'disabled' => $this->disabled,
+						'required' => false,
+						'class' => 'AppBundle\Model\Project',
+						'empty_value' => 'Brak projektu',
+						'query' => ProjectQuery::create()->filterByYear($this->Year)->orderByName() ));				
+				
+			}			
 		});					
     }
 

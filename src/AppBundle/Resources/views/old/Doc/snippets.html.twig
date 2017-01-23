@@ -1,0 +1,47 @@
+
+<div id='Bookk{{Bookk.id}}' class='bookk' >
+	<div class='ajax_init_form' method="POST"
+		 action="{{ path('oppen_bookk', { 'bookk_id' : Bookk.id, 'doc_id' : Doc.id,  
+				'return' : return, 'id1' : id1, 'id2' : id2}) }}" >
+				
+			{{ Bookk.isAccepted ? 'X' : ' ' }} | {{ Bookk.bookkingDate|date("Y/m/d") }} - {{ Bookk.desc }} 
+			({{ Bookk.Project is not empty ? Bookk.Project.name : ''}}) [{{ Bookk.id }}] 
+
+		<a class="ajax_init_form" href={{ path('oppen_bookk_entry', { 'bookk_entry_id' : 0, 'bookk_id' : Bookk.id,  'side' : 1, 'return' : return, 'id1' : id1, 'id2' : id2}) }}>
+			(Wn+)</a>
+			
+		<a class="ajax_init_form" href={{ path('oppen_bookk_entry', { 'bookk_entry_id' : 0, 'bookk_id' : Bookk.id,  'side' : 2, 'return' : return, 'id1' : id1, 'id2' : id2}) }}>
+			{Ma+}</a>												
+	</div>
+	
+	<div class='bookk_sides'>	
+		{% for side in 1..2 %}
+		<div id='Bookk{{Bookk.id}}_side{{side}}' class='i bookk_side' >
+			
+			{% for BookkEntry in Bookk.BookkEntries if BookkEntry.side == side %}
+			<div id='BookkEntry{{BookkEntry.id}}' class='bookk_entry' >
+				<div class='ajax_init_form' method="POST"
+					 action="{{ path('oppen_bookk_entry', { 'bookk_entry_id' : BookkEntry.id, 'bookk_id' : Bookk.id, 'side' : side, 
+						'return' : return, 'id1' : id1, 'id2' : id2}) }}" >
+					<div class="value">{{ BookkEntry.value|number_format(2,',',' ') }} 	</div> 
+					<div class="accNo">{{ BookkEntry.accNo }} </div> 						
+				</div>
+			</div>
+			{% endfor %}
+		
+		</div>	
+		{% endfor %}
+	</div>
+</div>	
+
+
+
+
+<div id='BookkEntry{{BookkEntry.id}}' class='bookk_entry' >
+	<div class='ajax_init_form' method="POST"
+		 action="{{ path('oppen_bookk_entry', { 'bookk_entry_id' : BookkEntry.id, 'bookk_id' : Bookk.id, 'side' : side, 
+			'return' : return, 'id1' : id1, 'id2' : id2}) }}" >
+		<div class="value">{{ BookkEntry.value|number_format(2,',',' ') }} 	</div> 
+		<div class="accNo">{{ BookkEntry.accNo }} </div> 						
+	</div>
+</div>

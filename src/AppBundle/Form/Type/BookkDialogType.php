@@ -22,8 +22,10 @@ class BookkDialogType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {				
 		$builder 				
-			->add('desc', 'text', array('label' => 'Opis','required' => false))	 
-			->add('bookking_date', 'date', array('label' => 'Data księgowania', 'required' => false, 'widget' => 'single_text'))				 
+			->add('bookking_date', 'date', array('label' => 'Data księgowania', 'required' => false, 'widget' => 'single_text'))	
+						 
+			->add('desc', 'text', array('label' => 'Opis','required' => false))	
+			 
 			->add('Project', 'model', array(
 				'required' => false,
 				'label' => 'Projekt',

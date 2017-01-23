@@ -12,6 +12,7 @@ use Symfony\Component\Security\Core\SecurityContext;
 
 use AppBundle\Model\Year;
 use AppBundle\Model\DocCat;
+use AppBundle\Model\File;
 use AppBundle\Model\FileCat;
 
 use AppBundle\Model\MonthQuery;
@@ -21,40 +22,39 @@ use AppBundle\Model\DocCatQuery;
 class DocType extends AbstractType
 {
 	protected $Year;
-	protected $full;
+	protected $show_details;
 	protected $disabled;
 	protected $securityContext;
 	protected $disable_accepted_docs;
 	
-	public function __construct (Year $Year, $full, $disabled, 
-		SecurityContext $securityContext, $disable_accepted_docs)
+	public function __construct (Year $Year, 
+								 $show_details, 
+								 $disabled, 
+								 SecurityContext $security_context, 
+								 $disable_accepted_docs)
 	{
 		$this->Year = $Year;
-		$this->full = (bool) $full;
+		$this->show_details = (bool) $show_details;
 		$this->disabled = (bool) ($disabled && $disable_accepted_docs);
-		$this->securityContext = $securityContext;
-		$this->disable_accepted_docs = $disable_accepted_docs;
+		$this->security_context = $security_context;
+		$this->disable_accepted_docs = (bool) $disable_accepted_docs;
 	}	
+	
     public function buildForm(FormBuilderInterface $builder, array $options)
     {		
         $builder
 			->add('select', 'checkbox', array('required'  => false, 'mapped' => false))        
-			->add('id', 'text', array('required' => false))
-				
-			->add('Bookks', 'collection', array('label' => 'Dekretacje',
-				'type'          => new BookkType($this->Year, $this->full, 
-					$this->securityContext, $this->disable_accepted_docs),
-				'allow_add'     => true,
-				'allow_delete'  => true, 
-				));   
-			
-		if ($this->full) {			
+			->add('id', 'text', array('required' => false));
+
+		if ($this->show_details) 
+		{		
 			$builder	
 				->add('cancel', 'submit', array('label' => 'Anuluj'))        
 				->add('save', 'submit', array('label' => 'Zapisz'))
 				->add('save&new', 'submit', array('label' => 'Zapisz i Nowy')) 
 				->add('delete', 'submit', array('label' => 'Usuń',
-					  'attr' => array('class' => 'confirm', 'data-confirm' => 'Czy chcesz usunąć dokument?')))          
+					  'attr' => array('class' => 'confirm', 'data-confirm' => 'Czy chcesz usunąć dokument?')
+				))          
 		 
 				->add('document_date', 'date', array('label' => 'Data dokumentu', 'required' => false, 'widget' => 'single_text', 'disabled' => $this->disabled))
 				->add('operation_date', 'date', array('label' => 'Data operacji', 'required' => false, 'widget' => 'single_text', 'disabled' => $this->disabled))
@@ -65,7 +65,8 @@ class DocType extends AbstractType
 
 				->add('payment_method', 'choice', array(
 					'label' => 'Metoda płatności',
-					'choices' => array( '1' => 'przelew', '2' => 'gotówka',) ))
+					'choices' => array( '1' => 'przelew', '2' => 'gotówka',) 
+				))
 														
 				->add('Month', 'model', array(
 					'label' => 'Miesiąc',
@@ -73,7 +74,8 @@ class DocType extends AbstractType
 					'class' => 'AppBundle\Model\Month',
 					'query' => MonthQuery::create()
 								->filterByYear($this->Year)
-								->orderByFromDate() ))  
+								->orderByFromDate() 
+				))  
 											
 				->add('DocCat', 'model', array(
 					'label' => 'Kategoria',
@@ -81,38 +83,84 @@ class DocType extends AbstractType
 					'class' => 'AppBundle\Model\DocCat',
 					'query' => DocCatQuery::create()
 								->filterByYear($this->Year)
-								->orderById() ))	
+								->orderById() 
+				))	
 								
 				->add('doc_idx', 'text', array('label' => 'Nr ewidencyjny', 'required' => false, 'disabled' => true))  
 				->add('doc_no', 'text', array('label' => 'Nr dokumentu','required' => false, 'disabled' => $this->disabled))  	
 								
 				->add('desc', 'text', array('label' => 'Opis','required' => false, 'disabled' => $this->disabled))
-				->add('comment', 'textarea', array('label' => 'Komentarz', 'required' => false)) ; 
+				->add('comment', 'textarea', array('label' => 'Komentarz', 'required' => false)) 
+			; 
+		}
+		else
+		{
+			$builder
+				->add('Bookks', 'collection', array('label' => 'Dekretacje',
+					'type'          => new BookkType(
+							$this->Year, 
+							false,	
+							$this->security_context, 
+							$this->disable_accepted_docs),
+				))
+			;   
+		}							
 								
-			$builder->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) {
-				$form = $event->getForm();
-				$Doc = $event->getData();	
-				$DocCat = $Doc->getDocCat();
+        $formModifier = function (FormInterface $form, DocCat $DocCat = null) {
+			
+            if ($DocCat instanceOf DocCat)
+            {	
 				$FileCat = $DocCat->getFileCat();
 				
-				if($FileCat instanceOf FileCat) {  
+				if($FileCat instanceOf FileCat)
+				{
+					$Files = $FileCat->getFiles();
 					$label = $FileCat->getName();
-					$q = FileQuery::create()->filterByFileCat($FileCat)->orderByAccNo();					
+					$query = FileQuery::create()
+								->filterByFileCat($FileCat)
+								->orderByName(); 
+				} else {
+					$Files = array();
+					$label = 'Brak kartoteki';
+					$query = FileQuery::create()
+								->filterByFileCat(new FileCat)
+								->orderByName(); 					
 				}
-				else {
-					$label = 'Kartoteka';
-					$q = FileQuery::create()->filterById(0);
-				}					
-				$form->add('File', 'model', array(
-					'label' => $label,
-					'disabled' => $this->disabled,
-					'required' => false,
-					'class' => 'AppBundle\Model\File',
-					'empty_value' => 'Brak kartoteki',
-					'query' => $q));				
-			});
-		}
-    }
+			}
+
+			$form->add('File', 'model', array(
+				'label' => $label,
+				'disabled' => $this->disabled,
+				'required' => false,
+				'class' => 'AppBundle\Model\File',
+				'placeholder' => 'Brak kartoteki',
+				//'choices' => $Files,
+				'query' => 	$query,
+			));
+
+        };
+
+        $builder->addEventListener(
+            FormEvents::PRE_SET_DATA,
+            function (FormEvent $event) use ($formModifier) {
+
+                $data = $event->getData();
+                $formModifier($event->getForm(), $data->getDocCat());
+            }
+        );
+
+		if ($this->show_details) 
+		{
+			$builder->get('DocCat')->addEventListener(
+				FormEvents::POST_SUBMIT,
+				function (FormEvent $event) use ($formModifier) {
+
+					$DocCat = $event->getForm()->getData();
+					$formModifier($event->getForm()->getParent(), $DocCat);
+				}
+			);
+        }
+    }								
 
 	public function setDefaultOptions(OptionsResolverInterface $resolver)
 	{

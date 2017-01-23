@@ -1,0 +1,37 @@
+{{ form_start(form, {
+	'method': 'post', 
+	'action': path('oppen_task', { 'task_id' : task_id, 'project_id' : Project.id}),
+	'attr' : {
+		'id'    : 'dialog-ajax-form',
+		'data-title' : 'Zadanie ('~Project.name|slice(0,30)~')',
+	}
+} ) }}
+
+<div class="content-header">
+	<div class='title'> Zadanie ( {{ Project.name|slice(0,30) }} )</div> 
+
+	<div class='toolbar'>
+	{% for button in buttons %}
+		<span>
+		{{ form_widget(form[button], {'attr':{
+			'class'    : 'ajax_submit_button',		
+		}} ) }}
+		</span>	
+	{% endfor %}			
+	</div>		
+</div>
+
+	{{ form_row(form.desc) }} 
+	{{ form_row(form.from_date,{'attr':{'class':'date'}}) }}
+	{{ form_row(form.to_date,{'attr':{'class':'date'}}) }}
+	{{ form_row(form.comment,{'attr':{'class':'text'}} ) }} 
+	{{ form_row(form.send_reminder) }}
+	{{ form_row(form.User) }}
+			
+	{{ form_errors(form) }}	
+
+<div class="h">
+	{{ form_rest(form) }}
+</div>
+
+{{ form_end(form) }}	

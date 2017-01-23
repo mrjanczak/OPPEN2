@@ -1,0 +1,37 @@
+{% set bookk_id = Bookk.id is not empty ?  Bookk.id : 0 %}
+
+<div id='Bookk{{Bookk.id}}' class='bookk' 	data-list='.bookks_list' >
+	<div class='ajax_init_form i' method="POST" title="{{ Bookk.desc }}"
+
+		 action="{{ path('oppen_bookk', { 'bookk_id' : bookk_id, 'doc_id' : Bookk.Doc.id, 'return' : return, 'id1' : id1, 'id2' : id2}) }}" >
+		 
+			{{ Bookk.isAccepted ? '[X]' : '[ ]' }} | {{ Bookk.bookkingDate|date("d/m/Y") }} - {{ Bookk.desc|slice(0, 50) }} {{ Bookk.desc|length > 50 ? '...':'' }}
+			({{ Bookk.Project is not empty ? Bookk.Project.name : ''}}) 											
+	</div>
+	
+	<div class="i">
+		<a class="ajax_init_form" action="{{ path('oppen_bookk_entry', { 'bookk_entry_id' : 0, 'bookk_id' : bookk_id,  'side' : 1, 'return' : return, 'id1' : id1, 'id2' : id2}) }}">
+			(Wn+)</a>
+			
+		<a class="ajax_init_form" action="{{ path('oppen_bookk_entry', { 'bookk_entry_id' : 0, 'bookk_id' : bookk_id,  'side' : 2, 'return' : return, 'id1' : id1, 'id2' : id2}) }}">
+			(Ma+)</a>
+			
+		<a class="small" action="{{ path('oppen_bookk', { 'bookk_id' : bookk_id, 'doc_id' : Bookk.Doc.id, 'return' : return, 'id1' : id1, 'id2' : id2}) }}">
+			[{{Bookk.id}}]</a>	
+	</div>	
+		
+	<div class='bookk_sides'>	
+		{% for side in 1..2 %}
+		<div id='Bookk{{Bookk.id}}_side{{side}}' class='i bookk_side' >
+			
+			{% for BookkEntry in Bookk.BookkEntries if BookkEntry.side == side %}
+			
+				{{ include('AppBundle:BookkEntry:view.html.twig') }}
+
+			{% endfor %}
+		
+		</div>	
+		{% endfor %}
+	</div>
+	
+</div>

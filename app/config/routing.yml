@@ -48,7 +48,7 @@ oppen_docs_month_update:
     defaults: { _controller: AppBundle:Month:updateDocList }
 
 oppen_doc_update_files:
-    path:  /doc/update/month/{month_id}/doc_cat/{doc_cat_id}
+    path:  /doc/update/files/doc_cat/{doc_cat_id}
     defaults: { _controller: AppBundle:Doc:updateFiles }  
 
 oppen_files_update_filter:
@@ -65,7 +65,8 @@ oppen_projects:
     path:  /project/list/year/{year_id}
     defaults: { _controller: AppBundle:Project:list}
     requirements:
-        year_id: \d+      
+        year_id: \d+ 
+             
 oppen_project:
     path:  /project/{project_id}/edit/tab/{tab_id}/year/{year_id}
     defaults: { _controller: AppBundle:Project:edit, tab_id = 1 }
@@ -76,12 +77,19 @@ oppen_project:
 
 ############### Task Controller ################
 
+oppen_task: 
+    path:  /task/{task_id}/project/{project_id}
+    defaults: { _controller: AppBundle:Task:edit}
+    requirements:
+        task_id: \d+  
+        project_id: \d+
+        
 oppen_task_move:
     path:  /task/{task_id}/move/{dir}
     defaults: { _controller: AppBundle:Task:move }
     requirements:  
         task_id: \d+
-                   
+                           
 oppen_task_send_reminder:
     path: /tasks/send_reminder
     defaults: {_controller: AppBundle:Task:sendReminder}
@@ -93,12 +101,14 @@ oppen_income:
     defaults: { _controller: AppBundle:Income:edit }
     requirements:  
         project_id: \d+
-        income_id: \d+       
+        income_id: \d+ 
+              
 oppen_income_move:
     path:  /income/{income_id}/move/{dir}
     defaults: { _controller: AppBundle:Income:move }
     requirements:  
         income_id: \d+
+        
 oppen_income_add_doc:
     path:  /income/{income_id}/add_doc/month/{month_id}/doc_cat/{doc_cat_id}
     defaults: { _controller: AppBundle:Income:addDoc }
@@ -106,6 +116,7 @@ oppen_income_add_doc:
         income_id: \d+
         month_id: \d+    
         doc_cat_id: \d+
+        
 oppen_income_remove_doc:
     path:  /income/{income_id}/remove_doc/income_doc/{income_doc_id}
     defaults: { _controller: AppBundle:Income:removeDoc }
@@ -120,11 +131,13 @@ oppen_cost:
     requirements:
         project_id: \d+    
         cost_id: \d+
+        
 oppen_cost_move:
     path:  /cost/{cost_id}/move/{dir}
     defaults: { _controller: AppBundle:Cost:move }
     requirements:   
         cost_id: \d+  
+        
 oppen_cost_add_doc:
     path:  /cost/{cost_id}/add_doc/month/{month_id}/doc_cat/{doc_cat_id}
     defaults: { _controller: AppBundle:Cost:addDoc }
@@ -132,6 +145,7 @@ oppen_cost_add_doc:
         cost_id: \d+
         month_id: \d+    
         doc_cat_id: \d+
+        
 oppen_cost_remove_doc:
     path:  /cost/{cost_id}/remove_doc/cost_doc/{cost_doc_id}
     defaults: { _controller: AppBundle:Cost:removeDoc }
@@ -146,11 +160,13 @@ oppen_contract:
     requirements:  
         cost_id: \d+
         contract_id: \d+ 
+        
 oppen_contract_copy:
     path:  /contract/{contract_id}/copy/cost/{cost_id}
     defaults: { _controller: AppBundle:Contract:edit }
     requirements:  
         contract_id: \d+
+        
 oppen_contract_delete:
     path:  /contract/{contract_id}/delete
     defaults: { _controller: AppBundle:Contract:delete }
@@ -165,7 +181,8 @@ oppen_docs:
     requirements:  
         year_id: \d+
         month_id: \d+      
-        doc_cat_id: \d+         
+        doc_cat_id: \d+   
+              
 oppen_doc:
     path:  /doc/{doc_id}/edit/month/{month_id}/doc_cat/{doc_cat_id}/return/{return}/{id1}/{id2}
     defaults: { _controller: AppBundle:Doc:edit, return: docs, id1: 0, id2: 0 }
@@ -173,6 +190,7 @@ oppen_doc:
         doc_id: \d+    
         month_id: \d+         
         doc_cat_id: \d+ 
+        
 oppen_doc_cat_edit:
     path:  /doc_cat/{doc_cat_id}/edit/year/{year_id}
     defaults: { _controller: AppBundle:DocCat:edit }
@@ -184,7 +202,8 @@ oppen_docs_repair:
     path:  /docs/repair/year/{year_id}
     defaults: { _controller: AppBundle:Doc:repair }
     requirements: 
-        year_id: \d+                   
+        year_id: \d+     
+                      
 ############### File & FileCat Controller ##############       
         
 oppen_files:
@@ -192,12 +211,14 @@ oppen_files:
     defaults: { _controller: AppBundle:File:list, return: files, id1: 0, id2: 0, id3: 0  }
     requirements:
         file_cat_id: \d+ 
+        
 oppen_file:
     path:  /file/{file_id}/edit/file_cat/{file_cat_id}
     defaults: { _controller: AppBundle:File:edit }
     requirements:
         file_cat_id: \d+
         file_id: \d+ 	
+        
 oppen_file_cat_edit:
     path:  /file_cat/{file_cat_id}/edit/year/{year_id}
     defaults: { _controller: AppBundle:FileCat:edit }
@@ -215,35 +236,42 @@ oppen_bookks:
         month_id: \d+ 
         acc_no: '[0-9\-\*]+'
         is_accepted: \d+
+        
 oppen_bookk:
-    path:  /bookk/{bookk_id}/edit/month/{month_id}/return/{return}
+    path:  /bookk/{bookk_id}/edit/doc/{doc_id}/return/{return}/{id1}/{id2}
     defaults: { _controller: AppBundle:Bookk:edit, return: bookks }
     requirements:
         bookk_id: \d+    
-        month_id: \d+  
-        return: project|bookks
+        doc_id: \d+  
+        
 oppen_bookk_entry:
-    path:  /bookk_entry/{bookk_entry_id}/edit/bookk/{bookk_id}
+    path:  /bookk_entry/{bookk_entry_id}/edit/bookk/{bookk_id}/side/{side}/return/{return}/{id1}/{id2}
     defaults: { _controller: AppBundle:BookkEntry:edit }
     requirements: 
+        bookk_entry_id: \d+
         bookk_id: \d+
+        side: '[1-2]'
         
-oppen_bookk_entry_repair:
-    path:  /bookk_entry/repair/year/{year_id}
-    defaults: { _controller: AppBundle:BookkEntry:repair }
-    requirements: 
-        year_id: \d+        
 # auxiliary form only with Account and File Levels to build AccNo in BookkEntry form         
 oppen_account_files:
     path:  /account_files/year/{year_id}/account_id/{account_id}/file_lev1_id/{file_lev1_id}/file_lev2_id/{file_lev2_id}/file_lev3_id/{file_lev3_id}
     defaults: { _controller: AppBundle:BookkEntry:accountFiles }
+    
 # maintanace functions
+oppen_bookk_entry_repair:
+    path:  /bookk_entry/repair/year/{year_id}
+    defaults: { _controller: AppBundle:BookkEntry:repair }
+    requirements: 
+        year_id: \d+ 
+        
 oppen_bookking_date:
     path:  /bookking_date/year/{year_id}
     defaults: { _controller: AppBundle:Bookk:updateBookkingDate }
+    
 oppen_clear_bookks:
     path:  /clear_bookks/                    
-    defaults: { _controller: AppBundle:Bookk:clearBookks }                
+    defaults: { _controller: AppBundle:Bookk:clearBookks }   
+                 
 ############### Report Controller##############           
               
 oppen_reports:
@@ -251,12 +279,14 @@ oppen_reports:
     defaults: { _controller: AppBundle:Report:list }
     requirements:  
         year_id: \d+ 
+        
 oppen_report:
     path:  /report/{report_id}/method/{method_id}
     defaults: { _controller: AppBundle:Report:report }
     requirements:  
         report_id: \d+ 
         method_id: \d+
+        
 # Settings
 oppen_report_edit:
     path:  /report/edit/{report_id}/year/{year_id}
@@ -264,12 +294,14 @@ oppen_report_edit:
     requirements:  
         report_id: \d+  
         year_id: \d+
+        
 oppen_report_entry_edit:
     path:  /report_entry/edit/{report_entry_id}/parent/{parent_id}
     defaults: { _controller: AppBundle:ReportEntry:edit }
     requirements:  
         report_entry_id: \d+ 
-        parent_id: \d+        
+        parent_id: \d+ 
+               
 oppen_report_entry_move:
     path:  /report_entry/{report_entry_id}/move/{dir}
     defaults: { _controller: AppBundle:ReportEntry:move }
@@ -304,7 +336,8 @@ oppen_account_edit:
     defaults: { _controller: AppBundle:Account:edit }
     requirements:  
         account_id: \d+ 
-        parent_id: \d+        
+        parent_id: \d+ 
+               
 oppen_account_move:
     path:  /account/{account_id}/move/{dir}
     defaults: { _controller: AppBundle:Account:move }
@@ -320,8 +353,6 @@ oppen_template_edit:
         template_id: \d+ 
         year_id: \d+        
               
-
-
 oneup_uploader:
     resource: .
     type: uploader

@@ -1,19 +1,41 @@
-{% block content %}
+{{ form_start(form, {
+	'method': 'post',
+	'action':  path('oppen_bookk_entry', { 'bookk_entry_id' : bookk_entry_id, 'bookk_id' : BookkEntry.Bookk.id, 'side' : BookkEntry.side, 
+										   'return' : return, 'id1' : id1, 'id2' : id2 }),
+	'attr' : {
+		'id'    : 'dialog-ajax-form',
+		'data-title'   : 'Dekretacja dokumentu '~BookkEntry.Bookk.Doc.docNo,
+		'data-side'    : BookkEntry.side 
+	}	
+}) }}
 
-<h1 class='title'> Konto </h1>
+<div class="content-header">
+	<div class='title'> {{ not bookk_entry_id ? 'Nowa' }} Pozycja dekretacji {{ bookk_entry_id ? '['~bookk_entry_id~']' : ''}} </div> 
 
-{{ form_start(form, {'method': 'post'}) }}
+	<div class='toolbar'>
+	{% for button in buttons %}
+		<span>
+		{{ form_widget(form[button], {'attr':{
+			'class':'ajax_submit_button',	
+		}} ) }} 
+		</span>	
+	{% endfor %}			
+	</div>		
+</div>
 
-	{{ form_row(form.Account) }} 
+	{{ form_row(form.side) }} 
+	
+	{{ form_row(form.value) }} 
+	{{ form_row(form.Account, {'attr':{
+		'class':'ajax_update_file_levs', 
+		'action' :  path("oppen_account_update", {"account_id" : "__account_id__"}) 
+	}} ) }} 		
 	{{ form_row(form.FileLev1) }}
 	{{ form_row(form.FileLev2) }}
 	{{ form_row(form.FileLev3) }}
 			
 	{{ form_errors(form) }}	
 
-<div style="display: none;">{{ form_rest(form) }}</div>
+<div class="h">{{ form_rest(form) }}</div>
 
 {{ form_end(form) }}	
-
-{% endblock %}
-

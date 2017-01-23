@@ -51,76 +51,77 @@ class ProjectType extends AbstractType
 			->add('name', 'text', array('label' => 'Nazwa','required' => false));
 												   
 		if ($this->tab_id == 1) {
-		  $builder
-			->add('desc', 'textarea', array('label' => 'Opis', 'required' => false))
-			->add('place', 'text', array('label' => 'Miejsce', 'required' => false))
-			->add('from_date', 'date', array('label' => 'Od', 'required' => false, 'widget' => 'single_text'))
-			->add('to_date', 'date', array('label' => 'Do', 'required' => false, 'widget' => 'single_text'))
-			->add('comment', 'textarea', array('label' => 'Komentarz', 'required' => false))
-		  
-			->add('File', 'model', array(
-				'label' => 'Kartoteka projektu',
-				'required' => false,
-				'class' => 'AppBundle\Model\File',
-				'empty_value' => 'Brak kartoteki',
-				'empty_data' => 0,
-				'query' => FileQuery::create()
-							->useFileCatQuery()
-								->filterByAsProject(1)
-								->filterByYear($this->Year)
-							->endUse()						
-							->orderByAccNo() ))
+			$builder
+				->add('desc', 'textarea', array('label' => 'Opis', 'required' => false))
+				->add('place', 'text', array('label' => 'Miejsce', 'required' => false))
+				->add('from_date', 'date', array('label' => 'Od', 'required' => false, 'widget' => 'single_text'))
+				->add('to_date', 'date', array('label' => 'Do', 'required' => false, 'widget' => 'single_text'))
+				->add('comment', 'textarea', array('label' => 'Komentarz', 'required' => false))
+			  
+				->add('File', 'model', array(
+					'label' => 'Kartoteka projektu',
+					'required' => false,
+					'class' => 'AppBundle\Model\File',
+					'empty_value' => 'Brak kartoteki',
+					'empty_data' => 0,
+					'query' => FileQuery::create()
+								->useFileCatQuery()
+									->filterByAsProject(1)
+									->filterByYear($this->Year)
+								->endUse()						
+								->orderByAccNo() ))
 
-			->add('CostFileCat', 'model', array(
-				'label' => 'Kategoria Kartoteki kosztów',
-				'required' => false,
-				'class' => 'AppBundle\Model\FileCat',
-				'empty_value' => 'Brak kategorii',
-				'empty_data' => 0,
-				'query' => FileCatQuery::create()
-							->filterByAsCost(1)
-							->filterByYear($this->Year)					
-							->orderByName() ))
+				->add('CostFileCat', 'model', array(
+					'label' => 'Kategoria Kartoteki kosztów',
+					'required' => false,
+					'class' => 'AppBundle\Model\FileCat',
+					'empty_value' => 'Brak kategorii',
+					'empty_data' => 0,
+					'query' => FileCatQuery::create()
+								->filterByAsCost(1)
+								->filterByYear($this->Year)					
+								->orderByName() ))
 
-			->add('status', 'choice', array(
-				'label' => 'Status',
-				'choices' => array('-1' => 'w przygotowaniu', '0' => 'rozpoczęty', '1' => 'zamknięty'), ))			
+				->add('status', 'choice', array(
+					'label' => 'Status',
+					'choices' => array('-1' => 'w przygotowaniu', '0' => 'rozpoczęty', '1' => 'zamknięty'), ))			
 
-			->add('IncomeAcc', 'model', array(
-				'label' => 'Konto przychodów',
-				'required' => false,
-				'class' => 'AppBundle\Model\Account',
-				'empty_value' => 'Brak konta',
-				'query' => AccountQuery::create()
-							->filterByAsIncome(1)
-							->filterByYear($this->Year)					
-							->orderByAccNo() ))
+				->add('IncomeAcc', 'model', array(
+					'label' => 'Konto przychodów',
+					'required' => false,
+					'class' => 'AppBundle\Model\Account',
+					'empty_value' => 'Brak konta',
+					'query' => AccountQuery::create()
+								->filterByAsIncome(1)
+								->filterByYear($this->Year)					
+								->orderByAccNo() ))
 
-			->add('CostAcc', 'model', array(
-				'label' => 'Konto kosztów',
-				'required' => false,
-				'class' => 'AppBundle\Model\Account',
-				'empty_value' => 'Brak konta',
-				'query' => AccountQuery::create()
-							->filterByAsCost(1)
-							->filterByYear($this->Year)					
-							->orderByAccNo() ))
+				->add('CostAcc', 'model', array(
+					'label' => 'Konto kosztów',
+					'required' => false,
+					'class' => 'AppBundle\Model\Account',
+					'empty_value' => 'Brak konta',
+					'query' => AccountQuery::create()
+								->filterByAsCost(1)
+								->filterByYear($this->Year)					
+								->orderByAccNo() ))
 
-			->add('BankAcc', 'model', array(
-				'label' => 'Konto bankowe',
-				'required' => false,
-				'class' => 'AppBundle\Model\Account',
-				'empty_value' => 'Brak konta',
-				'query' => AccountQuery::create()
-							->filterByAsBankAcc(1)
-							->filterByYear($this->Year)					
-							->orderByAccNo()
-							))
-			->add('Tasks', 'collection', array(
-				'type' => new TaskType(),
-				'label' => 'Zadania',
-				'allow_add'     => true,
-				'allow_delete'  => true )); 
+				->add('BankAcc', 'model', array(
+					'label' => 'Konto bankowe',
+					'required' => false,
+					'class' => 'AppBundle\Model\Account',
+					'empty_value' => 'Brak konta',
+					'query' => AccountQuery::create()
+								->filterByAsBankAcc(1)
+								->filterByYear($this->Year)					
+								->orderByAccNo() ))
+			/*					
+				->add('Tasks', 'collection', array(
+					'type' => new TaskType(),
+					'label' => 'Zadania',
+					'allow_add'     => true,
+					'allow_delete'  => true )) */
+			; 
 		}   	  
 								
 		if (in_array($this->tab_id, array(2,3,4))) {

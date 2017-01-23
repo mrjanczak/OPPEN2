@@ -1,6 +1,8 @@
 <?php
+
 namespace AppBundle\Controller;
 
+use \Exception;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -141,7 +143,7 @@ class AccountController extends Controller
 		$FilesLev1 = array();
 		$FilesLev2 = array();
 		$FilesLev3 = array();
-		$Labels = array();
+		$Labels    = array();
 		
 		if($Account instanceOf Account) {	
 			$FileCatLev1 = $Account->getFileCatLev1();
@@ -151,21 +153,22 @@ class AccountController extends Controller
 			if($FileCatLev1 instanceOf FileCat) {
 				$Labels[] = $FileCatLev1->getName();
 				foreach ($FileCatLev1->getFiles() as $File) {
-					$FilesLev1[] = '<option value="'.$File->getId().'">'.$FileCatLev1->getSymbol().'|'.
-						$this->fileNo($File->getAccNo(),$File->getName()).'</option>'; }}
+					$FilesLev1[] = '<option value="'.$File->getId().'">'.$File.'</option>'; }}
+			else {$Labels[] = 'Brak kartoteki';}
 			
 			if($FileCatLev2 instanceOf FileCat) {					
 				$Labels[] = $FileCatLev2->getName();
 				foreach ($FileCatLev2->getFiles() as $File) {
-					$FilesLev2[] = '<option value="'.$File->getId().'">'.$FileCatLev2->getSymbol().'|'.
-						$this->fileNo($File->getAccNo(),$File->getName()).'</option>'; }}
-			
+					$FilesLev2[] = '<option value="'.$File->getId().'">'.$File.'</option>'; }}
+			else {$Labels[] = 'Brak kartoteki';}
+						
 			if($FileCatLev3 instanceOf FileCat) {					
 				$Labels[] = $FileCatLev3->getName();
 				foreach ($FileCatLev3->getFiles() as $File) {
-					$FilesLev3[] = '<option value="'.$File->getId().'">'.$FileCatLev3->getSymbol().'|'.
-						$this->fileNo($File->getAccNo(),$File->getName()).'</option>'; }}		}
-
+					$FilesLev3[] = '<option value="'.$File->getId().'">'.$File.'</option>'; }}
+			else {$Labels[] = 'Brak kartoteki';}
+		}
+		
 		$response = new JsonResponse();
 		$response->setData(array(
 			array($FilesLev1,$FilesLev2,$FilesLev3), $Labels ));

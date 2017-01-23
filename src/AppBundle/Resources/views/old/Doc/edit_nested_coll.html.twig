@@ -1,0 +1,186 @@
+{% extends "AppBundle::layout.html.twig" %}
+{% form_theme form 'AppBundle:Form:fields.html.twig' %}
+
+{% block content %}
+{{ form_start(form, {'method': 'post'}) }}
+
+<div class="content-header">
+	<div class='title'>
+	{% if form.doc_no.vars.value is empty %}
+		{%trans%} headers.documents.new_document {%endtrans%} {{Year.name}}
+	{% else %}	
+		 {{form.doc_no.vars.value}}
+	{% endif %} </div> 
+
+	<div class='toolbar'>
+	{% for button in buttons %}
+		<span>{{ form_widget(form[button]) }}</span>	
+	{% endfor %}			
+	</div>		
+</div>		
+				
+	{{ form_errors(form) }}
+	<div class="form" >
+		<div class='form-column'>
+			{{ form_row(form.document_date,{'attr':{'class':'date'}} ) }}
+			{{ form_row(form.operation_date,{'attr':{'class':'date'}} ) }}
+
+			{{ form_row(form.receipt_date,{'attr':{'class':'date'}} ) }} 
+			{{ form_row(form.bookking_date,{'attr':{'class':'date'}} ) }}
+			
+			{{ form_row(form.payment_deadline_date,{'attr':{'class':'date'}} ) }} 
+			{{ form_row(form.payment_date,{'attr':{'class':'date'}} ) }} 
+	
+			{{ form_row(form.Month) }} 
+			{{ form_row(form.payment_method) }} 
+		</div>
+		<div class='form-column'>	
+			{{ form_row(form.DocCat, {'attr':{'data-url' : path("oppen_doc_update_files", 
+				{"month_id" : "__month_id__", "doc_cat_id" : "__doc_cat_id__"}) }} ) }}
+			{{ form_row(form.File) }}	
+			{{ form_row(form.doc_idx) }}
+			{{ form_row(form.doc_no) }}		
+			
+			{{ form_row(form.desc,{'attr':{'class':'text'}} ) }}
+			{{ form_row(form.comment,{'attr':{'class':'text'}} ) }}
+		</div>  
+	</div>
+
+<!--
+{% form_theme form 'form_div_layout.html.twig' %}
+	
+	<div id='Bookks' class="bookks" data-idx0="{{ form.Bookks|length - 1 }}">
+		<div class='bookks_label' > {{ form_label(form.Bookks) }} </div>
+		<div class='bookks_header'>
+			<div class="i b item">{%trans%} headers.documents.accepted {%endtrans%}</div>
+			<div class="i b w100">{%trans%} headers.common.bookking_date {%endtrans%}</div>
+			<div class="i b desc_wide">{%trans%} headers.common.desc {%endtrans%} </div>
+			<div class="bookk_sides">	
+				<div class="i b bookk_side">{%trans%} headers.documents.debit {%endtrans%}
+					({%trans%} headers.common.value {%endtrans%} / 
+					 {%trans%} headers.common.account {%endtrans%})</div>
+				<div class="i b bookk_side">{%trans%} headers.documents.credit {%endtrans%}
+					({%trans%} headers.common.value {%endtrans%} / 
+					 {%trans%} headers.common.account {%endtrans%})</div>
+			</div>
+			<div class="s"></div>
+		</div>
+			
+		<div class='bookks_list'>
+		{% for B, Bookk in form.Bookks %}
+			<div id='Bookks_{{B}}' class='bookk' data-idx0='{{B}}' data-idx1='{{ Bookk.BookkEntries|length - 1 }}'>
+				<div class='bookk_form' >
+						{{ form_widget(Bookk.is_accepted,{'attr':{'class':'item'}}) }}
+						{{ form_widget(Bookk.bookking_date,{'attr':{'class':'date date_item'}}) }} 
+						{{ form_widget(Bookk.desc,{'attr':{'class':'desc', 'title':Bookk.desc.vars.value}}) }}
+						[{{ Bookk.id.vars.value }}]
+					<span class='h'>
+						{{ form_widget(Bookk.id) }}
+						{{ form_widget(Bookk.project_id) }}
+					</span> 
+				</div>
+				
+				<div class='bookk_sides'>	
+					{% for side in 1..2 %}
+					<div id='Bookks_{{B}}_side{{side}}' class='i bookk_side{{side}}' >
+						
+						{% for BE, BookkEntry in Bookk.BookkEntries if BookkEntry.side.vars.value == side %}
+						<div id='Bookks_{{B}}_BookkEntries_{{BE}}' class='bookk_entry' >
+							<div class='bookk_entry_form'  data-side='{{side}}' > 
+								{{ form_widget(BookkEntry.value,{'attr':{'class':'value'}}) }}
+								{{ form_widget(BookkEntry.accNo,{'attr':{'class':'accNo'}}) }} 						
+								<span class='h'>
+									{{ form_widget(BookkEntry.id) }}
+									{{ form_widget(BookkEntry.side) }}
+									{{ form_widget(BookkEntry.account_id) }}
+									{{ form_widget(BookkEntry.file_lev1_id) }}
+									{{ form_widget(BookkEntry.file_lev2_id) }}
+									{{ form_widget(BookkEntry.file_lev3_id) }} 
+								</span>
+							</div>
+						</div>
+						{% endfor %}
+					
+					</div>	
+					{% endfor %}
+				</div>
+				
+			</div>
+			{% endfor %}		
+		</div>
+	</div>
+	
+	<div class="footer ">
+		<div class="s"></div>
+		<div class="i item"><input type="checkbox" value="Bookks" class="toggle_items"></div>
+		<div class="i"> {%trans%} labels.common.select_deselect {%endtrans%}</div>
+	</div>
+	
+	<div id='Bookk_prototype'  class='h' data-prototype='
+			<div id="Bookks___name__" class="bookk" data-idx0="__idx0__" data-idx1="-1">
+				<div class="bookk_form"  data-disabled="0">
+						{{ form_widget(form.Bookks.vars.prototype.is_accepted|e,{"attr":{"class":"item"}}) }}
+						{{ form_widget(form.Bookks.vars.prototype.bookking_date|e,{"attr":{"class":"date"}}) }} 
+						{{ form_widget(form.Bookks.vars.prototype.desc|e,{"attr":{"class":"desc"}}) }} 
+					<span class="h">
+						{{ form_widget(form.Bookks.vars.prototype.id|e) }}
+						{{ form_widget(form.Bookks.vars.prototype.project_id|e) }}
+					</span> 
+				</div>
+				
+				<div class="bookk_sides">	
+					{% for side in 1..2 %}
+					<div id="Bookks___name___side{{side}}" class="i bookk_side{{side}}" ></div>	
+					{% endfor %}
+				</div>
+			</div>'  >	</div>
+		
+    {% set Bookk_ = form.Bookks.vars.prototype %}
+	<div id='BookkEntry_prototype' class='h' data-prototype='
+			<div id="Bookks___name___BookkEntries___name__" class="bookk_entry" >
+				<div class="bookk_entry_form" data-side="__side__" data-disabled="0"> 
+					{{ form_widget(Bookk_.BookkEntries.vars.prototype.value|e,{"attr":{"class":"value"}}) }}
+					{{ form_widget(Bookk_.BookkEntries.vars.prototype.accNo|e,{"attr":{"class":"accNo"}}) }} 						
+					<span class="h">
+						{{ form_widget(Bookk_.BookkEntries.vars.prototype.id|e) }}
+						{{ form_widget(Bookk_.BookkEntries.vars.prototype.side|e) }}
+						{{ form_widget(Bookk_.BookkEntries.vars.prototype.account_id|e) }}
+						{{ form_widget(Bookk_.BookkEntries.vars.prototype.file_lev1_id|e) }}
+						{{ form_widget(Bookk_.BookkEntries.vars.prototype.file_lev2_id|e) }}
+						{{ form_widget(Bookk_.BookkEntries.vars.prototype.file_lev3_id|e) }} 
+					</span>
+				</div>
+			</div>'  >		 
+	</div>
+
+-->
+			
+	<div class="h">{{ form_rest(form) }}</div>
+		
+{{ form_end(form) }}
+
+<div id="Bform" data-width="800" data-height="250" title="Opis dekretacji" class="h">
+{{ form_start(Bform) }}
+	{{ form_row(Bform.bookking_date,{"attr":{"class":"date date_item"}}) }}
+	{{ form_row(Bform.desc,{"attr":{"class":"desc_wide"}}) }}
+	{{ form_row(Bform.Project) }}
+{{ form_end(Bform) }}
+</div>
+
+<div id="BEform" data-width="600" data-height="250" title="Wybierz konto" class="h">
+{{ form_start(BEform) }}
+	{% form_theme BEform 'AppBundle:Form:fields.html.twig' %}
+	
+	{{ form_row(BEform.Account,{'attr':{'data-url' :  path("oppen_account_update", {"account_id" : "__account_id__"})  }}) }}
+	{{ form_row(BEform.FileLev1) }}
+	{{ form_row(BEform.FileLev2) }}
+	{{ form_row(BEform.FileLev3) }}
+{{ form_end(BEform) }}
+</div>
+<div class="log"></div>
+
+{% endblock %}
+
+{% block jquery %}
+	{% include 'AppBundle:Doc:edit.js.twig' %}
+{% endblock %}

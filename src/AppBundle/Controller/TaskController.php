@@ -2,14 +2,112 @@
 
 namespace AppBundle\Controller;
 
+use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
+use AppBundle\Model\Project;
+use AppBundle\Model\ProjectQuery;
+use AppBundle\Model\Task;
 use AppBundle\Model\TaskQuery;
 use AppBundle\Model\ParameterQuery;
+use AppBundle\Model\User;
+
+use AppBundle\Form\Type\TaskType;
 
 class TaskController extends Controller
 {
+   public function editAction($task_id, $project_id, Request $request) {
+		
+		$buttons = array('cancel','save');
+		$msg = array('errors' => array(), 'warnings' => array());
+ 		$security_context = $this->get('security.context');
+ 		$User = $security_context->getToken()->getUser();
+							
+		if($task_id == 0) {	
+			$Project = ProjectQuery::create()->findPk($project_id); 
+			$Task = new Task();
+			$Task->setProject($Project);
+			$Task->setUser($User);
+		} else {
+			
+			$Task = TaskQuery::create()->findPk($task_id);
+			if(!($Task instanceOf Task)) 
+				{ throw $this->createNotFoundException('The Task (id '.$task_id.') does not exist'); }
+
+			$buttons[] = 'delete';
+			$Project = $Task->getProject();
+		}
+		
+		if(!($Project instanceOf Project)) 
+			{ throw $this->createNotFoundException('The Project (id '.$project_id.') does not exist'); }
+			
+		$Year = $Project->getYear(); 									
+ 				
+ 		$form = $this->createForm(new TaskType(), $Task); 
+        $form->handleRequest($request);  
+		
+		$params = array(
+			'Project' => $Project,
+			'Task'=> $Task,
+			'task_id' => $task_id,
+			'form' => $form->createView(),
+			'errors' => $msg['errors'],
+			'buttons' => $buttons,	
+		);
+						
+		if ($form->isSubmitted()) 
+		{	
+			$redirect = true;
+			$params['twig'] = 'AppBundle:Task:view.html.twig';	
+			
+			if ($form->get('save')->isClicked()) 
+			{ 	
+				$Task->save();
+				$js = $task_id == 0 ? 'APPEND' : 'REPLACE'; 				
+			}						
+			
+			if ($form->get('delete')->isClicked()) 
+			{ 	
+				$Task->delete(); 
+				$js = 'REMOVE'; 
+			}
+			
+			if ($form->get('cancel')->isClicked()) 
+			{ 	
+				$js = 'CANCEL';  
+			}			
+		} else {		
+			
+			$params['twig'] ='AppBundle:Task:edit.html.twig';
+			$js = 'REFRESH_FORM'; 	
+			
+			$redirect = false;
+		} 			
+		
+		if ($request->isXmlHttpRequest()) 
+		{
+			$html = $this->renderView($params['twig'], $params); 
+			return new JsonResponse(array('status'=>'success', 'html'=>$html, 'js'=>$js, ), 200);
+			 	
+		} else {
+			if (!$redirect) {			
+				return $this->render('AppBundle:Template:content.html.twig', $params); 
+				
+			} else {
+				
+	$html = $this->renderView($params['twig'], $params); 			
+				return $this->redirect($this->generateUrl('oppen_project',array(
+					'project_id' => $project_id,
+					'tab_id' => 1,
+					'year_id'=> $Year->getId(),					
+
+				) ));						
+			}	
+		}
+	}  	
+	
     public function moveAction($task_id, $dir, Request $request)
     {		
 		$Task = TaskQuery::create()->findPk($task_id); 

@@ -1,0 +1,15 @@
+{% extends "AppBundle::layout.html.twig" %}
+
+{% form_theme form 'AppBundle:Form:fields.html.twig' %}
+
+{% block content %}
+
+	{{ include(twig) }}
+	
+{% endblock %}
+
+{% block jquery %}
+	{% if js is defined %}
+		{{ include(js) }}
+	{% endif %}
+{% endblock %}

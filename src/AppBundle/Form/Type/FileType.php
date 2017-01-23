@@ -54,22 +54,22 @@ class FileType extends AbstractType
             ->add('district', 'text', array('label' => 'Powiat','required' => false))
 			->add('province', 'choice', array(
 				'label' => 'Województwo', 'required' => false, 'choices' => array( 
-				'dolnośląskie' => 'dolnośląskie',
-				'kujawsko-pomorskie' => 'kujawsko-pomorskie',
-				'lubelskie' => 'lubelskie',
-				'lubuskie' => 'lubuskie',
-				'łódzkie' => 'łódzkie',
-				'małopolskie' => 'małopolskie',
-				'mazowieckie' => 'mazowieckie',
-				'opolskie' => 'opolskie',
-				'podkarpackie' => 'podkarpackie',
-				'podlaskie' => 'podlaskie',
-				'pomorskie' => 'pomorskie',
-				'śląskie' => 'śląskie',
-				'świętokrzyskie' => 'świętokrzyskie',
-				'Warminsko-mazurskie' => 'Warminsko-mazurskie',
-				'wielkopolskie' => 'wielkopolskie',
-				'zachodniopomorskie' => 'zachodniopomorskie',
+					'dolnośląskie' => 'dolnośląskie',
+					'kujawsko-pomorskie' => 'kujawsko-pomorskie',
+					'lubelskie' => 'lubelskie',
+					'lubuskie' => 'lubuskie',
+					'łódzkie' => 'łódzkie',
+					'małopolskie' => 'małopolskie',
+					'mazowieckie' => 'mazowieckie',
+					'opolskie' => 'opolskie',
+					'podkarpackie' => 'podkarpackie',
+					'podlaskie' => 'podlaskie',
+					'pomorskie' => 'pomorskie',
+					'śląskie' => 'śląskie',
+					'świętokrzyskie' => 'świętokrzyskie',
+					'Warminsko-mazurskie' => 'Warminsko-mazurskie',
+					'wielkopolskie' => 'wielkopolskie',
+					'zachodniopomorskie' => 'zachodniopomorskie',
 				) ))            
 
 			->add('country', 'choice', array(

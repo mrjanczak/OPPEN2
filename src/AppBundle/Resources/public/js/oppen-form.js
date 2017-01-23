@@ -4,9 +4,7 @@ function form_init() {
 	form_button();
 	form_date();
 	form_date_copy_link();		
-	
-	//$('select').selectmenu();
-	
+		
 	$('.fileinput-button').each(function () {
 		var input = $(this).find('input:file').detach();
 		$(this)
@@ -80,10 +78,8 @@ function form_datepicker() {
 					prevText: '&#x3c;Poprzedni',
 					nextText: 'Następny&#x3e;',
 					currentText: 'Dziś',
-					monthNames: ['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec',
-					'Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzień'],
-					monthNamesShort: ['Sty','Lu','Mar','Kw','Maj','Cze',
-					'Lip','Sie','Wrz','Pa','Lis','Gru'],
+					monthNames: ['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec',	'Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzień'],
+					monthNamesShort: ['Sty','Lu','Mar','Kw','Maj','Cze', 'Lip','Sie','Wrz','Pa','Lis','Gru'],
 					dayNames: ['Niedziela','Poniedziałek','Wtorek','Środa','Czwartek','Piątek','Sobota'],
 					dayNamesShort: ['Nie','Pn','Wt','Śr','Czw','Pt','So'],
 					dayNamesMin: ['N','Pn','Wt','Śr','Cz','Pt','So'],
@@ -99,12 +95,12 @@ function form_datepicker() {
 
 function form_button() {
 		//typical buttons
-		$( "input [id*='submit']" )  .button({icons: {primary: "ui-icon-check"}});
+		$( "input [id*='submit']" ).button({icons: {primary: "ui-icon-check"}});
 		$( "button[id*='cancel']" ).button({icons: {primary: "ui-icon-arrowreturnthick-1-w"}});
 		$( "button[id*='delete']" ).button({icons: {primary: "ui-icon-closethick"}}); 
 		$( "button[id*='remove']" ).button({icons: {primary: "ui-icon-closethick"}});
 		$( "button[id*='save']" )  .button({icons: {primary: "ui-icon-check"}});
-		$( "button[id*='save_return']" )  .button({icons: {primary: "ui-icon-check"}});
+		$( "button[id*='save_return']" ).button({icons: {primary: "ui-icon-check"}});
 		//special buttons
 		$( "button[id*='select']" ).button({icons: {primary: "ui-icon-circle-check"}}); 
 		$( "button[id*='accept']" ).button({icons: {primary: "ui-icon-circle-check"}}); 
@@ -123,13 +119,12 @@ function form_button() {
 
 		$( "button[id*='print']" ).button({icons: {primary: "ui-icon-print"}});
 		
-		$('button.confirm').each( function() {
+		$('.confirm').each( function() {
 			var $button = $(this);
-			var id = $(this).attr('id');
 			var title = $(this).find('span.ui-button-text').html();
 			var confirm = $(this).data('confirm');
-			var $dialog = $('<div id="dialog-'+id+'" title_="'+title+'"><p><span class="dialog-icon ui-icon ui-icon-alert"></span>' + confirm + '</p>');
-			$('#dialogs').append($dialog);
+			var $dialog = $('<div id="dialog-confirm" title_="'+title+'"><p><span class="dialog-icon ui-icon ui-icon-alert"></span>' + confirm + '</p>');
+			$('#dialogs').html($dialog);
 			
 			$(this).click(function(e) {
 				if(!$dialog.dialog( "isOpen" )) {
@@ -217,117 +212,174 @@ function form_date_copy_link() {
 	});			
 };
 
-//********************************************
-// Prepare form collection functionality
-//********************************************
-function form_collection($root, d) {
-	add_link(   $root,d);
-	rem_link(   $root,d);
-	form_dialog($root,d);	
-	subform_prepare($root,d);
-}
+// Ajax functions
 
-function add_link($root,d) {
-	
-	if(d.hasOwnProperty("add_link_appendto")) {
-		var $add_link_appendto = $root.find(d.add_link_appendto).not('[disabled]');
+function ajax_update_Account($obj) {
+
+	$obj.change(function(e) {
 		
-		var $add_link = $('<a href="#" class="add_link">' + d.add_link + '</a>');
-		$add_link.click( function(e) {
-			e.preventDefault();
-			var form = $(d.new_form).data('prototype');	
+		var $form = $(this).parents('form');
+		
+		for (var lev=1;lev<=3;lev++) {
+			$form.find('select[id$="FileLev' + lev + '"] option:gt(0)').remove();
+			$form.find('label[for$="FileLev' + lev + '"]').text('Brak kartoteki').parents('form-row').slideUp();
+		}
+
+		var account_id = $(this).find('option:selected').val();
+
+		 $.ajax({
+			type: "POST",
+			data: "account_id=" + account_id,
+			url: $(this).attr('action').replace(/__account_id__/g, account_id),   
+			async: false,
+			success: function(data){
 				
-			var idx = new Array(0,0);
-			for (i = d.lev; i >= 0; i--) {
-				idx[i] = $root.data('idx'+i);
-				if (i==d.lev) {
-					idx[i]++;
-					$root.data('idx'+i, idx[i]);
-				}	
-			}
-			
-			form = replaceAll(form,"__idx0__",idx[0]);
-			if(d.hasOwnProperty('side')) {
-				form = replaceAll(form,"__side__",d.side); }
-				
-			for (j=0; j<=d.replace_names.length-1; j++) {			
-				form = replaceAll(form, d.replace_names[j]+"___name__",d.replace_names[j]+"_"+idx[j]);
-				form = replaceAll(form, "["+d.replace_names[j]+"][__name__]","["+d.replace_names[j]+"]["+idx[j]+"]"); }
-
-			var $new_form_appendto = $root.find(d.new_form_appendto)
-			$new_form_appendto.append(form);
-			$new_form = $new_form_appendto.children(':last');
-			
-			if(d.hasOwnProperty('side')) {
-				$new_form.find('input[id$="side"]').val(d.side);
-				//alert('side:'+$new_form.find('input[id$="side"]').val());
-			}
-			form_date();
-			
-			rem_link($new_form,d);
-			form_dialog($new_form,d);
-			subform_prepare($new_form,d);
-		});
-		
-		$add_link_appendto.append($add_link);
-	}
-}
-
-function rem_link($root, d) {
-	if(d.hasOwnProperty("rem_link")) {
-		var $rem_link = $('<a href="#" class="rem_link">' + d.rem_link + '</a>');
-		$rem_link.click( function(e) {
-			e.preventDefault();
-			$(this).parents(d.parent_toremove).remove();
-		});
-		
-		var data_attr = '';
-		if(d.hasOwnProperty('side')) { data_attr += '[data-side="' + d.side + '"]';}
-		
-		$root.find(d.rem_link_appendto + data_attr).not('[disabled]').append($rem_link);
-	}
-}
-
-function form_dialog($root, d) {		
-	if(d.hasOwnProperty("form_focusin")) {
-		
-		var data_attr = '';
-		if(d.hasOwnProperty('side')) { data_attr += '[data-side="' + d.side + '"]';}
-		
-		var $coll = $root.find(d.form + data_attr).not('[disabled]').find(d.form_focusin).focusin( function(e) {
-			var $form = $(this).parents(d.form);
-			var $dialog_form = $(d.dialog_form);
-			eval(d.dialog_form.substring(1) + '_init($form, $dialog_form)'); 
-
-			var dialog = $dialog_form.dialog({
-				autoOpen: true,
-				height: $dialog_form.data("height"),
-				width: $dialog_form.data("width"),
-				modal: true,
-				buttons: {
-					"OK": function() { 
-					  eval(d.dialog_form.substring(1) + '_ok($form, $dialog_form)'); 
-					  dialog.dialog( "destroy" );
-					},
-					"Anuluj": function() {
-					  dialog.dialog( "destroy" );
+				console.log( JSON.stringify(data) );
+				for (var lev=1;lev<=3;lev++) {
+					
+					if(data[0][lev-1].length > 1) {
+						$form.find('select[id$="FileLev' + lev + '"]').append( data[0][lev-1].join(''));
+						$form.find('label[for$="FileLev' + lev + '"]').text(   data[1][lev-1]).parents('form-row').slideDown(); 
 					}
-				} 
-			});
+				}
+			}
 		});
-	}
+	});	
+
 }
 
-function subform_prepare($root, d) {
-	if (d.hasOwnProperty('subroot')) {
-		$coll = $root.find(d.subroot);
-		if( $coll.length == 0 ){ $coll = $root; }
-		$coll.each( function(idx) {
-			for(i=0; i<=d.subdata.length-1; i++) {
-				form_collection($( this ), d.subdata[i]);	}
-		}); 
-	}		
+function ajax_update_DocCat($obj) {
+	
+	$obj.change(function(e) {
+
+		var doc_cat_id  = $(this).find('option:selected').val();
+		 $.ajax({
+			type: "POST",
+			url: $(this).attr('action').replace(/__doc_cat_id__/g, doc_cat_id),
+			success: function(data){
+				
+				console.log( JSON.stringify(data) );
+				$('#doc_File').parent().slideUp();
+				
+				$('#doc_File option:gt(0)').remove();
+				$('#doc_File').append( data[0].join());
+				
+				$('label[for="doc_File"]').text(data[1]);
+				
+				if(data[0].length > 1) {
+					$('#doc_File').parent().slideDown(); }
+			}
+		});
+	});	
 }
+
+var ajax_prepare_dialog = function(data_html) {
+	
+	$('#dialogs').html(data_html);
+	
+	var $dialog = $('#dialog-ajax-form');
+	
+	$dialog.dialog({
+		autoOpen: true,
+		modal: true,
+		minHeight:250,
+		minWidth:800,
+		title: $dialog.data('title'),
+	}); 
+	
+	form_date();
+	form_button();
+	
+	// Add all updaters existing in modal dialogs
+	ajax_update_Account( $('#bookk_entry_Account') );		
+
+	$dialog.find('.ajax_submit_button').on('click', function(e){
+		
+		e.preventDefault();
+		
+		var $button = $(this);
+		var $form = $button.parents('form');
+		
+		var form_data = $form.first().serializeArray();
+		form_data.push( {'name':$(this).attr('name')});
+
+		$.ajax({
+			type: 'POST',
+			url: $(this).parents('form').first().attr('action'),
+			data : form_data,
+			success: function(data) {
+				
+				var id    = '#'+$(data.html).attr('id');
+				var classAttr = $(data.html).attr('class');
+				var list  = $(data.html).data('list');
+				
+				var $item = $(document).find(id);
+				var $list = $(document).find(list);
+				
+		console.log( JSON.stringify(data) );
+		console.log( [$form, $item, $list] );
+					
+				switch(data.js) {
+					case 'REFRESH_FORM' :
+						$dialog = ajax_prepare_dialog( data.html);
+						break;
+						
+					case 'APPEND' :
+						$list.append( ajax_prepare_item( $(data.html) ));
+						$dialog.dialog( 'destroy' );
+						break;
+						
+					case 'REPLACE':	
+
+						if ((classAttr == 'bookk_entry') && ($form.data('side') != $(data.html).data('side'))) 
+						{
+							$item.remove();
+							$list.append( ajax_prepare_item( $(data.html) ));
+						} else {
+							$item.replaceWith( ajax_prepare_item( $(data.html) ));	
+						}					
+						$dialog.dialog( 'destroy' );
+						break;
+						
+					case 'REMOVE':
+						$item.remove();
+						$dialog.dialog( 'destroy' );
+						break;	
+						
+					case 'CANCEL':
+						$dialog.dialog( 'destroy' );
+						break;														
+				}
+			}
+		})
+	})
+	
+	return $dialog;
+};
+
+var ajax_prepare_item = function($item) {
+	
+	$item.find('.ajax_init_form' ).on('click', function(e){
+		
+		e.preventDefault();
+		
+		$.ajax({
+			type        : $(this).attr( 'method' ),
+			url         : $(this).attr( 'action' ),
+			success     : function(data) {
+				
+				var $dialog = ajax_prepare_dialog( data.html );
+				
+				return false;
+			}
+		})
+	});
+	
+	return $item;
+};
+
+
+// Utilities
 
 function escapeRegExp(string) {
     return string.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
@@ -335,4 +387,40 @@ function escapeRegExp(string) {
 
 function replaceAll(string, find, replace) {
   return string.replace(new RegExp(escapeRegExp(find), 'g'), replace);
+}
+
+/**
+ * Function : dump()
+ * Arguments: The data - array,hash(associative array),object
+ *    The level - OPTIONAL
+ * Returns  : The textual representation of the array.
+ * This function was inspired by the print_r function of PHP.
+ * This will accept some data as the argument and return a
+ * text that will be a more readable version of the
+ * array/hash/object that is given.
+ * Docs: http://www.openjs.com/scripts/others/dump_function_php_print_r.php
+ */
+function dump(arr,level) {
+	var dumped_text = "";
+	if(!level) level = 0;
+	
+	//The padding given at the beginning of the line.
+	var level_padding = "";
+	for(var j=0;j<level+1;j++) level_padding += "    ";
+	
+	if(typeof(arr) == 'object') { //Array/Hashes/Objects 
+		for(var item in arr) {
+			var value = arr[item];
+			
+			if(typeof(value) == 'object') { //If it is an array,
+				dumped_text += level_padding + "'" + item + "' ...\n";
+				dumped_text += dump(value,level+1);
+			} else {
+				dumped_text += level_padding + "'" + item + "' => \"" + value + "\"\n";
+			}
+		}
+	} else { //Stings/Chars/Numbers etc.
+		dumped_text = "===>"+arr+"<===("+typeof(arr)+")";
+	}
+	return dumped_text;
 }

@@ -1,6 +1,3 @@
-//		var newItem = Item.data('item').replace(/__accNo__/g, accNo).replace(/__value__/g, value);
-//		Credit.append(newItem);		
-
 	var Value = $('#BookkEntry_Value');
 	var Account = $('#BookkEntry_Account');
 
@@ -14,3 +11,4 @@
 			}
        });
 	});	
+

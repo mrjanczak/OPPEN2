@@ -73,9 +73,13 @@
 			
 			{% if return == 'docs' or (return == 'project' and Bookk.Project == Project) %}
 	<tr>
-		<td>{{ form_widget(BookkF.is_accepted, {'attr': {'class': 'item'}}) }} 	</td>	
-		<td width="400px"> 	{{ Bookk.bookkingDate|date("Y/m/d") }} - {{ Bookk.desc }} </td>
-				{% for side in 1..2 %}
+		<td>{{ form_widget(BookkF.is_accepted, {'attr': {'class': 'item'}}) }} 	</td>
+			
+		<td width="400px" title="{{ Bookk.desc }}"> 
+			{{ Bookk.bookkingDate|date("d/m/Y") }} - {{ Bookk.desc|slice(0, 100) }} {{ Bookk.desc|length > 100 ? '...':'' }}
+			({{ Bookk.Project is not empty ? Bookk.Project.name : ''}})
+		</td>
+			{% for side in 1..2 %}
 		<td class="bookk_side {% if side == 1 %} right-border {% endif %} " > 
 					{% for BookkEntry in Bookk.BookkEntries if BookkEntry.side == side %}
 			<div class="value">{{ BookkEntry.value|number_format(2,',',' ') }} </div><div class="accNo">{{ BookkEntry.accNo }} </div> 

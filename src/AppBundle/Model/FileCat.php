@@ -17,8 +17,16 @@ class FileCat extends BaseFileCat
 	public function getNextAccNo() {
 		return FileQuery::create()->filterByFileCat($this)->count() + 1;
 	}
+
+	public function getFilesByAccNo()
+	{
+		return FileQuery::create()
+					->orderByAccNo('asc')
+                    ->filterByFileCat($this)
+                    ->find();
+	}
 	
-   public function getFiles($criteria = null, PropelPDO $con = null)
+	public function getFiles($criteria = null, PropelPDO $con = null)
     {
         $partial = $this->collFilesPartial && !$this->isNew();
         if (null === $this->collFiles || null !== $criteria  || $partial) {
