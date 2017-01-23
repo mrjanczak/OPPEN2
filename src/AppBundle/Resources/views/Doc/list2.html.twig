@@ -70,8 +70,9 @@
 	
 		{% for BookkF in DocF.Bookks %}
 			{% set Bookk = BookkF.vars.value %}	
+			{% set project_id = Bookk.Project is not empty ?  Bookk.Project.id : 0 %}
 			
-			{% if return == 'docs' or (return == 'project' and Bookk.Project == Project) %}
+			{% if return == 'docs' or (return == 'project' and project_id == id1) %}
 	<tr>
 		<td>	{{ form_widget(BookkF.is_accepted, {'attr': {'class': 'item'}}) }} 	</td>
 			
