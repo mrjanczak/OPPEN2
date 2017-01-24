@@ -44,7 +44,6 @@ class DocListType extends AbstractType
             ->add('search', 'submit', array('label' => 'Szukaj'))   
             ->add('selectDocs', 'submit', array('label' => 'Wybierz'))                                       
             ->add('acceptBookks', 'submit', array('label' => 'Zatwierdź Dekretacje'))
-			->add('deleteBookks', 'submit', array('label' => 'Usuń Dekretacje'))            
 
 			->add('showBookks','choice', array( 'label' => 'Pokaż dekretacje', 'empty_value' => false, 'choices'   => array(
 					'-2' => 'Żadne','-1' => 'Wszystkie', '0' => 'Nie zatw.', '1' => 'Zatw.'), 'required'  => false))            

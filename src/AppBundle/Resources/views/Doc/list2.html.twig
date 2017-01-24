@@ -110,7 +110,6 @@
 	{% endif %}
 	{% if DocList.as_bookk_accept and is_granted('ROLE_ADMIN') %}
 		{{ form_widget(DocListF.acceptBookks) }}
-		{%{ form_widget(DocListF.deleteBookks) }%}
 	{% endif %}
 </div>
 
