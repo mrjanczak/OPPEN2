@@ -86,8 +86,8 @@ class DocController extends Controller
 								$Bookk->setIsAccepted(1)->save();							
 								if($Bookk->getIsAccepted() && $Bookk->getNo() == NULL) {
 									$Bookk->setNewNo()->save(); 
-									if(array_key_exists('deleteBookks',$DocListR)) {
-										$Bookk->delete(); }	
+									//if(array_key_exists('deleteBookks',$DocListR)) {
+									//	$Bookk->delete(); }	
 									if(array_key_exists('acceptBookks',$DocListR)) {
 										$Bookk->setIsAccepted(1)->save(); }									
 								}									
