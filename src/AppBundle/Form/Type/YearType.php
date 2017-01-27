@@ -30,7 +30,7 @@ class YearType extends AbstractType
 			->add('from_date', 'date', array('label' => 'Od', 'required' => false, 'widget' => 'single_text'))
  			->add('to_date', 'date', array('label' => 'Do', 'required' => false, 'widget' => 'single_text'))
                         
-			->add('Months', 'collection', array(
+			->add('SortedMonths', 'collection', array(
 				'type'          => new MonthType(null, false),
 				'allow_add'     => false,
 				'allow_delete'  => false,

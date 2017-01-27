@@ -11,7 +11,7 @@
 			<th>{%trans%} headers.common.options {%endtrans%}</th>
 	</tr>	
 {% set totalIncome = 0 %}
-{% for IncomeF in form.Incomes %}
+{% for IncomeF in form.SortedIncomes %}
 	{% set Income = IncomeF.vars.value %}
 	{% set totalIncome = totalIncome + Income.value %}
 	
@@ -88,7 +88,7 @@
 	{% for Symbol, Tmp in BookingTemplates  if Tmp.group == 'Income' %} 		  
 	<tr><td></td> 	
 		<td> {{ form_widget(form[Symbol], {'attr': {'class': 'checkbox'}}) }} </td>
-		<td> {{ form_label(form[Symbol]) }} </td>
+		<td colspan="100%"> {{ form_label(form[Symbol]) }} </td>
 	</tr>
 	{% endfor %}
 	

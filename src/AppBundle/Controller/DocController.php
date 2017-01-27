@@ -50,6 +50,7 @@ class DocController extends Controller
 		// form is created later to preserve Bookks unchanged
 				
 		if ($request->isMethod('POST')) {
+			
 			$DocListR = $request->request->get('doc_list');
 			$Year = YearQuery::create()->findPk($DocListR['Year']);
 			$Month = MonthQuery::create()->findPk($DocListR['Month']);
@@ -57,6 +58,7 @@ class DocController extends Controller
 			$showBookks = $DocListR['showBookks'];				
 			$desc = $DocListR['desc'];
 			$page = $DocListR['page'];
+			
 			if($showBookks == -2) {
 				$as_bookk_accept = false;}
 		}
@@ -72,36 +74,38 @@ class DocController extends Controller
 		// Bookks have to be accepted before form creation to enable/disable it in form
 
 		if ($request->isMethod('POST')) {
+			
+			
 			if(array_key_exists('Docs',$DocListR)) {					
 				foreach($DocListR['Docs'] as $DocR) {
 					
-					if(array_key_exists('Bookks',$DocR)) {	
-						foreach($DocR['Bookks'] as $BookkR) {
-							if(array_key_exists('is_accepted',$BookkR)) {
-								$Bookk = BookkQuery::create()->findPk($BookkR['id']);
+					// Bookk accept & number 			
+					if(array_key_exists('acceptBookks',$DocListR)) {
+					
+						if(array_key_exists('SortedBookks',$DocR)) {	
+							foreach($DocR['SortedBookks'] as $BookkR) {
 								
-								if(!($Bookk instanceOf Bookk)) 
-									{ throw $this->createNotFoundException('The Bookk (id '.$BookkR['id'].') does not exist'); }			
-	
-								$Bookk->setIsAccepted(1)->save();							
-								if($Bookk->getIsAccepted() && $Bookk->getNo() == NULL) {
-									$Bookk->setNewNo()->save(); 
-									//if(array_key_exists('deleteBookks',$DocListR)) {
-									//	$Bookk->delete(); }	
-									if(array_key_exists('acceptBookks',$DocListR)) {
-										$Bookk->setIsAccepted(1)->save(); }									
-								}									
+								if(array_key_exists('is_accepted',$BookkR)) {
+									
+									$Bookk = BookkQuery::create()->findPk($BookkR['id']);
+										
+									if($Bookk->getIsAccepted() == false) {
+										$Bookk->setIsAccepted(true)->save(); }
+										
+									if($Bookk->getIsAccepted() && $Bookk->getNo() == NULL) {
+										$Bookk->setNewNo()->save(); }
+								}					
 							} 
 						} 
 					}
 					
-					//---------------------------------
-					// Document registration			
-					//---------------------------------		
+					// Document registration		
 					$Doc = DocQuery::create()->findPk($DocR['id']);
+					
 					if($Doc instanceOf Doc) {
 						$has_accepted_bookks = BookkQuery::create()->filterByDoc($Doc)->filterByIsAccepted(1)->count() > 0;
-						if($has_accepted_bookks && $Doc->getRegNo() == NULL) {
+						
+						if($has_accepted_bookks && empty($Doc->getRegNo()) ) {
 							$Doc->setNewRegIdxNo();
 							
 							$BookkingDate = $Doc->getOperationDate(); //now();
@@ -211,30 +215,26 @@ class DocController extends Controller
 			$Doc->setUser($User);
 
 			if(empty($msg['errors'])) {
-				//save Doc and set new DocNo
-					
-				if($Doc->getDocIdx() == NULL ) {
+				
+				//save Doc and set new DocNo	
+				if( empty($Doc->getDocIdx()) ) {
 					$Doc->setNewDocIdx(); 
 				}
 
-				if($Doc->getDocNo() == NULL || $Doc->getDocNo() == '') {
+				if( empty($Doc->getDocNo()) ) {
 					$Doc->setNewDocNo(); 
 				}		
 							
 				$Doc->save();				
 				
 	
-				//---------------------------------------------
 				// document registration
-				//---------------------------------------------
 				$has_accepted_bookks = BookkQuery::create()->filterByDoc($Doc)->filterByIsAccepted(1)->count() > 0;
 				
-				if($has_accepted_bookks && $Doc->getRegNo() == NULL) {
-					$Doc->setNewRegIdxNo();
-					
+				if($has_accepted_bookks && empty($Doc->getRegNo()) ) {
 					$BookkingDate = $Doc->getOperationDate(); 
-					
-					$Doc->setBookkingDate($BookkingDate)
+					$Doc->setNewRegIdxNo()
+						->setBookkingDate($BookkingDate)
 						->setUser($this->getUser())
 						->save();
 				}			
@@ -352,7 +352,7 @@ class DocController extends Controller
 			->orderByDocNo()
 			->groupById();
 
-		$DocsPager = $DocsC->paginate($page , $maxPerPage = 30);			
+		$DocsPager = $DocsC->paginate($page , $maxPerPage = 50);			
 		foreach ($DocsPager as $k => $Doc) {
 			$Docs->set($k, $Doc);}
 
@@ -366,10 +366,10 @@ class DocController extends Controller
 			
 		$Project = $form->getData();
 							   
-		foreach ($form->get('Costs') as $FCost) {
+		foreach ($form->get('SortedCosts') as $FCost) {
 			
 			$Cost = $FCost->getData();			
-			foreach ($FCost->get('CostDocs') as $FCostDoc) {
+			foreach ($FCost->get('SortedCostDocs') as $FCostDoc) {
 			
 				if($FCostDoc->get('select')->getData()) {
 					
@@ -398,7 +398,8 @@ class DocController extends Controller
 							break;
 						case 'payment_date' :
 							if($form->get('payment_date')->getData()) {
-								$Doc->setPaymentDate($form->get('payment_date')->getData())->save();}
+								$payment_date = $form->get('payment_date')->getData();
+								$Doc->setPaymentDate($payment_date)->save();}
 							break;	
 					}
 				}

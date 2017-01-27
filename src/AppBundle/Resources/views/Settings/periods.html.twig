@@ -6,12 +6,15 @@
 				 <th>{%trans%}headers.periods.active{%endtrans%}</th>
 				 <th>{%trans%}headers.periods.closed{%endtrans%}</th></tr>	
 
-	{% for Year in form.Years %}
-	<tr><td> {{ form_widget(Year.select) }} </td>
-		<td> <a href={{ path('oppen_year_edit', { 'year_id' : Year.id.vars.value}) }}> 
-				{{ Year.name.vars.value }} </a>   </td> 
-		<td class='c'>{% if Year.is_active.vars.checked %} X {% endif %} </td>
-		<td class='c'>{% if Year.is_closed.vars.checked %} X {% endif %} </td>	 
+	{% for YearF in form.Years %}
+			
+	{% set Year = YearF.vars.value %}
+	
+	<tr><td> {{ form_widget(YearF.select) }} </td>
+		<td> <a href={{ path('oppen_year_edit', { 'year_id' : Year.id}) }}> 
+				{{ Year.name }} </a>   </td> 
+		<td class='c'>{{ Year.isActive ? 'X' : '' }} </td>
+		<td class='c'>{{ Year.isClosed ? 'X' : '' }} </td>	 
 	</tr>
 	{% endfor %}
 		
@@ -39,6 +42,7 @@
 			<th>{%trans%}headers.common.file{%endtrans%}</th>
 			<th>{%trans%}headers.common.symbol{%endtrans%} </th> 
 			<th>{%trans%}headers.common.name{%endtrans%} </th></tr>
+			
 		{% for FileCatF in form.FileCats %}
 			{% set FileCat = FileCatF.vars.value %}
 			<tr>
@@ -57,6 +61,7 @@
 			<th>{%trans%}headers.common.document{%endtrans%}</th>
 			<th>{%trans%}headers.common.symbol{%endtrans%} </th> 
 			<th>{%trans%}headers.common.name{%endtrans%} </th></tr>
+			
 		{% for DocCatF in form.DocCats %}
 			{% set DocCat = DocCatF.vars.value %}
 			<tr>

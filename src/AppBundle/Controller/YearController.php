@@ -39,7 +39,9 @@ class YearController extends Controller
 		if ($form->get('cancel')->isClicked()) {
 			$redirect = true;
 		}			
-		if ($form->isSubmitted()) {
+		if ($form->get('save')->isClicked() || 
+			$form->get('close_month')->isClicked() || 
+			$form->get('activate_month')->isClicked()) {
 			
 			$Year = $form->getData();
 			$YearFromDate = $form->get('from_date')->getData();
@@ -53,8 +55,9 @@ class YearController extends Controller
 			if($NextYear instanceOf Year && $NextYear->getFromDate()->modify('-1 day') != $YearToDate) {
 				$errors[] = 'Brak ciągłości dat pomiędzy latami '.$YearName.' i '.$NextYear->getName().'.';} 
 									
-			$FMonths = $form->get('Months');
+			$FMonths = $form->get('SortedMonths');
 			foreach ($FMonths as $k=>$FMonth) {	
+				
 				$Month = $FMonth->getData();	
 				$MonthFromDate = $FMonth->get('from_date')->getData();
 				$MonthToDate   = $FMonth->get('to_date')->getData();	
@@ -79,11 +82,12 @@ class YearController extends Controller
 				$ActiveMonth = MonthQuery::create()->filterByYear($Year)->findOneByIsActive(1);					
 				
 				if ($form->get('close_month')->isClicked() && $FMonth->get('select')->getData()) {
+					
 					if( $PrevMonth instanceOf Month && !$PrevMonth->getIsClosed()) {
 						$errors[] = 'Poprzedni miesiąc nie jest zamknięty';}
 					if($Month->getIsClosed()) {	
 						$errors[] = 'Miesiąc jest już zamknięty';}							
-					if(count($errors) == 0) { 
+					if(empty($errors) ) { 
 						$Month->setIsActive(false)
 							  ->setIsClosed(true)
 							  ->save(); 
@@ -95,7 +99,8 @@ class YearController extends Controller
 					}	
 				}
 				
-				if ($form->get('activate_month')->isClicked() && $FMonth->get('select')->getData() == 1) {	
+				if ($form->get('activate_month')->isClicked() && $FMonth->get('select')->getData() == 1) {
+						
 					if($ActiveMonth instanceOf Month) { 
 						$errors[] = 'Rok posiada już aktywny miesiąc.';}
 					if($PrevMonth instanceOf Month && !$PrevMonth->getIsClosed() && !$PrevMonth->getIsActive())  {	
@@ -103,16 +108,17 @@ class YearController extends Controller
 					if($Month->getIsClosed()) {	
 						$errors[] = 'Miesiąc jest już zamknięty';}
 						
-					if(count($errors) == 0) { 
+					if(empty($errors) ) { 
 						$Month->setIsActive(true)->save(); 
 						$Year->setIsActive(true)->save(); 	
 						$refresh = true; 
 					}
 				} 
 			}
-			if(count($errors) == 0) {  
+			
+			if($form->get('save')->isClicked() && empty($errors) ) {  
 				$Year->save();
-				if($form->get('save')->isClicked()) { $redirect = true; }
+				$redirect = true; 
 			}
 		}
 				
@@ -121,6 +127,8 @@ class YearController extends Controller
 				'tab_id'  => $tab_id,
 				'year_id' => $Year->getId()) )); 			
 		}
+		
+		// Refresher to set select boxes empty
 		if($refresh) {
 			return $this->redirect($this->generateUrl('oppen_year_edit', array(
 				'year_id' => $Year->getId()) )); 			

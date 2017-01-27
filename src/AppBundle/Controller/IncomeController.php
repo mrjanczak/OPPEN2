@@ -236,7 +236,7 @@ class IncomeController extends Controller
 		$Project = $form->getData();
 		$Data[0]=array('SUM'=>array());
 		
-		foreach ($form->get('Incomes') as $FIncome) {
+		foreach ($form->get('SortedIncomes') as $FIncome) {
 			
 			$Income = $FIncome->getData();
 			$IncomeAcc = current(array_filter(array($Income->getIncomeAcc(),$Project->getIncomeAcc())));

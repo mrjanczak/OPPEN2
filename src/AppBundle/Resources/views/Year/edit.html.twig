@@ -4,6 +4,8 @@
 {% block content %}
 {{ form_start(form, {'method': 'post', attr:{ 'id':'Year-form'}}) }}
 
+{% set Year = form.vars.value %}
+
 <div class="content-header">
 	<div class='title'> Rok {{form.name.vars.value}} </div> 
 
@@ -20,21 +22,22 @@
 
 	<tr><td></td>
 		<td> {{ form_widget(form.name) }}</td>
-		<td class='c'>{% if form.is_active.vars.checked %} X {% endif %}</td>
-		<td class='c'>{% if form.is_closed.vars.checked %} X {% endif %}</td>
+		<td class='c'>{{ Year.isActive ? 'X' : '' }}</td>
+		<td class='c'>{{ Year.isActive ? 'X' : '' }}</td>
 		<td>{{ form_widget(form.from_date,{'attr':{'class':'date no_copy_link'}} ) }} </td>
 		<td>{{ form_widget(form.to_date,{'attr':{'class':'date no_copy_link'}} ) }}</td> 
 	</tr>
 
 	<tr><th></th><th>Okresy</th> <th>Aktywny</th> <th>Zamknięty</th><th>Od</th><th>Do</th>	</tr>	
 
-	{% for Month in form.Months %}
-	<tr><td> {{ form_widget(Month.select) }}</td>
-		<td> {{ form_widget(Month.name) }}  </td> 
-		<td class='c'>{% if Month.is_active.vars.checked %} X {% endif %} </td>
-		<td class='c'>{% if Month.is_closed.vars.checked %} X {% endif %} </td>
-		<td>{{ form_widget(Month.from_date,{'attr':{'class':'date no_copy_link'}} ) }} </td>
-		<td>{{ form_widget(Month.to_date,{'attr':{'class':'date no_copy_link'}} ) }}	 </td>
+	{% for MonthF in form.SortedMonths %}
+		{% set Month = MonthF.vars.value %}
+	<tr><td> {{ form_widget(MonthF.select) }}</td>
+		<td> {{ form_widget(MonthF.name) }}  </td> 
+		<td class='c'>{{ Month.isActive ? 'X' : '' }} </td>
+		<td class='c'>{{ Month.isClosed ? 'X' : '' }} </td>
+		<td>{{ form_widget(MonthF.from_date,{'attr':{'class':'date no_copy_link'}} ) }} </td>
+		<td>{{ form_widget(MonthF.to_date,{'attr':{'class':'date no_copy_link'}} ) }}	 </td>
 	</tr>
 	{% endfor %}
 		

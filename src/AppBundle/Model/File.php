@@ -18,7 +18,7 @@ class File extends BaseFile
     public function __toString()
     {	
 		$FCsym = $this->getFileCat()->getSymbol();
-        return (string) $FCsym.'|'.$this->__AccNo().' - '.$this->getName();
+        return (string) $FCsym.'|'.$this->__AccNo().' - '.substr($this->getName(),0,35);
     }	
 
     public function getPfxStreet()

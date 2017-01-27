@@ -115,22 +115,16 @@ class ProjectType extends AbstractType
 								->filterByAsBankAcc(1)
 								->filterByYear($this->Year)					
 								->orderByAccNo() ))
-			/*					
-				->add('Tasks', 'collection', array(
-					'type' => new TaskType(),
-					'label' => 'Zadania',
-					'allow_add'     => true,
-					'allow_delete'  => true )) */
 			; 
 		}   	  
 								
 		if (in_array($this->tab_id, array(2,3,4))) {
 		  $builder    	  
-			->add('Incomes', 'collection', array(
+			->add('SortedIncomes', 'collection', array(
 				'type'          => new IncomeType($this->Year, false, 
 					$this->securityContext, $this->disable_accepted_docs) ))
 				
-			->add('Costs', 'collection', array(
+			->add('SortedCosts', 'collection', array(
 				'type'          => new CostType($this->Year, null, false, 
 					$this->securityContext, $this->disable_accepted_docs) ))
 				
@@ -168,12 +162,15 @@ class ProjectType extends AbstractType
 			->add('downloadTransfers', 'submit', array('label' => 'Przelwy (csv)'));
 		}	
 		
-		if (in_array($this->tab_id, array(2,3))) {			
+		if (in_array($this->tab_id, array(2,3))) {	
+					
 			$Templates = TemplateQuery::create()
 				->filterByAsBooking(true)
 				->_or()
 				->filterByAsTransfer(true)
+				->orderByName()
 				->find();
+				
 			foreach($Templates as $Tmp) {
 				$builder->add($Tmp->getSymbol(), 'checkbox', array('label' => $Tmp->getName().' ('.$Tmp->getSymbol().')','required'  => false, 'mapped' => false));}
 		}

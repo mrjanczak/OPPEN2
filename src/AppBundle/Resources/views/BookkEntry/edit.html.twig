@@ -22,7 +22,8 @@
 	{% endfor %}			
 	</div>		
 </div>
-
+	{{ form_errors(form) }}
+	
 	{{ form_row(form.side) }} 
 	
 	{{ form_row(form.value) }} 
@@ -33,8 +34,6 @@
 	{{ form_row(form.FileLev1) }}
 	{{ form_row(form.FileLev2) }}
 	{{ form_row(form.FileLev3) }}
-			
-	{{ form_errors(form) }}	
 
 <div class="h">{{ form_rest(form) }}</div>
 

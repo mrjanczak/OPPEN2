@@ -20,13 +20,12 @@
 	{% endfor %}			
 	</div>		
 </div>
+	{{ form_errors(form) }}
 
 	{{ form_row(form.is_accepted) }} 
 	{{ form_row(form.bookking_date,{'attr':{'class':'date'}}) }}
 	{{ form_row(form.desc,{'attr':{'class':'text'}} ) }} 
 	{{ form_row(form.Project) }}
-			
-	{{ form_errors(form) }}	
 
 <div class="h">
 	{{ form_rest(form) }}

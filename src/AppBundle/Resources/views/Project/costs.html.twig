@@ -8,12 +8,12 @@
 		<th>Łącznie</th>
 		
 		{% set totalIncome = 0 %}
-		{% for I, IncomeF in form.Incomes %} <!-- if IncomeF.vars.value.show == 1 -->
+		{% for I, IncomeF in form.SortedIncomes %} <!-- if IncomeF.vars.value.show == 1 -->
 			{% set Income = IncomeF.vars.value %}
 			{% set totalIncome = totalIncome + Income.value %}
 		{% endfor %}
 
-		{% for I, IncomeF in form.Incomes if IncomeF.vars.value.show == 1 %}
+		{% for I, IncomeF in form.SortedIncomes if IncomeF.vars.value.show == 1 %}
 			{% set Income = IncomeF.vars.value %}
 			<th></th>
 			<th class='income_label' data-income="{{I}}">
@@ -25,14 +25,15 @@
 	</tr>	
 
 {% set totalCost = 0 %}
-{% for C, CostF in form.Costs %}
-
+{% for C, CostF in form.SortedCosts %}
+											
 	{% set Cost = CostF.vars.value %}
 	{% set Cval = Cost.value %}		
 	{% set totalCost = totalCost + Cval %}	
 		
 	{% set CDsum = 0 %}	
-	{% for CostDoc in Cost.CostDocs %}
+	{% for CostDocF in CostF.SortedCostDocs %}
+		{% set CostDoc = CostDocF.vars.value %}
 		{% set CDsum = CDsum + CostDoc.value %}
 	{% endfor %}	
 	
@@ -54,11 +55,11 @@
 			<div>({{ CDsum|number_format(2,',','') }})</div>				
 		</td>
 	
-		{% for CI, CostIncomeF in CostF.CostIncomes if CostIncomeF.vars.value.Income.show == 1 %}
+		{% for CI, CostIncomeF in CostF.SortedCostIncomes if CostIncomeF.vars.value.Income.show == 1 %}
 		
 			{% set CDIsum = 0 %}	
-			{% for CostDocF in CostF.CostDocs %}
-				{% for CDI, CostDocIncomeF in CostDocF.CostDocIncomes if CI == CDI %}
+			{% for CostDocF in CostF.SortedCostDocs %}
+				{% for CDI, CostDocIncomeF in CostDocF.SortedCostDocIncomes if CI == CDI %}
 					{% set CostDocIncome = CostDocIncomeF.vars.value %}
 					{% set CDIsum = CDIsum + CostDocIncome.value %}
 				{% endfor %}
@@ -91,7 +92,7 @@
 					<td colspan="4">{%trans%} labels.common.select_deselect {%endtrans%}</td></tr>
 	<tr class="even"><td colspan="100%"><div class="s"></div></td></tr>
 		
-	{% for CostDocF in CostF.CostDocs %}
+	{% for CostDocF in CostF.SortedCostDocs %}
 	
 		{% set CostDoc = CostDocF.vars.value %}
 		{% set Doc = CostDoc.Doc %} 
@@ -106,7 +107,7 @@
 				</td> 
 		<td> {{ form_widget(CostDocF.value, {'attr' : {'class' : 'value'}}) }}  </td> 
 												  
-		{% for CostDocIncomeF in CostDocF.CostDocIncomes if CostDocIncomeF.vars.value.Income.show == 1 %}
+		{% for CostDocIncomeF in CostDocF.SortedCostDocIncomes if CostDocIncomeF.vars.value.Income.show == 1 %}
 		<td>
 			{% if loop.first %} <a href="" class="copy_values"> >> </a> 
 			{% else %}  <a href="" class="switch_values"> <> </a> 
@@ -137,7 +138,7 @@
 			 <div class= {{ ratio <= 100.01 ? "'green b'" : "'red b'"}} > {{ ratio|number_format(0) }}% </div>
 		</td>				
 				
-		{% for I, IncomeF in form.Incomes if IncomeF.vars.value.show == 1%} 
+		{% for I, IncomeF in form.SortedIncomes if IncomeF.vars.value.show == 1%} 
 			{% set Income = IncomeF.vars.value %}		
 			{% set totalCI = 0 %}
 			{% for CostIncome in Income.CostIncomes %}  <!-- if Income.show == 1 -->
@@ -184,7 +185,7 @@
 	{% for Symbol, Tmp in BookingTemplates  if Tmp.group == 'Cost' %} 		  
 	<tr><td></td> 	
 		<td> {{ form_widget(form[Symbol], {'attr': {'class': 'checkbox'}}) }} </td>
-		<td> {{ form_label(form[Symbol]) }} </td>
+		<td colspan="100%"> {{ form_label(form[Symbol]) }} </td>
 	</tr>
 	{% endfor %}
 	<tr class="even">
@@ -203,7 +204,7 @@
 	{% for Symbol, Tmp in TransferTemplates %} 		  
 	<tr><td></td> 	
 		<td> {{ form_widget(form[Symbol], {'attr': {'class': 'checkbox'}}) }} </td>
-		<td> {{ form_label(form[Symbol]) }} </td>
+		<td  colspan="100%"> {{ form_label(form[Symbol]) }} </td>
 	</tr>
 	{% endfor %}
 	

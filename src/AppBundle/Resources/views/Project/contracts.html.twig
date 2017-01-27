@@ -10,7 +10,7 @@
 	</tr>	
 
 {% set Totalsum = 0 %}
-{% for C, CostF in form.Costs %}
+{% for C, CostF in form.SortedCosts %}
 	{% set Cost = CostF.vars.value %}
 	{% set sumGross = 0 %}
 	<tr class='even' >
@@ -23,7 +23,7 @@
 					<td >{%trans%} labels.common.select_deselect {%endtrans%}</td></tr>	
 	<tr class="even"><td colspan="100%"><div class="s"></div></td></tr>	
 				
-	{% for ContractF in CostF.Contracts %}
+	{% for ContractF in CostF.SortedContracts %}
 		{% set Contract = ContractF.vars.value %}
 	<tr><td></td>
 		<td > {{ form_widget(ContractF.select, {'attr': {'class': 'item'}}) }} </td>

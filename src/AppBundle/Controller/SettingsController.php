@@ -153,7 +153,9 @@ class SettingsController extends Controller
 				break;
 		}
 		//*****************************************************
-		if ($form) {$form->handleRequest($request);}
+		if ($form) {
+			$form->handleRequest($request);
+		}
 		//*****************************************************
 		$errors = array();
 		$refresh = false;

@@ -103,18 +103,19 @@ class ProjectController extends Controller
    
     public function editAction($project_id, $tab_id, $year_id,  Request $request)  {	
 		
-		$Project = ProjectQuery::create()->findPk($project_id);
-		$Year = YearQuery::create()->findPk($year_id);
-		$CostFileCat = null;
+		
 		
 		$buttons = array('cancel','save');
 		$tabs = array(1=>'desc');
 				
-		if(!($Project instanceOf Project)) {
+		if($project_id == 0) {
+			$Year = YearQuery::create()->findPk($year_id);
 			$Project = new Project();
 			$Project->setYear($Year)
-				->setStatus(-1);
+					->setStatus(-1);
+			$CostFileCat = null;
 		} else { 
+			$Project = ProjectQuery::create()->findPk($project_id);
 			$Year = $Project->getYear();
 			$CostFileCat = $Project->getCostFileCat();
 			$tabs = array(1=>'desc', 2=>'incomes', 3=>'costs', 4=>'contracts', 5=>'documents');		
@@ -136,11 +137,11 @@ class ProjectController extends Controller
 		$Params = ParameterQuery::create()->getAll();	
 				
 		$BookingTemplates = array();
-		$Templates = TemplateQuery::create()->findByAsBooking(true);
+		$Templates = TemplateQuery::create()->orderByName()->findByAsBooking(true);
 		foreach($Templates as $Template) {
 			$BookingTemplates[$Template->getSymbol()] = $Parser->parse($Template->getData());}		
 		
-		$Templates = TemplateQuery::create()->findByAsTransfer(true);
+		$Templates = TemplateQuery::create()->orderByName()->findByAsTransfer(true);
 		foreach($Templates as $Template) {
 			$TransferTemplates[$Template->getSymbol()] = $Parser->parse($Template->getData());}
 		
@@ -152,8 +153,8 @@ class ProjectController extends Controller
 		if (($tab_id == 1) && ($File instanceOf File)) {
 			
 			$accNo_ = array('incomes'=>'7*', 'costs'=>'5*');
-			foreach ($accNo_ as $key => $accNo) {
-				$total = BookkEntryQuery::create()
+			foreach ($accNo_ as $col => $accNo) {
+				$sum = BookkEntryQuery::create()
 					->select(array('total'))
 					->withColumn('SUM(bookk_entry.value)', 'total')
 					->filterByAccNo( $accNo )	
@@ -162,9 +163,27 @@ class ProjectController extends Controller
 						->filterByIsAccepted(1)  
 					->endUse()
 					->findOne();
-									
-				$balance[$key] = $total;
-			}
+					
+				$balance[$col] = $sum;
+			}				
+			
+			// Koszty administracyjne - dekretacje posiadające 1-szą kartotekę z KA 
+			$KA = FileCatQuery::create()->findOneBySymbolAndYear('KA', $Year);
+			if($Project->getCostFileCat() == $KA) {
+				
+				$balance['costs'] += BookkEntryQuery::create()
+					->select(array('total'))
+					->withColumn('SUM(bookk_entry.value)', 'total')
+					->filterByAccNo( $accNo_['costs'] )	
+					->useAccountQuery()
+						->filterByFileCatLev1( $KA )
+					->endUse()				
+					->useBookkQuery()					
+						->filterByIsAccepted(1)  
+					->endUse()
+					->findOne();				
+			}					
+				
 			$balance['result'] = $balance['incomes']-$balance['costs'];
 		}
 		
@@ -177,6 +196,7 @@ class ProjectController extends Controller
 			$as_bookk_accept = true;
 						
 			if ($request->isMethod('POST') ) {
+				
 				$ProjectR = $request->request->get('project');
 				$DocListR = $ProjectR['DocList'];
 				$handleRequest = false;
@@ -191,24 +211,33 @@ class ProjectController extends Controller
 				$desc = $DocListR['desc'];
 				$page = $DocListR['page'];
 				
-				// Bookks have to be accepted before form creation to include their current status
-				if(array_key_exists('Docs',$DocListR)) {					
-					foreach($DocListR['Docs'] as $DocR) {
-						if(array_key_exists('Bookks',$DocR)) {	
-							foreach($DocR['Bookks'] as $BookkR) {
-								if(array_key_exists('is_accepted',$BookkR)) {
-									$Bookk = BookkQuery::create()->findPk($BookkR['id']);
-									if(array_key_exists('deleteBookks',$DocListR)) {
-										$Bookk->delete(); }	
-									if(array_key_exists('acceptBookks',$DocListR)) {
-										$Bookk->setIsAccepted(1)->save(); }
+				// Bookks have to be accepted before form creation to enable/disable it in form
+				
+				if(array_key_exists('acceptBookks',$DocListR)) {
+					
+					if(array_key_exists('Docs',$DocListR)) {					
+						foreach($DocListR['Docs'] as $DocR) {
+							
+							if(array_key_exists('SortedBookks',$DocR)) {	
+								foreach($DocR['SortedBookks'] as $BookkR) {
+									
+									if(array_key_exists('is_accepted',$BookkR)) {
+										
+										$Bookk = BookkQuery::create()->findPk($BookkR['id']);
+										
+										if($Bookk->getIsAccepted() == false) {
+											$Bookk->setIsAccepted(true)->save(); }
+											
+										if($Bookk->getIsAccepted() && $Bookk->getNo() == NULL) {
+											$Bookk->setNewNo()->save(); }											
+									} 
 								} 
 							} 
 						} 
-					} 
-				} 				
-			}
-			else { 
+					}
+				}
+				 				
+			} else {  // not POST
 				$showBookks = -1;				
 				$desc = '*';
 				$page = 1;			
@@ -242,12 +271,11 @@ class ProjectController extends Controller
 				$showBookks, $desc, $page, $as_doc_select, $as_bookk_accept);
 		}
 		
-		// ------------------------------
 		// Project form
-		// ------------------------------
 		$securityContext = $this->get('security.context');
 		$disable_accepted_docs = ParameterQuery::create()->getOneByName('disable_accepted_docs');
 		//$this->container->getParameter('disable_accepted_docs');
+		
 		$form = $this->createForm(new ProjectType($tab_id, $Year, 
 			$securityContext, $disable_accepted_docs), $Project); 
 		 				
@@ -287,8 +315,8 @@ class ProjectController extends Controller
 				
 				// Save incomes
 				if ($tab_id == 2 ) {
-					foreach($Project->getIncomes() as $Income) {
-						foreach($Income->getIncomeDocs() as $IncomeDoc) {
+					foreach($Project->SortedIncomes as $Income) {
+						foreach($Income->SortedIncomeDocs as $IncomeDoc) {
 							$IncomeDoc->save();
 						}
 					}
@@ -296,25 +324,31 @@ class ProjectController extends Controller
 				
 				// Check & Save costs
 				if ($tab_id == 3 ) {
-					foreach($Project->getCosts() as $Cost) {
-						foreach($Cost->getCostIncomes() as $CostIncome) {
+					foreach($Project->SortedCosts as $Cost) {
+						foreach($Cost->SortedCostIncomes as $CostIncome) {
 							$CostIncome->save();
 						}
-						foreach($Cost->getCostDocs() as $CostDoc) {
+						foreach($Cost->SortedCostDocs as $CostDoc) {
 							$CDIsum = 0;
-							foreach($CostDoc->getCostDocIncomes() as $CostDocIncome) {
-								$CDIsum += $CostDocIncome->getValue();	}
+							foreach($CostDoc->SortedCostDocIncomes as $CostDocIncome) {
+								$CDIsum += $CostDocIncome->getValue();	
+							}
 							if($CDIsum <> $CostDoc->getValue()) {
-								$msg['errors'][] = 'Łączna kwota nie odpowiada cząstkowym dla dokumentu '.$CostDoc->getDoc()->getDocNo();}
-							else {$CostDoc->save();}
+								$msg['errors'][] = 'Łączna kwota nie odpowiada cząstkowym dla dokumentu '.$CostDoc->getDoc()->getDocNo();
+							} else {								
+								$CostDoc->save();
+								foreach($CostDoc->SortedCostDocIncomes as $CostDocIncome) {
+									$CostDocIncome->save();	
+								}								
+							}
 						}
 					}
 				}
 				
 				// Re-calculate Tax & Netto in all Contracts & Save
 				if ($tab_id == 4) {
-					foreach($Project->getCosts() as $Cost) {
-						foreach($Cost->getContracts() as $Contract) {
+					foreach($Project->SortedCosts as $Cost) {
+						foreach($Cost->SortedContracts as $Contract) {
 															
 							$gross = $Contract->getGross();
 							$cost_coef = $Contract->getCostCoef();
@@ -438,6 +472,7 @@ class ProjectController extends Controller
 			'DocCat_asIncome' => $DocCat_asIncome,
 			'DocCat_asCost' => $DocCat_asCost,
 			'FileCat_asContractor' => $FileCat_asContractor,
+			
 			'BookingTemplates' => $BookingTemplates,
 			'TransferTemplates' => $TransferTemplates, ));
 	}		

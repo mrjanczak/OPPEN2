@@ -526,7 +526,6 @@ class ReportController extends Controller
 								$value +=  $sign * $BookkEntries[0];
 							} 
 							
-							
 								if($symbol_pfx == 'p') { //pasywa 
 									$value = -$value; 
 								}																

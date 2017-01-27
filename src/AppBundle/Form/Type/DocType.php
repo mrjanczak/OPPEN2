@@ -96,12 +96,12 @@ class DocType extends AbstractType
 		else
 		{
 			$builder
-				->add('Bookks', 'collection', array('label' => 'Dekretacje',
-					'type'          => new BookkType(
-							$this->Year, 
-							false,	
-							$this->security_context, 
-							$this->disable_accepted_docs),
+				->add('SortedBookks', 'collection', array('label' => 'Dekretacje',
+					'type' => new BookkType(
+									$this->Year, 
+									false,	
+									$this->security_context, 
+									$this->disable_accepted_docs),
 				))
 			;   
 		}							

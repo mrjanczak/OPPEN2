@@ -59,8 +59,8 @@
 				{{ Doc.DocNo }} </a> 
 				{{ Doc.desc }}
 				{% if Doc.DocCat.AsCost == 1 %}
-					{% if Doc.paymentDate is not empty %} <b> płatność {{ Doc.paymentDate|date("Y/m/d") }} </b> 
-					{% else %} <span class="red"> {%trans%} labels.documents.no_payment_date {%endtrans%} </span> {% endif %}
+					 <b> {{ (Doc.paymentDate is not empty ? Doc.paymentDate|date("Y/m/d") : '<span class="red">Brak daty płat.')|raw }}  </span></b> / 
+					 <b> {{ (Doc.bookkingDate is not empty ? Doc.bookkingDate|date("Y/m/d") : '<span class="red">Brak daty ksieg.')|raw }}  </span></b> 
 				{% endif %}
 				 
 				
@@ -68,7 +68,7 @@
 	</tr>
 	{% if not DocList.as_doc_select and DocList.as_bookk_accept %} 
 	
-		{% for BookkF in DocF.Bookks %}
+		{% for BookkF in DocF.SortedBookks %}
 			{% set Bookk = BookkF.vars.value %}	
 			{% set project_id = Bookk.Project is not empty ?  Bookk.Project.id : 0 %}
 			
@@ -82,7 +82,7 @@
 		</td>
 				{% for side in 1..2 %}
 		<td class="bookk_side {% if side == 1 %} right-border {% endif %} " > 
-					{% for BookkEntry in Bookk.BookkEntries if BookkEntry.side == side %}
+					{% for BookkEntry in Bookk.SortedBookkEntries if BookkEntry.side == side %}
 			<div class="value">{{ BookkEntry.value|number_format(2,',',' ') }} </div><div class="accNo">{{ BookkEntry.accNo }} </div> 
 					{% endfor %}
 		</td>

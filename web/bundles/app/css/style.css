@@ -171,17 +171,17 @@ div.form-row div label {
 	margin: 0 10px 0 0;
 }
 div.form-column {
-	width: 320px;
+	width: 350px;
 	margin:5px;
 	display: inline-block;
 }
-div.w50 {
+div.w50, input.w50 {
 	width:50px;
 }
-div.w100 {
+div.w100, input.w100 {
 	width:100px;
 }
-div.w200 {
+div.w200, input.w200 {
 	width:200px;
 }
 div.w300, input.w300, textarea.w300, td.w300 {

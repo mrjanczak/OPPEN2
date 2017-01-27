@@ -165,6 +165,7 @@ class CostController extends Controller
         $securityContext = $this->get('security.context');
         $disable_accepted_docs = ParameterQuery::create()->getOneByName('disable_accepted_docs');
         //$this->container->getParameter('disable_accepted_docs');
+        
         $form = $this->createForm(new DocListType($Year, null, false, true, 
             $securityContext, $disable_accepted_docs), $DocList);   
         $return = 'doc_list';
@@ -273,19 +274,27 @@ class CostController extends Controller
                        'IF' =>array());
         $msg['Data'] = $Data;
                        
-        foreach ($form->get('Costs') as $FCost) {
+        foreach ($form->get('SortedCosts') as $FCost) {
             
             $Cost = $FCost->getData();
             $CostAcc = current(array_filter(array($Cost->getCostAcc(),$Project->getCostAcc())));
             $CostFile = $Cost->getFile();
             
-            foreach ($FCost->get('CostDocs') as $FCostDoc) {
+            foreach ($FCost->get('SortedCostDocs') as $FCostDoc) {
             
                 if(($FCostDoc->get('select')->getData()) && 
                     ($FCostDoc->getData()->getValue() > 0)) {
                     
                     $CostDoc = $FCostDoc->getData();
                     $gross = $CostDoc->getValue();
+                    
+                    // Substract hidden columns from $gross
+                    foreach($CostDoc->getCostDocIncomes() as $CostDocIncome)  {
+                        if(($CostDocIncome->getValue() > 0) && (!$CostDocIncome->getIncome()->getShow()) ) {
+							$gross -= $CostDocIncome->getValue();
+						}
+                    }                    
+                    
                     $Doc = $CostDoc->getDoc();
                     $D = $Doc->getId();
                     if(!($Doc instanceOf Doc)) { 
@@ -319,6 +328,7 @@ class CostController extends Controller
                     
                     if(!array_key_exists(0,$Data[0]['SUM'])) { 
                         $Data[0]['SUM'][0] = array('gross'=>0,'netto'=>0,'tax'=>0, 'Doc'=> null);}
+                        
                     $Data[0]['SUM'][0]['gross']    += $gross;
                     $Data[0]['SUM'][0]['netto']    += $netto;
                     $Data[0]['SUM'][0]['tax']      += $tax;
@@ -341,11 +351,13 @@ class CostController extends Controller
                     $Data[$D]['SUM'][0]['GroupDoc_Desc']= $CostDoc->getDesc();
                                                                 
                     $CDIs = array();
-                    foreach($CostDoc->getCostDocIncomes() as $CostDocIncome) {
-                        if($CostDocIncome->getValue() > 0) {
-                                $CDIs[] = $CostDocIncome;
-                                $LastCDI = $CostDocIncome;
-                        }
+                    foreach($CostDoc->getCostDocIncomes() as $CostDocIncome) 
+                    {
+                        if(($CostDocIncome->getValue() > 0) && ($CostDocIncome->getIncome()->getShow()) ) // option to allow partial payment
+						{
+									$CDIs[] = $CostDocIncome;
+									$LastCDI = $CostDocIncome;
+						}
                     }
                     
                     $nettoSum = 0;
@@ -440,8 +452,8 @@ class CostController extends Controller
         
         $i=0;
         $contents = '';     
-        foreach ($form->get('Costs') as $FCost) {       
-            foreach ($FCost->get('CostDocs') as $FCostDoc) {
+        foreach ($form->get('SortedCosts') as $FCost) {       
+            foreach ($FCost->get('SortedCostDocs') as $FCostDoc) {
                 if(($FCostDoc->get('select')->getData()) && 
                     ($FCostDoc->getData()->getValue() > 0)) {
                         

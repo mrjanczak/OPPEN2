@@ -55,7 +55,7 @@
 		</div>
 
 		<div class='tasks_list'>	
-		{% for Task in Project.Tasks %}
+		{% for Task in Project.SortedTasks %}
 			
 			{{ include('AppBundle:Task:view.html.twig') }}
 

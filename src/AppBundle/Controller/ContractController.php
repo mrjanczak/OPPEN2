@@ -147,9 +147,10 @@ class ContractController extends Controller
 		$operaion_date = $form->get('operation_date')->getData();
 		if(!$operaion_date) {$operaion_date = new \DateTime('now');}		
 		
-		foreach ($form->get('Costs') as $FCost) {
-			foreach ($FCost->get('Contracts') as $FContract) {
+		foreach ($form->get('SortedCosts') as $FCost) {
+			foreach ($FCost->get('SortedContracts') as $FContract) {
 				if($FContract->get('select')->getData() == 1) {
+					
 					$Contract = $FContract->getData();
 					$File = $Contract->getFile();
 					$Cost = $Contract->getCost();
@@ -210,8 +211,8 @@ class ContractController extends Controller
 		*/
 		
 		$pages = array();
-		foreach ($form->get('Costs') as $FCost) {
-			foreach ($FCost->get('Contracts') as $FContract) {
+		foreach ($form->get('SortedCosts') as $FCost) {
+			foreach ($FCost->get('SortedContracts') as $FContract) {
 				if($FContract->get('select')->getData() == 1) {
 					$Contract = $FContract->getData();
 					$Template = $Contract->getTemplate();
@@ -366,8 +367,8 @@ class ContractController extends Controller
 			
 		$payment_period =  $form->get('payment_period')->getData();
 		
-		foreach ($form->get('Costs') as $FCost) {
-			foreach ($FCost->get('Contracts') as $FContract) {
+		foreach ($form->get('SortedCosts') as $FCost) {
+			foreach ($FCost->get('SortedContracts') as $FContract) {
 				if($FContract->get('select')->getData() == 1) {
 					$Contract = $FContract->getData();	
 					$Contract->setPaymentPeriod($payment_period)->save();
@@ -381,8 +382,8 @@ class ContractController extends Controller
 			
 		$event_desc =  $form->get('event_desc')->getData();
 		
-		foreach ($form->get('Costs') as $FCost) {
-			foreach ($FCost->get('Contracts') as $FContract) {
+		foreach ($form->get('SortedCosts') as $FCost) {
+			foreach ($FCost->get('SortedContracts') as $FContract) {
 				if($FContract->get('select')->getData() == 1) {
 					$Contract = $FContract->getData();	
 					$Contract->setEventDesc($event_desc)->save();

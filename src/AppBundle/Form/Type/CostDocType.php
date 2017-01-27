@@ -28,7 +28,7 @@ class CostDocType extends AbstractType
             ->add('value', 'number', array('scale' => 2, 'required' => false)) 	    
             ->add('desc', 'text', array('label' => 'Opis', 'required' => false))
             			
-			->add('CostDocIncomes', 'collection', array(
+			->add('SortedCostDocIncomes', 'collection', array(
 				'type'          => new CostDocIncomeType(),
 				'by_reference'  => false))
             

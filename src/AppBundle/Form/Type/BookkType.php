@@ -78,7 +78,7 @@ class BookkType extends AbstractType
 						'empty_value' => 'Brak projektu',
 						'query' => ProjectQuery::create()->filterByYear($this->Year)->orderByName() ));				
 				
-			}			
+			} 				
 		});					
     }
 

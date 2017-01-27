@@ -12,6 +12,8 @@ use AppBundle\Model\ParameterQuery;
 class Doc extends BaseDoc
 {
     protected $Bookks;
+    
+    public $SortedBookks;
 
     public function __construct()
     {
@@ -109,51 +111,13 @@ class Doc extends BaseDoc
 		return $this->setRegNo($tmp);
 	}
 	
-    public function getBookks($criteria = null, PropelPDO $con = null)
-    {
-        $partial = $this->collBookksPartial && !$this->isNew();
-        if (null === $this->collBookks || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collBookks) {
-                // return empty collection
-                $this->initBookks();
-            } else {
-                $collBookks = BookkQuery::create(null, $criteria)
+    public function getSortedBookks($criteria = null, PropelPDO $con = null)
+    {	
+		$query = BookkQuery::create(null, $criteria)
                     ->filterByDoc($this)
-                    ->orderByBookkingDate()
-                    ->find($con);
-                if (null !== $criteria) {
-                    if (false !== $this->collBookksPartial && count($collBookks)) {
-                      $this->initBookks(false);
-
-                      foreach ($collBookks as $obj) {
-                        if (false == $this->collBookks->contains($obj)) {
-                          $this->collBookks->append($obj);
-                        }
-                      }
-
-                      $this->collBookksPartial = true;
-                    }
-
-                    $collBookks->getInternalIterator()->rewind();
-
-                    return $collBookks;
-                }
-
-                if ($partial && $this->collBookks) {
-                    foreach ($this->collBookks as $obj) {
-                        if ($obj->isNew()) {
-                            $collBookks[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collBookks = $collBookks;
-                $this->collBookksPartial = false;
-            }
-        }
-
-        return $this->collBookks;
-    }
+                    ->orderByBookkingDate();
 	
+        return $this->getBookks($query, $con);
+    }	
     
 }

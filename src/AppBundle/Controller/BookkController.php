@@ -178,199 +178,207 @@ class BookkController extends Controller
 							return $msg;
 						}
 						
-						$Doc = $Data2['Doc'][$TmpB['Doc']]; 
-						if(!($Doc instanceOf Doc)) {
-							$msg['errors'][] = 'Dokument '.$TmpB['Doc'].' nie istnieje'.$sfx; 
-							return $msg;
-						}
-						$DocYear = $Doc->getMonth()->getYear();
 						
-						$SelDocFile_Name = '';
-						if(array_key_exists('SelDocFile', $B['SUM'][0])) {
-							$SelDocFile = $B['SUM'][0]['SelDocFile'];
-							if($SelDocFile instanceOf File) {
-								$SelDocFile_Name = $SelDocFile->getName();
+						
+						if(($TmpB['Doc'] != 'SelectedDoc') 
+							|| (!array_key_exists('OnlyDocCat',$TmpB)) 
+							|| ($SelDoc->getDocCat()->getSymbol() == $TmpB['OnlyDocCat'])) {
+								
+						
+						
+							$Doc = $Data2['Doc'][$TmpB['Doc']]; 
+							if(!($Doc instanceOf Doc)) {
+								$msg['errors'][] = 'Dokument '.$TmpB['Doc'].' nie istnieje'.$sfx; 
+								return $msg;
 							}
-						}
-						
+							$DocYear = $Doc->getMonth()->getYear();
 							
-						$GroupFile_Name = '';	
-						if(array_key_exists('GroupFile', $B['SUM'][0])) {
-							$GroupFile = $B['SUM'][0]['GroupFile'];
-								if($GroupFile instanceOf File) {
-									$GroupFile_Name = $GroupFile->getName();}
-						}
+							$SelDocFile_Name = '';
+							if(array_key_exists('SelDocFile', $B['SUM'][0])) {
+								$SelDocFile = $B['SUM'][0]['SelDocFile'];
+								if($SelDocFile instanceOf File) {
+									$SelDocFile_Name = $SelDocFile->getName();
+								}
+							}
+								
+							$GroupFile_Name = '';	
+							if(array_key_exists('GroupFile', $B['SUM'][0])) {
+								$GroupFile = $B['SUM'][0]['GroupFile'];
+									if($GroupFile instanceOf File) {
+										$GroupFile_Name = $GroupFile->getName();}
+							}
 
-						$ID_desc = '';	
-						if(array_key_exists('ID_desc', $B['SUM'][0])) {
-							$ID_desc = $B['SUM'][0]['ID_desc'];
-						}
+							$ID_desc = '';	
+							if(array_key_exists('ID_desc', $B['SUM'][0])) {
+								$ID_desc = $B['SUM'][0]['ID_desc'];
+							}
 
-						$GroupDoc_Desc = '';	
-						if(array_key_exists('GroupDoc_Desc', $B['SUM'][0])) {
-							$GroupDoc_Desc = $B['SUM'][0]['GroupDoc_Desc'];}
-																
-						$desc = $TmpB['desc'];
-						$desc = str_replace('__Doc_desc__',        $Doc->getDesc(), $desc);
-						$desc = str_replace('__Doc_no__',          $Doc->getDocNo(), $desc);
-						$desc = str_replace('__SelDocFile_Name__', $SelDocFile_Name, $desc);
-						$desc = str_replace('__SelDoc_No__',       $SelDoc_No, $desc);
-						$desc = str_replace('__GroupFile_Name__',  $GroupFile_Name, $desc);
-						$desc = str_replace('__GroupDoc_Desc__',   $GroupDoc_Desc, $desc);
-						$desc = str_replace('__YY__',              $payment_date->format('y'), $desc);
-						$desc = str_replace('__MM__',              $payment_date->format('m'), $desc);
-						$desc = str_replace('__Project_Name__',    $Project_Name, $desc);
-						$desc = str_replace('__ID_desc__',         $ID_desc, $desc);
-						
-						$Bookk = new Bookk();	
-						$Bookk->setDoc($Doc);
-						$Bookk->setDesc($desc);						
-						$Bookk->setProject($Project);
-						
-						if($payment_date != null) {
-							$bookking_date = $payment_date; }
-						else {
-							$bookking_date = $Doc->getBookkingDate();
-							if($bookking_date == null) {
-								$msg['errors'][] = 'Dokument '.$TmpB['Doc'].' nie posiada daty księgowania';}
-						}
-						$Bookk->setBookkingDate($bookking_date);
-						
-						foreach($TmpB['BEs'] as $TmpBEid => $TmpBE) {
-							if(!array_key_exists($TmpBE['cols'],$B)) {
-								$msg['errors'][] = 'Metoda '.$TmpBE['cols'].' jest niedostępna'.$sfx; 
-								return $msg;}
+							$GroupDoc_Desc = '';	
+							if(array_key_exists('GroupDoc_Desc', $B['SUM'][0])) {
+								$GroupDoc_Desc = $B['SUM'][0]['GroupDoc_Desc'];}
+																	
+							$desc = $TmpB['desc'];
+							$desc = str_replace('__Doc_desc__',        $Doc->getDesc(), $desc);
+							$desc = str_replace('__Doc_no__',          $Doc->getDocNo(), $desc);
+							$desc = str_replace('__SelDocFile_Name__', $SelDocFile_Name, $desc);
+							$desc = str_replace('__SelDoc_No__',       $SelDoc_No, $desc);
+							$desc = str_replace('__GroupFile_Name__',  $GroupFile_Name, $desc);
+							$desc = str_replace('__GroupDoc_Desc__',   $GroupDoc_Desc, $desc);
+							$desc = str_replace('__YY__',              $payment_date->format('y'), $desc);
+							$desc = str_replace('__MM__',              $payment_date->format('m'), $desc);
+							$desc = str_replace('__Project_Name__',    $Project_Name, $desc);
+							$desc = str_replace('__ID_desc__',         $ID_desc, $desc);
 							
-							foreach($B[$TmpBE['cols']] as $BEid => $BE) {	
-								if(($TmpBE['cols'] == 'SUM' && $BEid == 0) || 
-								   ($TmpBE['cols'] != 'SUM' && $BEid > 0)) {
-									
-									$sfx2 = $sfx.' |TmpBEi'.$TmpBEid.'|BE_id'.$BEid;
-									
-									//side
-									$side = $TmpBE['side'];
-									//value
-									$Data2['value'] = array();
-									foreach(array('gross','netto','tax') as $value) {
-										if(array_key_exists($value, $BE)) {
-											$Data2['value'][$value] = $BE[$value];}}
-									if(!array_key_exists($TmpBE['value'], $Data2['value'])) {
-										$msg['errors'][] = 'Wartość '.$TmpBE['value'].' jest niedostępna'.$sfx2; 
-										return $msg;
-									}	
-									$value = $Data2['value'][$TmpBE['value']];
-									
-									// Account
-									$Data2['Account'] = array();
- 									if(array_key_exists('GroupAcc', $B['SUM'][0])) {
-										$Data2['Account']['GroupAcc'] = $B['SUM'][0]['GroupAcc'];
-									}							
-									
-									// CommitAcc & TaxCommitAcc is searched in year of Doc
-									if(array_key_exists('CommitAcc', $B['SUM'][0])) {
-										$CommitAcc = $B['SUM'][0]['CommitAcc'];
-										if(($CommitAcc instanceOf Account) && 
-										   ($CommitAcc->getYear() != $DocYear)) {		
-											$CommitAcc = AccountQuery::create()
-												->filterByYear($DocYear )
-												->filterByAccNo($CommitAcc->getAccNo())
-												->findOne();
-										}
-										$Data2['Account']['CommitAcc'] = $CommitAcc;
-									}	
+							$Bookk = new Bookk();	
+							$Bookk->setDoc($Doc);
+							$Bookk->setDesc($desc);						
+							$Bookk->setProject($Project);
+							
+							if($payment_date != null) {
+								$bookking_date = $payment_date; }
+							else {
+								$bookking_date = $Doc->getBookkingDate();
+								if($bookking_date == null) {
+									$msg['errors'][] = 'Dokument '.$TmpB['Doc'].' nie posiada daty księgowania';}
+							}
+							$Bookk->setBookkingDate($bookking_date);
+							
+							foreach($TmpB['BEs'] as $TmpBEid => $TmpBE) {
+								if(!array_key_exists($TmpBE['cols'],$B)) {
+									$msg['errors'][] = 'Metoda '.$TmpBE['cols'].' jest niedostępna'.$sfx; 
+									return $msg;}
+								
+								foreach($B[$TmpBE['cols']] as $BEid => $BE) {	
+									if(($TmpBE['cols'] == 'SUM' && $BEid == 0) || 
+									   ($TmpBE['cols'] != 'SUM' && $BEid > 0)) {
+										
+										$sfx2 = $sfx.' |TmpBEi'.$TmpBEid.'|BE_id'.$BEid;
+										
+										//side
+										$side = $TmpBE['side'];
+										//value
+										$Data2['value'] = array();
+										foreach(array('gross','netto','tax') as $value) {
+											if(array_key_exists($value, $BE)) {
+												$Data2['value'][$value] = $BE[$value];}}
+										if(!array_key_exists($TmpBE['value'], $Data2['value'])) {
+											$msg['errors'][] = 'Wartość '.$TmpBE['value'].' jest niedostępna'.$sfx2; 
+											return $msg;
+										}	
+										$value = $Data2['value'][$TmpBE['value']];
+										
+										// Account
+										$Data2['Account'] = array();
+										if(array_key_exists('GroupAcc', $B['SUM'][0])) {
+											$Data2['Account']['GroupAcc'] = $B['SUM'][0]['GroupAcc'];
+										}							
+										
+										// CommitAcc & TaxCommitAcc is searched in year of Doc
+										if(array_key_exists('CommitAcc', $B['SUM'][0])) {
+											$CommitAcc = $B['SUM'][0]['CommitAcc'];
+											if(($CommitAcc instanceOf Account) && 
+											   ($CommitAcc->getYear() != $DocYear)) {		
+												$CommitAcc = AccountQuery::create()
+													->filterByYear($DocYear )
+													->filterByAccNo($CommitAcc->getAccNo())
+													->findOne();
+											}
+											$Data2['Account']['CommitAcc'] = $CommitAcc;
+										}	
 
-									if(array_key_exists('TaxCommitAcc', $B['SUM'][0])) {
-										$TaxCommitAcc = $B['SUM'][0]['TaxCommitAcc'];
-										if(($TaxCommitAcc instanceOf Account) && 
-										   ($TaxCommitAcc->getYear() != $DocYear)) {		
-											$TaxCommitAcc = AccountQuery::create()
-												->filterByYear($DocYear )
-												->filterByAccNo($TaxCommitAcc->getAccNo())
-												->findOne();
+										if(array_key_exists('TaxCommitAcc', $B['SUM'][0])) {
+											$TaxCommitAcc = $B['SUM'][0]['TaxCommitAcc'];
+											if(($TaxCommitAcc instanceOf Account) && 
+											   ($TaxCommitAcc->getYear() != $DocYear)) {		
+												$TaxCommitAcc = AccountQuery::create()
+													->filterByYear($DocYear )
+													->filterByAccNo($TaxCommitAcc->getAccNo())
+													->findOne();
+											}
+											$Data2['Account']['TaxCommitAcc'] = $TaxCommitAcc;
+										}	
+										
+										if(array_key_exists('IncomeBankAcc',$BE)) {
+											$Data2['Account']['IncomeBankAcc'] = $BE['IncomeBankAcc'];
 										}
-										$Data2['Account']['TaxCommitAcc'] = $TaxCommitAcc;
-									}	
-									
-									if(array_key_exists('IncomeBankAcc',$BE)) {
-										$Data2['Account']['IncomeBankAcc'] = $BE['IncomeBankAcc'];
-									}
-									
-									$Data2['Account']['IncomeAcc'] = $Project->getIncomeAcc();
-									$Data2['Account']['CostAcc'] = $Project->getCostAcc();
-									
-									if(substr($TmpBE['Account'],0,1) == '#') {
-										$Account = AccountQuery::create()
-											->filterByYear($DocYear)
-											->findOneByAccNo(substr($TmpBE['Account'],1));										
-									}
-									elseif(array_key_exists($TmpBE['Account'], $Data2['Account'])) {
-										$Account = $Data2['Account'][$TmpBE['Account']]; }
-									else {
-										$msg['errors'][] = 'Konto '.$TmpBE['Account'].' jest niedostępne'.$sfx2; 
-										return $msg;
-									}																	
-									
-									if(!($Account instanceOf Account)) {
-										$msg['errors'][] = 'Konto '.$TmpBE['Account'].' nie istnieje'.$sfx2; 
-										return $msg;
-									} 	
-									
-									if($Account->getYear() != $DocYear) {
-										$msg['errors'][] = 'Różny Rok Konta '.$TmpBE['Account'].' i Dokumentu'.$sfx2; 
-										return $msg;
-									}									
-									//Files	
-									$Data2['File'] = array();
-										$Data2['File']['ProjectFile'] = $ProjectFile;																			
- 									if(array_key_exists('GroupFile', $B['SUM'][0])) {
-										$Data2['File']['GroupFile'] = $B['SUM'][0]['GroupFile'];}	
- 									if(array_key_exists('SelDocFile', $B['SUM'][0])) {
-										$Data2['File']['SelDocFile'] = $B['SUM'][0]['SelDocFile'];}
- 									if(array_key_exists('IncomeFile',$BE)) {
-										$Data2['File']['IncomeFile'] = $BE['IncomeFile'];}									
-																											
-									for($lev = 1; $lev <=3; $lev++ ){
-										if(!array_key_exists('FileLev'.$lev,$TmpBE) || $TmpBE['FileLev'.$lev] == null) {
-											$FileLev[$lev] = null;} 
-										elseif(array_key_exists($TmpBE['FileLev'.$lev], $Data2['File'])) {
-											$FileLev[$lev] = $Data2['File'][$TmpBE['FileLev'.$lev]]; 
-											
-											if(!($FileLev[$lev] instanceOf File)) {
-												$msg['errors'][] = 'Kartoteka '.$TmpBE['FileLev'.$lev].' nie istnieje'.$sfx2; 
+										
+										$Data2['Account']['IncomeAcc'] = $Project->getIncomeAcc();
+										$Data2['Account']['CostAcc'] = $Project->getCostAcc();
+										
+										if(substr($TmpBE['Account'],0,1) == '#') {
+											$Account = AccountQuery::create()
+												->filterByYear($DocYear)
+												->findOneByAccNo(substr($TmpBE['Account'],1));										
+										}
+										elseif(array_key_exists($TmpBE['Account'], $Data2['Account'])) {
+											$Account = $Data2['Account'][$TmpBE['Account']]; }
+										else {
+											$msg['errors'][] = 'Konto '.$TmpBE['Account'].' jest niedostępne'.$sfx2; 
+											return $msg;
+										}																	
+										
+										if(!($Account instanceOf Account)) {
+											$msg['errors'][] = 'Konto '.$TmpBE['Account'].' nie istnieje'.$sfx2; 
+											return $msg;
+										} 	
+										
+										if($Account->getYear() != $DocYear) {
+											$msg['errors'][] = 'Różny Rok Konta '.$TmpBE['Account'].' i Dokumentu'.$sfx2; 
+											return $msg;
+										}									
+										//Files	
+										$Data2['File'] = array();
+											$Data2['File']['ProjectFile'] = $ProjectFile;																			
+										if(array_key_exists('GroupFile', $B['SUM'][0])) {
+											$Data2['File']['GroupFile'] = $B['SUM'][0]['GroupFile'];}	
+										if(array_key_exists('SelDocFile', $B['SUM'][0])) {
+											$Data2['File']['SelDocFile'] = $B['SUM'][0]['SelDocFile'];}
+										if(array_key_exists('IncomeFile',$BE)) {
+											$Data2['File']['IncomeFile'] = $BE['IncomeFile'];}									
+																												
+										for($lev = 1; $lev <=3; $lev++ ){
+											if(!array_key_exists('FileLev'.$lev,$TmpBE) || $TmpBE['FileLev'.$lev] == null) {
+												$FileLev[$lev] = null;} 
+											elseif(array_key_exists($TmpBE['FileLev'.$lev], $Data2['File'])) {
+												$FileLev[$lev] = $Data2['File'][$TmpBE['FileLev'.$lev]]; 
+												
+												if(!($FileLev[$lev] instanceOf File)) {
+													$msg['errors'][] = 'Kartoteka '.$TmpBE['FileLev'.$lev].' nie istnieje'.$sfx2; 
+													return $msg;
+												}
+												elseif($FileLev[$lev]->getFileCat()->getYear() != $Project_Year) {
+													
+													$oldFileCat_symbol = $FileLev[$lev]->getFileCat()->getSymbol();
+													$oldAccNo = $FileLev[$lev]->getAccNo();
+													$newFile = FileQuery::create()
+														->useFileCatQuery()
+															->filterByYear($Project_Year)
+															->filterBySymbol($oldFileCat_symbol)
+														->endUse()
+														->findOneByAccNo( $oldAccNo );
+													if(!($newFile instanceOf File)) {
+														$msg['errors'][] = 'Brak Kartoteki '.$TmpBE['FileLev'.$lev].'z roku Dokumentu w roku Projektu'.$sfx2; 
+														return $msg;	
+													} else {
+														 $FileLev[$lev] = $newFile;
+													}							
+												} 
+											}	
+											else { $msg['errors'][] = 'Kartoteka '.$TmpBE['FileLev'.$lev].' jest niedostępna'.$sfx2;  
 												return $msg;
 											}
-											elseif($FileLev[$lev]->getFileCat()->getYear() != $Project_Year) {
-												
-												$oldFileCat_symbol = $FileLev[$lev]->getFileCat()->getSymbol();
-												$oldAccNo = $FileLev[$lev]->getAccNo();
-												$newFile = FileQuery::create()
-													->useFileCatQuery()
-														->filterByYear($Project_Year)
-														->filterBySymbol($oldFileCat_symbol)
-													->endUse()
-													->findOneByAccNo( $oldAccNo );
-												if(!($newFile instanceOf File)) {
-													$msg['errors'][] = 'Brak Kartoteki '.$TmpBE['FileLev'.$lev].'z roku Dokumentu w roku Projektu'.$sfx2; 
-													return $msg;	
-												} else {
-													 $FileLev[$lev] = $newFile;
-												}							
-											} 
-										}	
-										else { $msg['errors'][] = 'Kartoteka '.$TmpBE['FileLev'.$lev].' jest niedostępna'.$sfx2;  
-											return $msg;
 										}
-									}
 
-									//BookkEntry
-									if(empty($msg['errors'])) {
-										$BookkEntry = new BookkEntry();
-										$BookkEntry->setBE($Bookk, $side, $value, $Account, $FileLev);										
-										$Bookk->addBookkEntry($BookkEntry);}
-								}							   			   	   						
+										//BookkEntry
+										if(empty($msg['errors'])) {
+											$BookkEntry = new BookkEntry();
+											$BookkEntry->setBE($Bookk, $side, $value, $Account, $FileLev);										
+											$Bookk->addBookkEntry($BookkEntry);}
+									}							   			   	   						
+								}
 							}
+							$BookksToSave[] = $Bookk;
 						}
-						$BookksToSave[] = $Bookk;
 					}
 				}
 			}

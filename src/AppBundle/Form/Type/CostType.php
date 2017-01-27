@@ -39,7 +39,7 @@ class CostType extends AbstractType
 				->add('cancel', 'submit', array('label' => 'Anuluj'))        
 				->add('save', 'submit', array('label' => 'Zapisz'))
 				->add('delete', 'submit', array('label' => 'Usuń',
-				'attr' => array('class' => 'confirm', 'data-confirm' => 'Czy chcesz usunąć kategorię kosztów?')))  
+					'attr' => array('class' => 'confirm', 'data-confirm' => 'Czy chcesz usunąć kategorię kosztów?')))  
 											 
 				->add('name', 'text', array('label' => 'Nazwa', 'required' => false))
 				->add('comment', 'textarea', array('label' => 'Opis', 'required' => false))           
@@ -76,16 +76,18 @@ class CostType extends AbstractType
 								->orderByAccNo()  ));			
 		} else {
 			$builder
-				->add('CostIncomes', 'collection', array(
+				->add('SortedCostIncomes', 'collection', array(
 					'type'          => new CostIncomeType(),
 					'by_reference'  => false))
 					
-				->add('CostDocs', 'collection', array(
-					'type'          => new CostDocType($this->Year,
-						$this->securityContext, $this->disable_accepted_docs),
+				->add('SortedCostDocs', 'collection', array(
+					'type'          => new CostDocType(
+						$this->Year,
+						$this->securityContext, 
+						$this->disable_accepted_docs),
 					'by_reference'  => false))			
 
-				->add('Contracts', 'collection', array(
+				->add('SortedContracts', 'collection', array(
 					'type'          => new ContractType($this->Year, false),
 					'by_reference'  => false));			
 		}
