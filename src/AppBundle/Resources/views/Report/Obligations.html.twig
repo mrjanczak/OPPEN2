@@ -1,0 +1,42 @@
+{% extends "AppBundle::layout.html.twig" %}
+
+{% block content %}
+{{ form_start(form, {'method': 'post'}) }}
+
+<div class="content-header">
+	<div class='title'> {{ReportList.Account}} {{ Items is empty ? : ' - '~Items.getFirst.data.FileCat.name }} </div> 	
+	
+	<div class='toolbar'>
+	{% for button in buttons %}
+		<span>{{ form_widget(form[button]) }}</span>	
+	{% endfor %}			
+	</div>	
+</div>	
+
+<div>Okres {{ReportList.FromDate|date("d-m-Y")}} - {{ReportList.ToDate|date("d-m-Y")}}</div>		
+
+<table class="form list"><tbody>
+	<tr> 
+		<th>Nazwa</th> <th>Wn</th> <th> Ma</th><th> Saldo</th>  </tr>
+		
+	{% for Item in Items %}
+	
+		<tr>
+			<td > {{ Item.data.name }} </td>
+			<td > {{ Item.data.side1|number_format(2, ',', '.') }} </td>
+			<td > {{ Item.data.side2|number_format(2, ',', '.') }} </td>
+			
+			{% set saldo = Item.data.side2 - Item.data.side1 %}
+			
+			<td class="{{ saldo != 0 ? 'red' : ''}}"</td> {{saldo|number_format(2, ',', '.') }} </td>
+		</tr>
+	
+	{% endfor %}
+	
+</tbody></table>	
+
+{{ form_errors(form) }}
+<div class="h">{{ form_rest(form) }}</div>
+{{ form_end(form) }}
+
+{% endblock %}
