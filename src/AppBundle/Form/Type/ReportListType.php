@@ -53,8 +53,10 @@ class ReportListType extends AbstractType
 
 			->add('reportMethod', 'choice', array(
 				'label' => 'Metoda rozliczenia',
-				'choices' => array( 1 => 'kasowa', 2 => 'memoriałowa'),
-				'empty_data' => 2 ))
+				'choices' => array( 
+					'kasowa'=>1, 
+					'memoriałowa'=>2),
+				'choices_as_values' => true,	))
 
 				
 			->add('FromDate', 'date', array('label' => 'Od', 'required' => false, 'widget' => 'single_text'))

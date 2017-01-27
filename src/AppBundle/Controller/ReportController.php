@@ -58,9 +58,11 @@ class ReportController extends Controller
 			->filterByYear($Year)
 			->orderByRank('asc')
 			->findOne();
-			
+		
+		$method_id = 2; //Memorialowa
+		
 		$Reports = ReportQuery::create()->orderBySortableRank()->findByYear($Year);							
-		$ReportList =  new ReportList($Year, $Month, $Year->getFromDate(), $Year->getToDate(), $Reports);
+		$ReportList =  new ReportList($Year, $Month, $Year->getFromDate(), $Year->getToDate(), $method_id, $Reports);
 		$form = $this->createForm(new ReportListType($Year), $ReportList);	
         $form->handleRequest($request);
 		
@@ -193,6 +195,7 @@ class ReportController extends Controller
 		return $this->render('AppBundle:Report:list.html.twig',
 			array(	'Year' => $Year,
 					'form' => $form->createView(),
+					'method_id' => $method_id,
 					'buttons' => array(),
 					'errors' => $errors ));
 	}
@@ -298,6 +301,7 @@ class ReportController extends Controller
 		$Items = new PropelObjectCollection();
 		$ItemColls = new PropelObjectCollection();
 		$ICdata = array('year' => $Year->getName());
+		
 		$form = array('method_id'=>$method_id);
 		$buttons = array('cancel');
 		$msg = array('errors' => array(), 'warnings' => array(), 'messages' => array());
@@ -498,10 +502,14 @@ class ReportController extends Controller
 										
 										->useDocQuery()
 	
-											->_if($method_id == 1)     //metoda kasowa
+											//metoda kasowa
+											->_if($method_id == 1)     
 												->filterByPaymentDate(array('min'=>$fromDate, 'max'=>$toDate))
-											->_elseif($method_id == 2) //metoda memoriałowa
+												
+											//metoda memoriałowa	
+											->_elseif($method_id == 2) 
 												->filterByBookkingDate(array('min'=>$fromDate, 'max'=>$toDate))
+												
 											->_endif()
 																	
 											->_if($DocCats != null)
@@ -522,13 +530,16 @@ class ReportController extends Controller
 									->endUse()
 									
 									->withColumn('SUM(bookk_entry.value)', 'sum')
-									->find();								
-								$value +=  $sign * $BookkEntries[0];
+									->findOne();
+									
+								if($symbol_pfx == 'p') { //pasywa 
+									$BookkEntries = -$BookkEntries; 
+								}										
+																	
+								$value +=  $sign * $BookkEntries;
 							} 
 							
-								if($symbol_pfx == 'p') { //pasywa 
-									$value = -$value; 
-								}																
+															
 							
 							break;
 						case 'node' :
@@ -614,10 +625,15 @@ class ReportController extends Controller
 				->endUse()
 				->useDocQuery()
 					->orderByDocumentDate()
-					->_if($method_id == 1)     //metoda kasowa
+					
+					//metoda kasowa
+					->_if($method_id == 1)     
 						->filterByPaymentDate(array('min'=>$Year->getFromDate(), 'max'=>$Year->getToDate()))
-					->_elseif($method_id == 2) //metoda memoriałowa
+						
+					//metoda memoriałowa	
+					->_elseif($method_id == 2) 
 						->filterByBookkingDate(array('min'=>$Year->getFromDate(), 'max'=>$Year->getToDate()))
+						
 					->_endif()
 				->endUse()
 				->find();
@@ -866,9 +882,17 @@ class ReportController extends Controller
 					->filterBySide($side)			
 					->useBookkQuery()
 						->filterByIsAccepted(1)
-						->filterByBookkingDate( array('min'=> $Item->data['Month']->getFromDate(),
-												 	  'max'=> $Item->data['Month']->getToDate()) )
+						
+						// by Bookk date
+						//->filterByBookkingDate( array('min'=> $Item->data['Month']->getFromDate(),
+						//						 	  'max'=> $Item->data['Month']->getToDate()) )
 						->useDocQuery()
+						
+							// by Doc date
+							->filterByBookkingDate(array('min'=> $Item->data['Month']->getFromDate(),
+												 	  'max'=> $Item->data['Month']->getToDate()) )
+						
+						
 							->useDocCatQuery()
 								->filterBySymbol('BO', $Item->data['BOcrit'])
 							->endUse()						

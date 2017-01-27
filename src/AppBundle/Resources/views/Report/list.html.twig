@@ -34,7 +34,7 @@
 		<ul>	
 	{% for ReportF in form.Reports %}
 		{% set Report = ReportF.vars.value %}	
-		<li><a href={{ path('oppen_report', {'report_id' : Report.id, 'method_id' : 1 }) }} class="report"> {{Report.name}} ({{Report.shortname}}) </a> </li>
+		<li><a href={{ path('oppen_report', {'report_id' : Report.id, 'method_id' : method_id }) }} class="report"> {{Report.name}} ({{Report.shortname}}) </a> </li>
 	{% endfor %}		
 		</ul>
 		</td>

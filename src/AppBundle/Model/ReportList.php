@@ -8,7 +8,7 @@ class ReportList {
 	public $Month;	
 	public $FromDate;
 	public $ToDate;
-	PUBLIC $reportMethod;
+	public $reportMethod;
 	
 	public $accNo;
 	public $Account;
@@ -19,11 +19,13 @@ class ReportList {
 	
 	public $Reports;	
 	
-	public function __construct ($Year, $Month, $FromDate, $ToDate, $Reports)
+	public function __construct ($Year, $Month, $FromDate, $ToDate, $reportMethod, $Reports)
 	{
 		$this->Year = $Year;	
+		$this->Month = $Month;	
 		$this->FromDate = $FromDate;		
 		$this->ToDate = $ToDate;
+		$this->reportMethod = $reportMethod;
 				
 		$this->Reports = $Reports;
 	}
