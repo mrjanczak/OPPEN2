@@ -105,6 +105,14 @@ class ReportController extends Controller
 										'buttons' => array('cancel') ));		
 		}
 
+		if ($form->get('generateObligations')->isClicked()) {
+			return $this->render('AppBundle:Report:Obligations.html.twig',
+								array(	'ReportList'=> $ReportList,
+										'Items' => $this->generateObligations($ReportList),
+										'form' => $form->createView(),
+										'buttons' => array('cancel') ));		
+		}
+
 		if ($form->get('generateOpenBalance')->isClicked()) {
 		
 			if (empty($pYear))	{
@@ -491,7 +499,7 @@ class ReportController extends Controller
 									$sign *= -1; 
 								}
 									
-								$BookkEntries = BookkEntryQuery::create()
+								$BEsum = BookkEntryQuery::create()
 									->select(array('sum'))
 									
 									->filterByAccNo($p1)
@@ -530,13 +538,15 @@ class ReportController extends Controller
 									->endUse()
 									
 									->withColumn('SUM(bookk_entry.value)', 'sum')
-									->findOne();
+									->find();
+								
+								$sum =  $BEsum[0]+0; 
 									
 								if($symbol_pfx == 'p') { //pasywa 
-									$BookkEntries = -$BookkEntries; 
+									$sum = -$sum; 
 								}										
 																	
-								$value +=  $sign * $BookkEntries;
+								$value +=  $sign * $sum;
 							} 
 							
 															
@@ -1025,6 +1035,7 @@ class ReportController extends Controller
 		$prev_Bookk_id = 0;
 		$D = 0;
 		$Docs = array();
+		
 		foreach($BookkEntries as $BookkEntry) {
 			$Bookk = $BookkEntry->getBookk();
 			$Doc   = $Bookk->getDoc();
@@ -1070,5 +1081,56 @@ class ReportController extends Controller
 		 
 		return $Items;		
 	}	
+
+	public function generateObligations($ReportList) {
+		
+		$Items = new PropelObjectCollection();
+		
+		$FromDate = $ReportList->FromDate;
+		$ToDate = $ReportList->ToDate;
+		$Account = $ReportList->Account;
+		
+		if(($Account instanceOf Account) && ($Account->getFileCatLev1() instanceOf FileCat)) {	
+				
+			$FileCatLev1 = $Account->getFileCatLev1();
+			$Files = $FileCatLev1->getFiles();	
+		
+			foreach($Files as $id => $File) {
+				
+				$Item = new Item;
+				$Item->data['name'] = $File->getName() ;
+				$Item->data['FileCat'] = $FileCatLev1;
+				
+				$accNo = $Account->getAccNo().'-'.$File->__AccNo().'%';
+				
+				for($side = 1; $side <= 2; $side++) {
+					
+					$BEsum = BookkEntryQuery::create()
+						->select(array('sum'))
+						->filterBySide($side)			
+						->filterByAccNo($accNo)
+									
+						->useBookkQuery()
+							->filterByIsAccepted(1)
+							->filterByBookkingDate(array('min'=> $FromDate, 'max'=> $ToDate) )
+						->endUse()
+						
+						->withColumn('SUM(bookk_entry.value)', 'sum')
+						->find();	
+													
+										
+					$sum =  $BEsum[0]+0; 
+					
+					$Item->data['side'.$side] = $sum;
+				} 
+				$Items->set($id, $Item);
+			
+			} 
+
+		}
+			
+		return $Items;
+		
+	}
 		
 }

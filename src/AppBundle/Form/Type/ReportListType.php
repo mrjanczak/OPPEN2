@@ -29,7 +29,8 @@ class ReportListType extends AbstractType
             ->add('cancel', 'submit', array('label' => 'Anuluj')) 
             ->add('search', 'submit', array('label' => 'Szukaj'))   
              
-            ->add('generateTurnOver', 'submit', array('label' => 'Obroty konta')) 
+            ->add('generateTurnOver', 'submit', array('label' => 'Obroty konta wg miesięcy')) 
+            ->add('generateObligations', 'submit', array('label' => 'Obroty konta wg kartotek')) 
             ->add('generateRecords', 'submit', array('label' => 'Zapisy konta')) 
             ->add('generateRegister', 'submit', array('label' => 'Dziennik księgowań')) 
  
