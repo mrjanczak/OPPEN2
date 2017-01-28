@@ -135,7 +135,7 @@ class SettingsController extends Controller
 				break;
 			case 4: 
 				$Reports = ReportQuery::create()->orderByRank()->findByYear($Year);								
-				$form = $this->createForm(new ReportListType($Year), new ReportList($Year, null, null, null, $Reports));	
+				$form = $this->createForm(new ReportListType($Year), new ReportList($Year, null, null, null, 1, $Reports));	
 				break;
 			case 5:
 				$Templates = TemplateQuery::create()->orderByName()->find();

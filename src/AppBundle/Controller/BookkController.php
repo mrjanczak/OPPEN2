@@ -133,7 +133,10 @@ class BookkController extends Controller
 		$Project_Year =  $Project->getYear();
 		
 		$payment_DCsymbol = $form->get('payment_DocCat_symbol')->getData();
+		
+		$bookking_date = $form->get('bookking_date')->getData();
 		$payment_date = $form->get('payment_date')->getData();
+		
 		if(!($payment_date instanceOf \DateTime)) {
 			$msg['errors'][] = 'Brak daty płatności'; }
 					
@@ -234,13 +237,14 @@ class BookkController extends Controller
 							$Bookk->setDesc($desc);						
 							$Bookk->setProject($Project);
 							
-							if($payment_date != null) {
-								$bookking_date = $payment_date; }
-							else {
+							if(!($bookking_date instanceOf \DateTime)) {
 								$bookking_date = $Doc->getBookkingDate();
-								if($bookking_date == null) {
-									$msg['errors'][] = 'Dokument '.$TmpB['Doc'].' nie posiada daty księgowania';}
 							}
+							
+							if(!($bookking_date instanceOf \DateTime)) {
+								$msg['errors'][] = 'Dokument '.$TmpB['Doc'].' nie posiada daty księgowania';
+							}
+							
 							$Bookk->setBookkingDate($bookking_date);
 							
 							foreach($TmpB['BEs'] as $TmpBEid => $TmpBE) {

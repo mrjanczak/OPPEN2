@@ -77,6 +77,7 @@ class ContractController extends Controller
         $form->handleRequest($request); 
 		
 		$return = 'contract';
+		
 		if ($form->isSubmitted()){
 			$return = 'project';
 			
@@ -95,8 +96,8 @@ class ContractController extends Controller
 				$gross = $form->get('gross')->getData();
 				$cost_coef = $form->get('cost_coef')->getData();
 				$tax_coef = $form->get('tax_coef')->getData();
-				$income_cost = round( $gross * $cost_coef/100, 2);
-				$tax = round( $income_cost * $tax_coef/100, 0);
+				$income_cost = round( $gross*$cost_coef/100, 2);
+				$tax = round( ($gross - $income_cost)*$tax_coef/100, 0);
 				
 				$Contract->setIncomeCost( $income_cost );
 				$Contract->setTax( $tax );

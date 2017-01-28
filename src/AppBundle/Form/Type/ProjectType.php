@@ -129,11 +129,14 @@ class ProjectType extends AbstractType
 					$this->securityContext, $this->disable_accepted_docs) ))
 				
 			->add('bookking_date', 'date', array(
-				'label' => 'Data księgowania',   'required' => false, 'widget' => 'single_text', 'mapped' => false))
+				'label' => 'Data księgowania',   'required' => false, 'widget' => 'single_text', 'mapped' => false,
+				//'data' => new \DateTime('now')
+				))
 			  		  
 			->add('payment_date', 'date', array(
 				'label' => 'Data płatności',   'required' => false, 'widget' => 'single_text', 'mapped' => false,
-				'data' => new \DateTime('now')))
+				//'data' => new \DateTime('now')
+				))
 			
 			->add('payment_DocCat_symbol', 'choice', array(
 				'label' => 'Kat. dok. płatności',

@@ -59,8 +59,8 @@
 				{{ Doc.DocNo }} </a> 
 				{{ Doc.desc }}
 				{% if Doc.DocCat.AsCost == 1 %}
-					 <b> {{ (Doc.paymentDate is not empty ? Doc.paymentDate|date("Y/m/d") : '<span class="red">Brak daty płat.')|raw }}  </span></b> / 
 					 <b> {{ (Doc.bookkingDate is not empty ? Doc.bookkingDate|date("Y/m/d") : '<span class="red">Brak daty ksieg.')|raw }}  </span></b> 
+					 <b> {{ (Doc.paymentDate is not empty ? Doc.paymentDate|date("Y/m/d") : '<span class="red">Brak daty płat.')|raw }}  </span></b> / 
 				{% endif %}
 				 
 				

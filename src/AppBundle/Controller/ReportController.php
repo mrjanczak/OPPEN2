@@ -357,7 +357,8 @@ class ReportController extends Controller
         	$path = realpath($this->get('kernel')->getRootDir() . '/../web').'/';
         	$zipName = $ReportShortname.".zip";	
         	
-        	$msg = $this->createZIP($form, $msg, $zipName, $path, $Report, $Entries, $Params, $Template);
+        	$msg = $this->createZIP($form, $msg, $zipName, $path, $Report, $Entries, $Params, $Template);     	
+        	
         	if(empty($msg['errors'])) {
     		
 				$response = new Response();
@@ -783,7 +784,7 @@ class ReportController extends Controller
         $zip = new \ZipArchive();	
         
 		if(!($zip->open($zipName,  ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE)) {
-			$msg['errors'][] = 'Archiwum nie utworzone ani nadpisane.'; }
+			$msg['errors'][] = 'Archiwum nie otworzone ani nadpisane.'; }
 			
 		else {
 			
@@ -807,12 +808,17 @@ class ReportController extends Controller
 								  'items'=> $ItemColl->Items,
 								  'tagged_items' => $tagged_items,
 								  'params'=> $Params));
+								  
 					$zip->addFromString($filename,  $contents); 
 					
 					$list .= $ItemColl->data['first_name'].';'.
 							 $ItemColl->data['last_name'].';'.
 						 	 $ItemColl->data['email'].';'.
-							 $filename.PHP_EOL;					
+							 $filename.PHP_EOL;	
+							 
+					$file = fopen($filename, "w") or die("Unable to open file!");
+					fwrite($file, $contents);
+					fclose($file);							 				
 				}
 			}
 
@@ -829,9 +835,18 @@ class ReportController extends Controller
 			if(!empty($list)) {
 				$zip->addFromString('list.csv',  $list); 
 			}
+			
+			$file = fopen('list.csv', "w") or die("Unable to open file!");
+			fwrite($file, $list);
+			fclose($file);				
 		
 			$zip->close();
 		} 
+		
+		$msg['zip'] = $zip;
+		
+		if(!file_exists($zipName)) {
+			$msg['errors'] = 'Archiwum nie istnieje'; }
 		
 		return $msg;
 	}	

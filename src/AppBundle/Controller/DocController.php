@@ -385,10 +385,9 @@ class DocController extends Controller
 					
 					switch($field) {
 						case 'bookking_date' :
-							if($form->get('bookking_date')->getData()) {  // ==0 to remove
-								$Doc->setBookkingDate($form->get('bookking_date')->getData())->save();}
-							else {
-								$Doc->setBookkingDate($Doc->getReceiptDate())->save();}		
+							if($form->get('bookking_date')->getData()) { 
+								$bookking_date = $form->get('bookking_date')->getData();
+								$Doc->setBookkingDate($bookking_date)->save();}
 							break;
 						case 'payment_deadline_date' :
 							$payment_period = $form->get('payment_period')->getData();

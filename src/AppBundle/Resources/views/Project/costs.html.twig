@@ -88,7 +88,7 @@
 	</tr>
 
 	<tr class="even"><td></td>
-					<td class="item"><input type="checkbox" id='project_Costs_{{C}}' class="toggle_items"> </td>
+					<td class="item"><input type="checkbox" id='project_SortedCosts_{{C}}' class="toggle_items"> </td>
 					<td colspan="4">{%trans%} labels.common.select_deselect {%endtrans%}</td></tr>
 	<tr class="even"><td colspan="100%"><div class="s"></div></td></tr>
 		
@@ -163,13 +163,16 @@
 		<td colspan="100%">	  
 			<div class="form-row">
 				{#
-					{{ form_row(form.bookking_date,{'attr':{'class':'date'}} ) }} {{ form_widget(form.setBookkingDate) }}
-					{{ form_row(form.payment_period) }}	{{ form_widget(form.setPaymentDeadlineDate) }}	
-				#}	  
-				{{ form_row(form.doc_no) }} 			  	   
+					{{ form_row(form.payment_period) }}	
+					{{ form_widget(form.setPaymentDeadlineDate) }}	
+				#}	 
+				 
+				{{ form_row(form.doc_no) }} 
 				{{ form_row(form.payment_DocCat_symbol) }}
+				{{ form_row(form.bookking_date,{'attr':{'class':'date'}} ) }} 
 				{{ form_row(form.payment_date,{'attr':{'class':'date no_copy_link'}}) }}
 				
+				{{ form_widget(form.setBookkingDate) }}
 				{{ form_widget(form.setPaymentDate) }}
 				{{ form_widget(form.removeDocs) }}
 				{{ form_widget(form.downloadCosts) }} 	

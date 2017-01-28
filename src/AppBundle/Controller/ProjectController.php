@@ -346,6 +346,7 @@ class ProjectController extends Controller
 				}
 				
 				// Re-calculate Tax & Netto in all Contracts & Save
+				
 				if ($tab_id == 4) {
 					foreach($Project->SortedCosts as $Cost) {
 						foreach($Cost->SortedContracts as $Contract) {
@@ -354,7 +355,7 @@ class ProjectController extends Controller
 							$cost_coef = $Contract->getCostCoef();
 							$tax_coef = $Contract->getTaxCoef();
 							$income_cost = round( $gross * $cost_coef/100, 2);
-							$tax = round( $income_cost * $tax_coef/100, 0);
+							$tax = round( ($gross - $income_cost)*$tax_coef/100, 0);
 							
 							$Contract->setIncomeCost( $income_cost );
 							$Contract->setTax( $tax );
@@ -364,6 +365,7 @@ class ProjectController extends Controller
 						}
 					}
 				}
+				
 				$Project->save();
 			}
 			
