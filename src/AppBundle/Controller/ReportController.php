@@ -358,16 +358,14 @@ class ReportController extends Controller
         	$zipName = $ReportShortname.".zip";	
         	
         	$msg = $this->createZIP($form, $msg, $zipName, $path, $Report, $Entries, $Params, $Template);     	
+        	$zip = $msg['zip'];
         	
         	if(empty($msg['errors'])) {
-    		
-				$response = new Response();
-				$response->setContent(readfile($zipName));
-				$response->headers->set('Content-Type', 'application/zip');
-				$response->headers->set('Content-Disposition', 'attachment; filename='.$zipName );
-				$response->headers->set('Content-Length', filesize($zipName));
 
-				return $response;
+				header('Content-Type', 'application/zip');
+				header('Content-disposition: attachment; filename="' . $zipName . '"');
+				header('Content-Length: ' . filesize($zipName));
+				readfile($zipName);				
 			}		
 		}	
 				
@@ -816,7 +814,7 @@ class ReportController extends Controller
 						 	 $ItemColl->data['email'].';'.
 							 $filename.PHP_EOL;	
 							 
-					$file = fopen($filename, "w") or die("Unable to open file!");
+					$file = fopen('tmp/'.$filename, "w") or die("Unable to open file!");
 					fwrite($file, $contents);
 					fclose($file);							 				
 				}
@@ -836,7 +834,7 @@ class ReportController extends Controller
 				$zip->addFromString('list.csv',  $list); 
 			}
 			
-			$file = fopen('list.csv', "w") or die("Unable to open file!");
+			$file = fopen('tmp/'.'list.csv', "w") or die("Unable to open file!");
 			fwrite($file, $list);
 			fclose($file);				
 		
