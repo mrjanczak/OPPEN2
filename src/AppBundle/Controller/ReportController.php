@@ -354,18 +354,17 @@ class ReportController extends Controller
 		if ($form->get('downloadZIP')->isClicked()) {
 
 			$ReportShortname = $Report->getShortname();
-        	$path = realpath($this->get('kernel')->getRootDir() . '/../web').'/';
+        	$path = realpath($this->get('kernel')->getRootDir() . '/../web').'/tmp/';
         	$zipName = $ReportShortname.".zip";	
         	
         	$msg = $this->createZIP($form, $msg, $zipName, $path, $Report, $Entries, $Params, $Template);     	
-        	$zip = $msg['zip'];
         	
         	if(empty($msg['errors'])) {
 
 				header('Content-Type', 'application/zip');
-				header('Content-disposition: attachment; filename="' . $zipName . '"');
-				header('Content-Length: ' . filesize($zipName));
-				readfile($zipName);				
+				header('Content-disposition: attachment; filename="'. $zipName . '"');
+				header('Content-Length: ' . filesize($path.$zipName));
+				readfile($path.$zipName);				
 			}		
 		}	
 				
@@ -721,7 +720,7 @@ class ReportController extends Controller
 				'projects' => $projects,
 				'filename' => '');
 				
-			$filename = $this->ItemColl2Filename($ReportShortname, $ICdata).'.pdf';
+			$filename = $this->ItemColl2Filename($ReportShortname, $ICdata).'.xml';
 			
 			if(file_exists($path.$filename)) {
 				$ICdata['filename'] = $filename;
@@ -781,7 +780,7 @@ class ReportController extends Controller
 		
         $zip = new \ZipArchive();	
         
-		if(!($zip->open($zipName,  ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE)) {
+		if(!($zip->open($path.$zipName,  ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE)) {
 			$msg['errors'][] = 'Archiwum nie otworzone ani nadpisane.'; }
 			
 		else {
@@ -814,7 +813,7 @@ class ReportController extends Controller
 						 	 $ItemColl->data['email'].';'.
 							 $filename.PHP_EOL;	
 							 
-					$file = fopen('tmp/'.$filename, "w") or die("Unable to open file!");
+					$file = fopen($path.$filename, "w") or die("Unable to open file!");
 					fwrite($file, $contents);
 					fclose($file);							 				
 				}
@@ -843,8 +842,8 @@ class ReportController extends Controller
 		
 		$msg['zip'] = $zip;
 		
-		if(!file_exists($zipName)) {
-			$msg['errors'] = 'Archiwum nie istnieje'; }
+		if(!file_exists($path.$zipName)) {
+			$msg['errors'][] = 'Archiwum nie istnieje'; }
 		
 		return $msg;
 	}	
@@ -852,7 +851,7 @@ class ReportController extends Controller
 	public function ItemColl2Filename($ReportShortname, $ICdata) {
 		return str_replace(array('ą','Ą','ć','Ć','ę','Ę','ł','Ł','ń','Ń','ó','Ó','ś','Ś','ż','Ż','ź','Ź'),
 						   array('a','A','c','C','e','E','l','L','n','N','o','O','s','S','z','Z','z','Z'),
-						   $ReportShortname.'_' .trim($ICdata['first_name']).'_'.trim($ICdata['last_name']));
+						   $ReportShortname.'_' .$ICdata['year'].'_'.trim($ICdata['first_name']).'_'.trim($ICdata['last_name']));
 	}
 				
 	public function generateTurnOver($ReportList) {
