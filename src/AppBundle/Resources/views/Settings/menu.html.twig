@@ -8,5 +8,5 @@
 		<li class="i"><a href={{ path('oppen_settings',{'tab_id':settings_tab_id,'year_id': Year.id }) }} >{%trans%} modules.settings {%endtrans%}</a> | </li>
 	{% endif %}
 	
-	<li class="i"><a href={{ asset('pdf/OppenProject_Manual.pdf') }}> {%trans%} modules.help {%endtrans%}</a> | </li>
+	<li class="i"><a href={{ path('oppen_help') }}> Pomoc </a> | </li>
 </ul>

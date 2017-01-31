@@ -1,0 +1,10 @@
+{% extends "AppBundle::layout.html.twig" %}
+
+{% block content %}
+
+<div class="help">
+{{  include('@App/Settings/help.md')|md2html }}
+</div>
+
+{% endblock %}
+

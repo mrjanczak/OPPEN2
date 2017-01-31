@@ -24,7 +24,7 @@ Nazwa wydatku; {# -#}
 		{% set Doc = CostDoc.Doc -%}
 		{{i}}; {# -#}
 		{{ Doc.DocNo }}; {# -#}
-		{% if Doc.Contracts[0] -%}
+		{% if 0 in Doc.Contracts|keys -%}
 			umowa {{ Doc.Contracts[0].contractNo}} z dnia {{ Doc.Contracts[0].contractDate|date("d/m/Y")}}; {# -#}
 		{% else -%}
 			;{# -#}

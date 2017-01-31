@@ -13,3 +13,13 @@ services:
         arguments: [ @twig, @mailer, @service_container ]
         tags:
             - { name: kernel.event_listener, event: heroku_daily }
+            
+    app.markdown:
+        class: AppBundle\Utils\Markdown
+
+    app.twig.app_extension:
+        class:     AppBundle\Twig\AppExtension
+        arguments: ['@app.markdown']
+        public:    false
+        tags:
+            - { name: twig.extension }

@@ -350,6 +350,7 @@ li.list {
 	list-style-type: square;
 	margin-left: 20px;
 }
+
 div.content-header {
 	padding: 5px 5px 10px 5px ;
 	border-bottom: solid #000 thin;	
@@ -654,7 +655,38 @@ div.black a.ajax_init_form {
 }
 .border td, .border th {
 border: 1px solid black;
-font-size: 10px;}
+font-size: 10px;
+}
+
+
+/* HELP */
+div.help p {
+	font-size: 12px;
+	line-height: 20px;
+	padding: 0;
+	margin: 10px 0;
+}
+div.help ul, div.help ol {
+	padding:0;
+	margin:0 0 0 20px;
+}
+div.help, div.help ul li, div.help ol li {
+	list-style-type: circle;
+	padding:0px;
+	margin: 5px 0;
+}
+div.help h1 {
+		padding:0px;
+		margin: 40px 0;
+}
+div.help h2, div.help h3 {
+		padding:0px;
+		margin: 20px 0;
+}
+div.help th, div.help td {
+	border: 1px solid gray;
+}
+
 .register_doc .c1 {width: 70px}
 .register_doc .c2 {width: 70px}
 .register_doc .c3 {width: 70px}

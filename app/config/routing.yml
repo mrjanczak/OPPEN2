@@ -320,6 +320,10 @@ oppen_settings:
 oppen_user_edit:
     path: /user/{user_id}/edit
     defaults: { _controller: AppBundle:User:edit2 }
+
+oppen_help:
+    path: /help
+    defaults: { _controller: AppBundle:Settings:help }
        
 ############### Year Controller ##############  
         

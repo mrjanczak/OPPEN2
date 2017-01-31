@@ -92,6 +92,11 @@ class SettingsController extends Controller
 			return $this->render('AppBundle:Settings:empty.html.twig');
 		}
     }
+
+	public function helpAction()
+	{
+		return $this->render('AppBundle:Settings:help.html.twig');
+	}
     
     public function editAction($tab_id, $year_id,  Request $request)
     {		
