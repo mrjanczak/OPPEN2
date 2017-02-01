@@ -144,30 +144,39 @@ class DocController extends Controller
 
     public function editAction($doc_id, $month_id, $doc_cat_id, $return, $id1, $id2, Request $request) {
 		
-		$buttons = array('cancel','save');
+		$buttons = array('cancel');
+		
+		$security_context = $this->get('security.context');			
+		if($security_context->isGranted('ROLE_ADMIN')) {
+			$buttons[] = 'save'; }
+					
 		$msg = array('errors' => array(), 'warnings' => array());
 		
 		if($doc_id == 0) 
 		{
 			$Month = MonthQuery::create()->findPk($month_id);
-			if(!($Month instanceOf Month)) 
-				{ throw $this->createNotFoundException('The Month (id '.$month_id.') does not exist'); }
-							
+			if(!($Month instanceOf Month)) {
+				$msg['errors'][] = 'Miesiąc '.$month_id. ' nie istnieje';
+				return $this->render('AppBundle:Settings:empty_layout.html.twig', array('errors' => $msg['errors'],));
+			}							
 			$DocCat = DocCatQuery::create()->findPk($doc_cat_id);			
-			if(!($DocCat instanceOf DocCat)) 
-				{throw $this->createNotFoundException('The Doc (id '.$doc_id.') does not exist'); }
-			
+			if(!($DocCat instanceOf DocCat)) {
+				$msg['errors'][] = 'Kat. dokumentu '.$doc_cat_id. ' nie istnieje';
+				return $this->render('AppBundle:Settings:empty_layout.html.twig', array('errors' => $msg['errors'],));
+			}			
 			$Doc = new Doc();
 			$Doc->setMonth($Month);
 			$Doc->setDocCat($DocCat);					
 			$has_accepted_bookks = false;			
 		} else {
 			$Doc = DocQuery::create()->findPk($doc_id); 
-			if(!($Doc instanceOf Doc)) 
-				{ throw $this->createNotFoundException('The Doc (id '.$doc_id.') does not exist'); }			
-			
+			if(!($Doc instanceOf Doc)) {
+				$msg['errors'][] = 'Dokument '.$doc_id. ' nie istnieje';
+				return $this->render('AppBundle:Settings:empty_layout.html.twig', array('errors' => $msg['errors'],));
+			}			
 			$has_accepted_bookks = BookkQuery::create()->filterByDoc($Doc)->filterByIsAccepted(1)->count() > 0;
-			if(!$has_accepted_bookks) { $buttons[] = 'delete';}
+			if(!$has_accepted_bookks && $security_context->isGranted('ROLE_ADMIN')) { 
+				$buttons[] = 'delete';}
 		}
 		
 		$Year = $Doc->getMonth()->getYear();

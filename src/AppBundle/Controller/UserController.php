@@ -39,7 +39,9 @@ class UserController extends Controller
             if ($form->get('save')->isClicked()) {
 				
 				if (false === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
-					throw new AccessDeniedException(); }
+					$msg['errors'][] = 'Brak dostępu';
+					return $this->render('AppBundle:Settings:empty_layout.html.twig', array('errors' => $msg['errors'],));
+				}
 					
 				$this->get('fos_user.user_manager')->updateUser($user); 
 			}	
@@ -47,7 +49,9 @@ class UserController extends Controller
             if ($form->get('delete')->isClicked()) {
 				
 				if (false === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
-					throw new AccessDeniedException(); }
+					$msg['errors'][] = 'Brak dostepu';
+					return $this->render('AppBundle:Settings:empty_layout.html.twig', array('errors' => $msg['errors'],));
+				}
 					
 				$this->get('fos_user.user_manager')->deleteUser($user); 
 			}			

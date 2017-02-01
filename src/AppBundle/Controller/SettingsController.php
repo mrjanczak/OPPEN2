@@ -101,12 +101,16 @@ class SettingsController extends Controller
     public function editAction($tab_id, $year_id,  Request $request)
     {		
 		if (false === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
-			throw new AccessDeniedException(); }		
-		
+			$msg['errors'][] = 'Brak dostępu';
+			return $this->render('AppBundle:Settings:empty_layout.html.twig', array('errors' => $msg['errors'],));
+		}
+				
 		$Year = YearQuery::create()->findPk($year_id);
 		if(!($Year instanceOf Year)) {
-			throw new \Exception('Year not exists');}
-							
+			$msg['errors'][] = 'Rok '.$year_id. ' nie istnieje';
+			return $this->render('AppBundle:Settings:empty_layout.html.twig', array('errors' => $msg['errors'],));
+		}			
+						
 		//$tabs = array('Okresy','Plan Kont','Kategorie','Raporty','Szablony','Parametry','Użytkownicy');    
 		$tabs = array('periods','accounts','categories','reports','templates','parameters','users');    
 		$buttons = array();
@@ -129,7 +133,9 @@ class SettingsController extends Controller
 			case 2: 
 				$Root = AccountQuery::create()->findRoot($Year->getId());
 				if(!($Root instanceOf Account)) {
-					throw new \Exception('Accounts root not exists');}
+					$msg['errors'][] = 'Brak węzła root planu kont';
+					return $this->render('AppBundle:Settings:empty_layout.html.twig', array('errors' => $msg['errors'],));
+				}
 				$Accounts = $Root->getBranch();							
 				$form = $this->createForm(new AccountListType($Year), new AccountList($Year, $Accounts));		
 				break;
@@ -160,6 +166,9 @@ class SettingsController extends Controller
 		//*****************************************************
 		if ($form) {
 			$form->handleRequest($request);
+			$form_view = $form->createView();
+		} else {
+			$form_view = null;
 		}
 		//*****************************************************
 		$errors = array();
@@ -230,7 +239,7 @@ class SettingsController extends Controller
 		return $this->render('AppBundle:Settings:edit.html.twig',
 			array(	'Year' => $Year,
 					'data' => $data,
-					'form' => $form->createView(),
+					'form' => $form_view,
 					'tabs' => $tabs,
 					'tab_id' => $tab_id,
 					'buttons' => $buttons,

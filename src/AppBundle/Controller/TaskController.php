@@ -34,14 +34,18 @@ class TaskController extends Controller
 			
 			$Task = TaskQuery::create()->findPk($task_id);
 			if(!($Task instanceOf Task)) 
-				{ throw $this->createNotFoundException('The Task (id '.$task_id.') does not exist'); }
+				$msg['errors'][] = 'Zadanie '.$task_id. ' nie istnieje';
+				return $this->render('AppBundle:Settings:empty_layout.html.twig', array('errors' => $msg['errors'],));
+			}
 
 			$buttons[] = 'delete';
 			$Project = $Task->getProject();
 		}
 		
 		if(!($Project instanceOf Project)) 
-			{ throw $this->createNotFoundException('The Project (id '.$project_id.') does not exist'); }
+			$msg['errors'][] = 'Projekt zadania '.$task_id. ' nie istnieje';
+			return $this->render('AppBundle:Settings:empty_layout.html.twig', array('errors' => $msg['errors'],));
+		}
 			
 		$Year = $Project->getYear(); 									
  				

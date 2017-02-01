@@ -91,12 +91,8 @@ class YearController extends Controller
 						$Month->setIsActive(false)
 							  ->setIsClosed(true)
 							  ->save(); 
-						$OpenMonth = MonthQuery::create()->filterByYear($Year)->findOneByIsClosed(0);
-						if($OpenMonth == NULL) {
-							$Year->setIsActive(false)
-								 ->setIsClosed(true);}
-						$refresh = true;
-					}	
+						$refresh = true;							  
+					}
 				}
 				
 				if ($form->get('activate_month')->isClicked() && $FMonth->get('select')->getData() == 1) {
@@ -113,7 +109,13 @@ class YearController extends Controller
 						$Year->setIsActive(true)->save(); 	
 						$refresh = true; 
 					}
-				} 
+				}
+				
+				// Final check to close the Year												  
+				$countOpenMonthes = MonthQuery::create()->filterByYear($Year)->filterByIsClosed(0)->count();
+				if($countOpenMonthes == 0) {
+					$Year->setIsActive(false)
+						 ->setIsClosed(true);}			 
 			}
 			
 			if($form->get('save')->isClicked() && empty($errors) ) {  

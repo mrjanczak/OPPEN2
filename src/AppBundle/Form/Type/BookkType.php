@@ -39,6 +39,7 @@ class BookkType extends AbstractType
 		$this->show_details = (bool) $show_details;
 		$this->security_context = $security_context;
 		$this->disable_accepted_docs = (bool) $disable_accepted_docs;
+		$this->disabled = !$this->security_context->isGranted('ROLE_ADMIN');
 	}	
     public function buildForm(FormBuilderInterface $builder, array $options)
     {		
@@ -48,8 +49,8 @@ class BookkType extends AbstractType
 		if ($this->show_details) {
 			$builder	
 				->add('cancel', 'submit', array('label' => 'Anuluj'))        
-				->add('save', 'submit', array('label' => 'Zapisz'))
-				->add('delete', 'submit', array('label' => 'Usuń',
+				->add('save', 'submit', array('label' => 'Zapisz','disabled' => $this->disabled,))
+				->add('delete', 'submit', array('label' => 'Usuń','disabled' => $this->disabled,
 					  'attr' => array('class' => 'confirm', 'data-confirm' => 'Czy chcesz usunąć dokument?'))) ;
 		}
 		
@@ -58,10 +59,7 @@ class BookkType extends AbstractType
 			$Bookk = $event->getData();
 			
 			if($Bookk instanceOf Bookk) { 
-				$this->disabled = ($Bookk->getIsAccepted() && $this->disable_accepted_docs) 
-					|| !$this->security_context->isGranted('ROLE_ADMIN'); }
-			else { 
-				$this->disabled = false; }			
+				$this->disabled = $this->disabled || ($Bookk->getIsAccepted() && $this->disable_accepted_docs); }		
 				
 			$form 
 				->add('is_accepted', 'checkbox', array('label' => 'Zatw. ','required'  => false, 'disabled' => $this->disabled) );				

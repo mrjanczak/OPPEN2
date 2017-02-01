@@ -65,7 +65,8 @@ class CostController extends Controller
         $Project = ProjectQuery::create()->findPk($project_id);
         $CostFileCat = $Project->getCostFileCat();
         if(!($CostFileCat instanceOf FileCat)) {
-            throw new \Exception('Projekt nie ma określonej kategorii kosztów.'); }
+			$msg['errors'][] = 'Projekt '.$project_id. ' nie posiada kategorii kosztów';
+		}            
         $Year = $Project->getYear(); 
         $buttons = array('cancel','save');
         
@@ -79,6 +80,7 @@ class CostController extends Controller
         $securityContext = $this->get('security.context');
         $disable_accepted_docs = ParameterQuery::create()->getOneByName('disable_accepted_docs');
         //$this->container->getParameter('disable_accepted_docs');
+        
         $form = $this->createForm(new CostType($Year, $CostFileCat, true, 
             $securityContext, $disable_accepted_docs), $Cost);
         $form->handleRequest($request); 

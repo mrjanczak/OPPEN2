@@ -31,16 +31,25 @@ class BookkEntryController extends Controller
 {		
     public function editAction($bookk_entry_id, $bookk_id, $side, $return, $id1, $id2, Request $request)
     {
-		$buttons = array('cancel','save');
+		$buttons = array('cancel');
+		
+		$security_context = $this->get('security.context');			
+		if($security_context->isGranted('ROLE_ADMIN')) {
+			$buttons[] = 'save'; }
+				
 		$msg = array('errors' => array(), 'warnings' => array());
 				
 		$Bookk = BookkQuery::create()->findPk($bookk_id);
 		if(!($Bookk instanceOf Bookk)) {
-			throw new \exception('No valid Bookk id '. $bookk_id);}	
-
+			$msg['errors'][] = 'Dekretacja '.$bookk_id. ' nie istnieje';
+			return $this->render('AppBundle:Settings:empty_layout.html.twig', array('errors' => $msg['errors'],));
+		}
+		
 		$Doc = $Bookk->getDoc();
 		if(!($Doc instanceOf Doc)) {
-			throw new \exception('No valid Doc for Bookk id '. $bookk_id);}		
+			$msg['errors'][] = 'Dokument dekretacji '.$bookk_id. ' nie istnieje';
+			return $this->render('AppBundle:Settings:empty_layout.html.twig', array('errors' => $msg['errors'],));
+		}	
 				
 		$Month = $Doc->getMonth();
 		$Year  = $Month->getYear();
@@ -52,8 +61,11 @@ class BookkEntryController extends Controller
 		} else {
 			$BookkEntry = BookkEntryQuery::create()->findPk($bookk_entry_id);
 			if(!($BookkEntry instanceOf BookkEntry)) {
-				throw new \exception('No valid BookkEntry id '. $bookk_entry_id);}	
-			$buttons[] = 'delete';
+				$msg['errors'][] = 'Pozycja dekretacji '.$bookk_entry_id. ' nie istnieje';
+				return $this->render('AppBundle:Settings:empty_layout.html.twig', array('errors' => $msg['errors'],));
+			}
+			if($security_context->isGranted('ROLE_ADMIN')) {
+				$buttons[] = 'delete'; }
 		}
 				
 		$security_context = $this->get('security.context');

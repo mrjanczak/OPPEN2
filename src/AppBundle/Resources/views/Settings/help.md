@@ -1,9 +1,3 @@
-# OPPen Project
-
-Zarządzanie Projektami i Księgowość dla organizacji OPP, ver. 2.7.1
-
-(c) 2017 Michał Janczak, mrjanczak@gmail.com
-
 # Spis treści
 
 1. [Wstęp](#1)
@@ -219,7 +213,7 @@ Zakładka Okresy pozwala dodać kolejny lub poprzedni Rok Obrotowy oraz skopiowa
 Kliknięcie w Rok Obrotowy pozwala edytować daty rozpoczęcia i zakończenia poszczególnych Okresów oraz ustawiać je jako:
 
  - Aktywne (umożliwia to księgowanie w tych okresach)
- - Zamknięte ( uniemożliwia to dalsze księgowanie w tych okresach))
+ - Zamknięte ( blokuje to dalsze księgowanie w tych okresach))
 
 ### 6.2 Plan Kont
 
@@ -383,11 +377,13 @@ mają być widoczne:
  - --document-- (...) --document-- - jeżeli do umowy nie jest przypisany dokument księgowy w postaci np. Rachunku, treść i pola w tym znaczniku nie będą widoczne.
 
 #### Przykład:
+```
 __event_desc__--event_desc2-- artystycznego wykonania koncertu pt. __event_name__ w ramach
 projektu __project_name__ w __event_place__ w terminie __event_date__ w charakterze __event_role__
 --event_desc2--
+```
 
-W powyższym przykładzie treść i pola zaznaczone kolorem zostaną usunięte, jeżeli pole __event_desc__ nie jest puste.
+W powyższym przykładzie treść pomiędzy znacznikami --event_desc2-- zostanie wyświetlona, jeżeli pole __event_desc__ jest puste.
 
 ### 6.5.2 Szablon Raportu
 

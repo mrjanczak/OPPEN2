@@ -29,13 +29,20 @@ class BookkController extends Controller
 {
    
     public function editAction($bookk_id, $doc_id, $return, $id1, $id2, Request $request) {
+
+		$buttons = array('cancel');
 		
-		$buttons = array('cancel','save');
+		$security_context = $this->get('security.context');			
+		if($security_context->isGranted('ROLE_ADMIN')) {
+			$buttons[] = 'save'; }
+		
 		$msg = array('errors' => array(), 'warnings' => array());
 				
 		$Doc = DocQuery::create()->findPk($doc_id); 
-		if(!($Doc instanceOf Doc)) 
-			{ throw $this->createNotFoundException('The Doc (id '.$doc_id.') does not exist'); }
+		if(!($Doc instanceOf Doc)) {
+			$msg['errors'][] = 'Dokument '.$doc_id. ' nie istnieje';
+			return $this->render('AppBundle:Settings:empty_layout.html.twig', array('errors' => $msg['errors'],));
+		}	
 			
 		$Month =$Doc->getMonth();
 		$Year  = $Month->getYear();
@@ -46,7 +53,8 @@ class BookkController extends Controller
 			$Bookk->setIsAccepted(false);
 		} else {
 			$Bookk = BookkQuery::create()->findPk($bookk_id);
-			$buttons[] = 'delete';
+			if($security_context->isGranted('ROLE_ADMIN')) {
+				$buttons[] = 'delete'; }
 		}
 		
 		$security_context = $this->get('security.context');

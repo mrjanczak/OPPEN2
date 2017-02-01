@@ -554,6 +554,7 @@ class ReportController extends Controller
 							$criteria = ReportEntryQuery::create()->filterBySymbol($p1)->limit(1);
 							if(count($RootEntry->getDescendants($criteria)) == 0 ) {
 								throw new \Exception('Invalid Item formula - no Node with symbol: '.$p1);}
+								
 							list($Node) = $RootEntry->getDescendants($criteria);
 							if($Node instanceOf ReportEntry) {
 								$Node_Item = $Items->get($Node->getId());
@@ -607,8 +608,8 @@ class ReportController extends Controller
 	// Find all contracts for each contractor in Year and fill in $Item->data table. Returns $Items 
 	public function setItemColls($Year, $DocCats, $ItemColls, $Report, $RootEntry, $Params, $ICdata, $form, $column) {
 		$ReportShortname = $Report->getShortname();
-		$path = realpath($this->get('kernel')->getRootDir() . '/../web/uploads/gallery').'/';
-
+		
+		// Find all unique PESELS
 		$FileIDs = FileQuery::create()
 				->select('PESEL')
 				->groupByPESEL()
@@ -654,6 +655,7 @@ class ReportController extends Controller
 				
 				$Project = $Contract->getCost()->getProject();
 				$Project_name = $Project->getName();
+				
 				if(strlen($Project_name) > 30) {
 					$Project_name = mb_substr($Project_name,0,30,'UTF-8').'...';}
 				
@@ -664,12 +666,14 @@ class ReportController extends Controller
 									'income_cost' => $Contract->getIncomeCost(),
 									'tax' => $Contract->getTax());				
 			}
+			
 			$File = $Contract->getFile(); // from last Contract
 
 			$US_name = ''; 
 			$US_accNo = 'XXXX'; 
 			$US_address1 = ''; 
 			$US_address2 = '';
+			
 			$SubFile = $File->getSubFile();
 			if($SubFile instanceOf File ) {
 				$US_name = $SubFile->getName();
@@ -903,23 +907,26 @@ class ReportController extends Controller
 					->select(array('sum'))
 					->filterBySide($side)			
 					->useBookkQuery()
+					
 						->filterByIsAccepted(1)
 						
 						// by Bookk date
-						//->filterByBookkingDate( array('min'=> $Item->data['Month']->getFromDate(),
-						//						 	  'max'=> $Item->data['Month']->getToDate()) )
+						->filterByBookkingDate( array('min'=> $Item->data['Month']->getFromDate(),
+												 	  'max'=> $Item->data['Month']->getToDate()) )
+												 	  
 						->useDocQuery()
 						
 							// by Doc date
-							->filterByBookkingDate(array('min'=> $Item->data['Month']->getFromDate(),
-												 	  'max'=> $Item->data['Month']->getToDate()) )
-						
+							//->filterByBookkingDate(array('min'=> $Item->data['Month']->getFromDate(),
+							//					 	  'max'=> $Item->data['Month']->getToDate()) )
 						
 							->useDocCatQuery()
 								->filterBySymbol('BO', $Item->data['BOcrit'])
-							->endUse()						
+							->endUse()	
+												
 							//->filterByMonth($Item->data['Month'])	
-						->endUse()						
+						->endUse()	
+											
 					->endUse()
 					->filterByAccNo($ReportList->accNo)	
 					->withColumn('SUM(bookk_entry.value)', 'sum')

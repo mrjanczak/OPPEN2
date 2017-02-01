@@ -29,8 +29,14 @@
 		<td > {{ form_widget(ContractF.select, {'attr': {'class': 'item'}}) }} </td>
 		<td> <a href={{ path('oppen_contract', { 'contract_id' : Contract.id, 'cost_id' : Cost.id}) }}>
 							{{ Contract.contractNo }} </a> 
-							<span {% if Contract.comment[:1] == '!' %} class='red'	{% endif %}>
-							{{ Contract.File.name }} </span>
+							{{ Contract.File.name }} 
+							{% if Contract.Doc is not empty %} 
+								(<a href={{path('oppen_doc', {'doc_id': Contract.Doc.id, 'month_id' : Contract.Doc.Month.id, 
+									'doc_cat_id' : Contract.Doc.DocCat.id, 
+									'return' : 'project', 'id1' : Project.id, 'id2' : 4 }) }} >{{Contract.Doc.DocNo}}</a>)
+							{% else %} 
+								<span class='red'>Brak rach.</span>
+							{% endif %} 
 		</td> 
 		<td>{{ form_widget(ContractF.gross, {'attr': {'class': 'value'}}) }} 
 		/ {{ Contract.netto|     number_format(2, '.', '') }}	

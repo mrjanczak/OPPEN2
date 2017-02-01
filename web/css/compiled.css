@@ -676,12 +676,14 @@ div.help, div.help ul li, div.help ol li {
 	margin: 5px 0;
 }
 div.help h1 {
-		padding:0px;
-		margin: 40px 0;
+	font-family: "Lucida Sans Unicode", "Lucida Grande", Verdana, Arial, Helvetica, sans-serif;
+	padding:0px;
+	margin: 40px 0;
 }
 div.help h2, div.help h3 {
-		padding:0px;
-		margin: 20px 0;
+	font-family: "Lucida Sans Unicode", "Lucida Grande", Verdana, Arial, Helvetica, sans-serif;
+	padding:0px;
+	margin: 20px 0;
 }
 div.help th, div.help td {
 	border: 1px solid gray;

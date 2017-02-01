@@ -34,16 +34,17 @@ class BookkEntryType extends AbstractType
 	{
 		$this->Year = $Year;
 		$this->security_context = $security_context;
-		$this->disable_accepted_docs = $disable_accepted_docs;			
+		$this->disable_accepted_docs = $disable_accepted_docs;		
+		$this->disabled = !$this->security_context->isGranted('ROLE_ADMIN');	
 	}	
     public function buildForm(FormBuilderInterface $builder, array $options)
     {								
 		$builder	
 			->add('cancel', 'submit', array('label' => 'Anuluj'))  
 			      
-			->add('save', 'submit', array('label' => 'Zapisz'))	
+			->add('save', 'submit', array('label' => 'Zapisz','disabled' => $this->disabled))	
 			
-			->add('delete', 'submit', array('label' => 'Usuń',
+			->add('delete', 'submit', array('label' => 'Usuń','disabled' => $this->disabled
 				  'attr' => array('class' => 'confirm', 'data-confirm' => 'Czy chcesz usunąć dokument?')
 			))  
 			
@@ -61,6 +62,7 @@ class BookkEntryType extends AbstractType
 			->add('Account', 'model', array(
 				'label' => 'Konto',
 				'required' => true,
+				'disabled' => $this->disabled,
 				'class' => 'AppBundle\Model\Account',
 				'empty_value' => 'Wybierz konto',				
 				'query' => AccountQuery::create()
@@ -113,9 +115,7 @@ class BookkEntryType extends AbstractType
 				
 				$Bookk   = $data->getBookk();			
 				if($Bookk instanceof Bookk) {	
-					$this->disabled = ($Bookk->getIsAccepted() && $this->disable_accepted_docs) 
-						|| !$this->security_context->isGranted('ROLE_ADMIN'); }
-				else { $this->disabled = false; }
+					$this->disabled = $this->disabled || ($Bookk->getIsAccepted() && $this->disable_accepted_docs); }
 				
 				$Account = $data->getAccount();
 				$formModifier($event->getForm(), $Account );

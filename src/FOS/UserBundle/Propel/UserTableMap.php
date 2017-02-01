@@ -69,8 +69,8 @@ class UserTableMap extends TableMap
     public function buildRelations()
     {
         $this->addRelation('UserGroup', 'FOS\\UserBundle\\Propel\\UserGroup', RelationMap::ONE_TO_MANY, array('id' => 'fos_user_id', ), null, null, 'UserGroups');
-        $this->addRelation('Doc', 'Oppen\\ProjectBundle\\Model\\Doc', RelationMap::ONE_TO_MANY, array('id' => 'user_id', ), null, null, 'Docs');
-        $this->addRelation('Task', 'Oppen\\ProjectBundle\\Model\\Task', RelationMap::ONE_TO_MANY, array('id' => 'user_id', ), null, null, 'Tasks');
+        $this->addRelation('Doc', 'AppBundle\\Model\\Doc', RelationMap::ONE_TO_MANY, array('id' => 'user_id', ), null, null, 'Docs');
+        $this->addRelation('Task', 'AppBundle\\Model\\Task', RelationMap::ONE_TO_MANY, array('id' => 'user_id', ), null, null, 'Tasks');
         $this->addRelation('Group', 'FOS\\UserBundle\\Propel\\Group', RelationMap::MANY_TO_MANY, array(), null, null, 'Groups');
     } // buildRelations()
 
