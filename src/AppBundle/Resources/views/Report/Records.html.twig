@@ -4,6 +4,7 @@
 {{ form_start(form, {'method': 'post'}) }}
 
 <div class="content-header">
+	{% include 'AppBundle:Report:header.html.twig' %}
 	<div class='title'> Zapisy na koncie: {{ReportList.accNo}} od {{ReportList.FromDate|date("d/m/Y")}} do {{ReportList.ToDate|date("d/m/Y")}}</div> 	
 	
 	<div class='toolbar'>
@@ -15,12 +16,11 @@
 
 <table class="form list"><tbody>
 	<tr> 
-		<th>Okres</th> <th>Data</th> <th>Dokument</th> <th> Opis</th> <th>Wn</th> <th> Ma</th><th> Konto przeciwstawne</th></tr>
+		<th>Data</th> <th>Dokument</th> <th> Opis</th> <th>Wn</th> <th> Ma</th><th> Konto przeciwstawne</th></tr>
 		
 	{% for Item in Items %}
 	
 		<tr class='{% if Item.data.Desc == 'SUMA' %} b {% endif %}'>
-			<td > {{ Item.data.Month }} </td>
 			<td > {{ Item.data.OperationDate|date("d/m/Y") }} </td>
 			<td > {{ Item.data.DocNo }} </td>
 			<td > {{ Item.data.Desc }} </td>

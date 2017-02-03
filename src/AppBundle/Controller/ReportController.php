@@ -63,6 +63,8 @@ class ReportController extends Controller
 		
 		$Reports = ReportQuery::create()->orderBySortableRank()->findByYear($Year);							
 		$ReportList =  new ReportList($Year, $Month, $Year->getFromDate(), $Year->getToDate(), $method_id, $Reports);
+		$Params = ParameterQuery::create()->getAll();
+		
 		$form = $this->createForm(new ReportListType($Year), $ReportList);	
         $form->handleRequest($request);
 		
@@ -81,7 +83,8 @@ class ReportController extends Controller
 					array(	'ReportList'=> $ReportList,
 							'Items' => $this->generateTurnOver($ReportList),
 							'form' => $form->createView(),
-							'buttons' => array('cancel') ));
+							'buttons' => array('cancel'),
+							'Params' => $Params ));
 			}			
 		}
 		
@@ -93,7 +96,8 @@ class ReportController extends Controller
 					array(	'ReportList'=> $ReportList,
 							'Items' => $this->generateRecords($ReportList),
 							'form' => $form->createView(),
-							'buttons' => array('cancel') ));	
+							'buttons' => array('cancel'),
+							'Params' => $Params ));	
 			}		
 		}	
 			
@@ -102,7 +106,8 @@ class ReportController extends Controller
 								array(	'ReportList'=> $ReportList,
 										'Items' => $this->generateRegister($ReportList),
 										'form' => $form->createView(),
-										'buttons' => array('cancel') ));		
+										'buttons' => array('cancel'),
+										'Params' => $Params ));		
 		}
 
 		if ($form->get('generateObligations')->isClicked()) {
@@ -110,7 +115,8 @@ class ReportController extends Controller
 								array(	'ReportList'=> $ReportList,
 										'Items' => $this->generateObligations($ReportList),
 										'form' => $form->createView(),
-										'buttons' => array('cancel') ));		
+										'buttons' => array('cancel'),
+										'Params' => $Params ));		
 		}
 
 		if ($form->get('generateOpenBalance')->isClicked()) {
@@ -205,7 +211,8 @@ class ReportController extends Controller
 					'form' => $form->createView(),
 					'method_id' => $method_id,
 					'buttons' => array(),
-					'errors' => $errors ));
+					'errors' => $errors,
+					'Params' => $Params ));
 	}
 
 	public function checkAccount(Year $prevYear, $Account, $FileLev) {
@@ -973,14 +980,15 @@ class ReportController extends Controller
 			->useBookkQuery()
 				->filterByIsAccepted(1)  //***************************** to be enabled in prod
 				->filterByBookkingDate( array('min'=> $FromDate, 'max'=> $ToDate) )
-				->useDocQuery()
+				->orderByBookkingDate()
+				//->useDocQuery()
 					//->useDocCatQuery()
 						//->filterBySymbol('BO',\Criteria::NOT_EQUAL)
 						//->filterByYear($Year)
 					//->endUse()	
 					//->filterByOperationDate(array('min'=>$FromDate, 'max'=>$ToDate))		
-					->orderByOperationDate()			
-				->endUse()						
+					//->orderByOperationDate()			
+				//->endUse()						
 			->endUse()
 			->filterByAccNo($ReportList->accNo)	
 			->find();			
@@ -990,10 +998,10 @@ class ReportController extends Controller
 			$id++;
 			$Item = new Item;
 			$Side = $BookkEntry->getSide();
-			$Item->data['Month'] = $BookkEntry->getBookk()->getDoc()->getMonth()->getName();						
-			$Item->data['OperationDate'] = $BookkEntry->getBookk()->getDoc()->getOperationDate();						
+			//$Item->data['Month'] = $BookkEntry->getBookk()->getDoc()->getMonth()->getName();						
+			$Item->data['OperationDate'] = $BookkEntry->getBookk()->getBookkingDate(); //getDoc()->getOperationDate();						
 			$Item->data['DocNo'] = $BookkEntry->getBookk()->getDoc()->getDocNo();						
-			$Item->data['Desc'] = $BookkEntry->getBookk()->getDoc()->getDesc();
+			$Item->data['Desc'] = $BookkEntry->getBookk()->getDesc(); //->getDoc()->getDesc();
 			$Item->data['Side1'] = 0;
 			$Item->data['Side2'] = 0;
 			$Item->data['Side'.$Side] = $BookkEntry->getValue();

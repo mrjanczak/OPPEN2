@@ -4,7 +4,7 @@
 
 {% if form %}{{ form_start(form, {'method': 'post'}) }}{% endif %}
 
-<ul class="sub-menu">
+<ul class="sub-menu no-print">
 	{% for key, tab in tabs%}
 		<li class='i'><a href={{ path('oppen_settings', {'tab_id': key + 1, 'year_id': Year.id }) }}
 		{% if key + 1 == tab_id %}
@@ -16,8 +16,12 @@
 </ul>
 
 <div class="content-header">
+	
+	{% include 'AppBundle:Report:header.html.twig' %}
+	
 	{%set tab_ = 'tabs.settings.'~tabs[tab_id-1] %}
-	<div class='title'> {{'modules.settings'|trans}} - {{ tab_|trans }}
+	<div class='title'> <span class="no-print">{{'modules.settings'|trans}} - </span> {{ tab_|trans }} | {{Year.name}}
+	
 {% if tab_id == 4 %}
 	<a href={{ path('oppen_report_edit', {'report_id' : 0, 'year_id' : Year.id}) }}>(+) </a>	
 {% endif %}
@@ -27,6 +31,7 @@
 {% if tab_id == 7 %}
 	<a href={{ path('oppen_user_edit', {'user_id' : 0}) }}>(+) </a>	
 {% endif %}
+
 	</div> 
 	<div class='toolbar'>
 	{% for button in buttons %}

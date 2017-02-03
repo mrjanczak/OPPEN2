@@ -13,12 +13,13 @@
 			<th>{%trans%}headers.common.files{%endtrans%} </th> 
 			<th>{%trans%}headers.common.group{%endtrans%} </th> 
 			<th>{%trans%}headers.accounts.balance{%endtrans%} </th> 
-			<th>{%trans%}headers.common.options{%endtrans%} </th> </tr>
+			<th class='no-print'>{%trans%}headers.common.options{%endtrans%} </th> 
+		</tr>
 
 		{% for AccountF in form.Accounts %}
 			{% set Account = AccountF.vars.value %}
 			{% set parent_id = Account.Parent is not null ? Account.Parent.id : 0 %}
-			<tr class="treegrid-{{ Account.id }} treegrid-parent-#{{ parent_id }} ">
+			<tr class="treegrid-{{ Account.id }} treegrid-parent-#{{ parent_id }} {{ Account.level == 0 ? 'no-print' : '' }}">
 				
 				<td> {{ Account.accNo }} </td>
 				<td>
@@ -46,7 +47,8 @@
 				<td> {{ Account.incOpenB ? 'labels.accounts.balance.in_open'|trans : ''}} 
 				     {{ Account.incCloseB ?'labels.accounts.balance.in_close'|trans : ''}} 
 				     {{ Account.asCloseB ? 'labels.accounts.balance.result'|trans : ''}}</td>
-				<td>
+				     
+				<td class='no-print'>
 					{% if Account.id is not empty %}
 						<a href={{ path('oppen_account_edit', {'account_id' : 0, 'parent_id' : Account.id}) }}>(+)  </a> 			
 						

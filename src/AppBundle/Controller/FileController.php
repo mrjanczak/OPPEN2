@@ -25,14 +25,19 @@ use AppBundle\Model\FileQuery;
 use AppBundle\Model\FileCatQuery;
 use AppBundle\Model\YearQuery;
 use AppBundle\Model\BookkEntryQuery;
+use AppBundle\Model\ParameterQuery;
 
 use AppBundle\Form\Type\FileListType;
 use AppBundle\Form\Type\FileType;
 
 class FileController extends Controller
 {  
+	
 	public function listAction($file_cat_id, $return, $id1, $id2, $id3, Request $request)
 	{
+		$Params = ParameterQuery::create()->getAll();		
+		$errors = array();
+		
 		if ($request->isMethod('POST')) {
 			$FileListR = $request->request->get('file_list');
 			$Year = YearQuery::create()->findPk($FileListR['Year']);
@@ -106,8 +111,10 @@ class FileController extends Controller
 			'FileList' => $FileList,
 			'form' => $form->createView(),
 			'buttons' => $buttons,
+			'errors' => $errors,
+			'Params' => $Params,
 			'return' => $return,
-			'subtitle' => ''));
+			'subtitle' => $FileCat->getName(), ));
     }	
 
     public function updateFilterAction($year_id)

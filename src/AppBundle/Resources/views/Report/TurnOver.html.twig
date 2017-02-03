@@ -4,6 +4,7 @@
 {{ form_start(form, {'method': 'post'}) }}
 
 <div class="content-header">
+	{% include 'AppBundle:Report:header.html.twig' %}	
 	<div class='title'> Obroty na koncie: {{ReportList.accNo}} w roku {{ReportList.Year.name}}</div> 	
 	
 	<div class='toolbar'>

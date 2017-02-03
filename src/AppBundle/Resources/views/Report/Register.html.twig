@@ -4,6 +4,7 @@
 {{ form_start(form, {'method': 'post'}) }}
 
 <div class="content-header">
+	{% include 'AppBundle:Report:header.html.twig' %}	
 	<div class='title'> Dziennik księgowań: {{ReportList.Month}} - {{ReportList.Year}}</div> 	
 	
 	<div class='toolbar'>

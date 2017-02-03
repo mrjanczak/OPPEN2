@@ -4,8 +4,11 @@
 {{ form_start(form, {'method': 'post'}) }}
 
 <div class="content-header">
-	<div class='title'> Kartoteki {{subtitle}} 
-		<a href={{ path('oppen_file',{'file_cat_id' : FileCat.id, 'file_id' : 0}) }}> ( + ) </a> 
+	
+	{% include 'AppBundle:Report:header.html.twig' %}
+	
+	<div class='title'> Kartoteki {{Year.name}} | {{subtitle}} 
+		<a class="no-print" href={{ path('oppen_file',{'file_cat_id' : FileCat.id, 'file_id' : 0}) }}> ( + ) </a> 
 	</div> 
 	
 	<div class='toolbar'>
@@ -35,7 +38,7 @@
 {% else %}
 	
 <table class="form list"><tbody>
-	<tr> <th></th> <th> Numer </th> <th> Nazwa </th> <th> Adres </th> </tr>
+	<tr> <th></th> <th class="col_no"> Numer </th> <th> Nazwa </th> <th> Dane </th> </tr>
 			
 	{% for FileF in form.Files %}
 	{% set File = FileF.vars.value %}
@@ -53,14 +56,15 @@
 				{% if File.country is empty %}  <span class="red">Brak Kraju</span>
 				{% endif %} 
 
-				{% if File.bankAccount is empty %}  <span class="red">Brak konta</span>
-				{% endif %} 
+				{% if File.bankAccount is not empty %} {{File.bankAccount}} 
+				{% else %} <span class="red">Brak konta</span>
+				{% endif %} |
 								
 				{% if File.Address1|length > 6 %}  {{ File.Address1 }}, {{ File.Address2 }} {{ File.country }} 
 				{% elseif File.country == "PL"%} <span class="red">Brak Adresu</span>
 				{% endif %} | 
 				
-				{% if File.PESEL is not empty %}  {{ File.PESEL }} 
+				{% if File.PESEL is not empty %}  PESEL {{ File.PESEL }} 
 				{% elseif File.country == "PL" %} <span class="red">Brak PESELu</span>
 				{% endif %} |				
 				

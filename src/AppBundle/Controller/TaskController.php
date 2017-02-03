@@ -33,7 +33,7 @@ class TaskController extends Controller
 		} else {
 			
 			$Task = TaskQuery::create()->findPk($task_id);
-			if(!($Task instanceOf Task)) 
+			if(!($Task instanceOf Task)) {
 				$msg['errors'][] = 'Zadanie '.$task_id. ' nie istnieje';
 				return $this->render('AppBundle:Settings:empty_layout.html.twig', array('errors' => $msg['errors'],));
 			}
@@ -42,7 +42,7 @@ class TaskController extends Controller
 			$Project = $Task->getProject();
 		}
 		
-		if(!($Project instanceOf Project)) 
+		if (!($Project instanceOf Project)) {
 			$msg['errors'][] = 'Projekt zadania '.$task_id. ' nie istnieje';
 			return $this->render('AppBundle:Settings:empty_layout.html.twig', array('errors' => $msg['errors'],));
 		}

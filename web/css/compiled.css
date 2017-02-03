@@ -319,6 +319,26 @@ img {
     font-family: Arial, Helvetica, sans-serif;
 }
 
+@media print
+{    
+    .no-print, .header, .toolbar, .filter
+    {
+        display: none !important;
+    }
+    .sf-reset .block
+    {
+		border: none !important;
+    }
+    .print-only
+    {
+		display: block  !important;
+		margin-bottom: 20px  !important;
+    }
+}
+.print-only {
+	display: none;
+}
+
 body {
     font-size: 12px;
     font-family: "Lucida Sans Unicode", "Lucida Grande", Verdana, Arial, Helvetica, sans-serif;

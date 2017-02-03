@@ -5,6 +5,7 @@
 {{ form_start(form, {'method': 'post'}) }}
 
 <div class="content-header">
+	{% include 'AppBundle:Report:header.html.twig' %}
 	<div class='title'> Rachunek Zysków i Strat {{Report.Year.name}}</div> 	
 	
 	<div class='toolbar'>

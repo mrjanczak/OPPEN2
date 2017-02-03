@@ -99,7 +99,10 @@ class SettingsController extends Controller
 	}
     
     public function editAction($tab_id, $year_id,  Request $request)
-    {		
+    {	
+		$Params = ParameterQuery::create()->getAll();		
+		$errors = array();
+			
 		if (false === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
 			$msg['errors'][] = 'Brak dostępu';
 			return $this->render('AppBundle:Settings:empty_layout.html.twig', array('errors' => $msg['errors'],));
@@ -171,7 +174,6 @@ class SettingsController extends Controller
 			$form_view = null;
 		}
 		//*****************************************************
-		$errors = array();
 		$refresh = false;
 		
 		if ($tab_id == 1 && $form->isSubmitted()) {
@@ -243,7 +245,8 @@ class SettingsController extends Controller
 					'tabs' => $tabs,
 					'tab_id' => $tab_id,
 					'buttons' => $buttons,
-					'errors' => $errors ));	
+					'errors' => $errors,
+					'Params' => $Params, ));	
 	}	
 	
 	public function newYear($form) {

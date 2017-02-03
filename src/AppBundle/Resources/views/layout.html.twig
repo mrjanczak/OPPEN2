@@ -37,7 +37,7 @@
     </head>
     <body>
         <div id="content">
-            <div class="header clear-fix">
+            <div class="header clear-fix no-print" >
                 <div class="header-logo">
 					{% image 'images/logoOPPen.png' %}
 						<img src="{{ asset_url }}" alt="logo" />
@@ -98,7 +98,7 @@
 				</div>
 			</div>
 			
-			<div><small>(C) Michał Janczak, 2015. Ver. 2.7.1</small></div>
+			<div class="no-print"><small>(C) Michał Janczak, 2015. Ver. 2.7.1</small></div>
 
 			{% if code is defined %}
 				<h2>Code behind this page</h2>
