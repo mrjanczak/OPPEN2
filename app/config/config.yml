@@ -83,9 +83,9 @@ fos_user:
         group_class: FOS\UserBundle\Propel\Group
  
 # One-Up Uploader       
-oneup_uploader:
-    mappings:
-        gallery:
-            frontend: blueimp 
-            enable_progress: true
-            namer: app.cat_namer
+# oneup_uploader:
+#    mappings:
+#        gallery:
+#            frontend: blueimp 
+#            enable_progress: true
+#            namer: app.cat_namer
