@@ -651,6 +651,7 @@ class ReportController extends Controller
 					//	->filterByBookkingDate(array('min'=>$Year->getFromDate(), 'max'=>$Year->getToDate()))
 						
 					//->_endif()
+					
 				->endUse()
 				->find();
 				
