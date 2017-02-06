@@ -361,7 +361,7 @@ class ReportController extends Controller
 		if ($form->get('downloadZIP')->isClicked()) {
 
 			$ReportShortname = $Report->getShortname();
-        	$path = realpath($this->get('kernel')->getRootDir() . '/../web').'/tmp/';
+        	$path = realpath($this->get('kernel')->getRootDir() . '/../web/tmp/');
         	$zipName = $ReportShortname.".zip";	
         	
         	$msg = $this->createZIP($form, $msg, $zipName, $path, $Report, $Entries, $Params, $Template);     	
@@ -808,7 +808,7 @@ class ReportController extends Controller
 						$tagged_items .= '<'.$tag.'>'.$val.'</'.$tag.'>'.PHP_EOL;
 					}
 					
-					$filename = $this->ItemColl2Filename($ReportShortname, $ItemColl->data).".xml";
+					$filename = $this->ItemColl2Filename($ReportShortname, $ItemColl->data).".pdf";
 					$contents = $env->render($Template->getData(),
 							array('year' => $Report->getYear()->getName(),
 								  'form' => $form_data,
