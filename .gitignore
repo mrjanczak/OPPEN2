@@ -5,6 +5,6 @@
 /bin/
 /ssl
 /vendor/
-/tmp/*
+/tmp/*.zip
 /composer.phar
 
