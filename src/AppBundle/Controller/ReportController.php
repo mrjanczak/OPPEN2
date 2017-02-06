@@ -361,7 +361,7 @@ class ReportController extends Controller
 		if ($form->get('downloadZIP')->isClicked()) {
 
 			$ReportShortname = $Report->getShortname();
-        	$path = realpath($this->get('kernel')->getRootDir() . '/../web/tmp/');
+        	$path = realpath($this->get('kernel')->getRootDir() . '/../web/tmp').'/';
         	$zipName = $ReportShortname.".zip";	
         	
         	$msg = $this->createZIP($form, $msg, $zipName, $path, $Report, $Entries, $Params, $Template);     	
@@ -643,14 +643,14 @@ class ReportController extends Controller
 					->orderByDocumentDate()
 					
 					//metoda kasowa
-					->_if($method_id == 1)     
+					//->_if($method_id == 1)     
 						->filterByPaymentDate(array('min'=>$Year->getFromDate(), 'max'=>$Year->getToDate()))
 						
 					//metoda memoriałowa	
-					->_elseif($method_id == 2) 
-						->filterByBookkingDate(array('min'=>$Year->getFromDate(), 'max'=>$Year->getToDate()))
+					//->_elseif($method_id == 2) 
+					//	->filterByBookkingDate(array('min'=>$Year->getFromDate(), 'max'=>$Year->getToDate()))
 						
-					->_endif()
+					//->_endif()
 				->endUse()
 				->find();
 				
@@ -733,9 +733,9 @@ class ReportController extends Controller
 				
 			$filename = $this->ItemColl2Filename($ReportShortname, $ICdata).'.xml';
 			
-			if(file_exists($path.$filename)) {
-				$ICdata['filename'] = $filename;
-			}
+			//if(file_exists($path.$filename)) {
+			//	$ICdata['filename'] = $filename;
+			//	}
 			
 			if($tax > 0) {	
 				$ItemColl->data = $ICdata;

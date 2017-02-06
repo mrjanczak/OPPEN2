@@ -357,6 +357,6 @@ oppen_template_edit:
         template_id: \d+ 
         year_id: \d+        
               
-oneup_uploader:
-    resource: .
-    type: uploader
+# oneup_uploader:
+#    resource: .
+#    type: uploader
