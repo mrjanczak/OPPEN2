@@ -22,7 +22,7 @@ class AppKernel extends Kernel
             new mCzolko\HerokuSchedulerBundle\mCzolkoHerokuSchedulerBundle(),  
                      
             new Propel\PropelBundle\PropelBundle(),
-            new Oneup\UploaderBundle\OneupUploaderBundle(),
+            //new Oneup\UploaderBundle\OneupUploaderBundle(),
 
             new AppBundle\AppBundle(),
             new FOS\UserBundle\FOSUserBundle(),
