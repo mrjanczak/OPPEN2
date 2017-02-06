@@ -808,7 +808,7 @@ class ReportController extends Controller
 						$tagged_items .= '<'.$tag.'>'.$val.'</'.$tag.'>'.PHP_EOL;
 					}
 					
-					$filename = $this->ItemColl2Filename($ReportShortname, $ItemColl->data).".pdf";
+					$filename = $this->ItemColl2Filename($ReportShortname, $ItemColl->data);
 					$contents = $env->render($Template->getData(),
 							array('year' => $Report->getYear()->getName(),
 								  'form' => $form_data,
@@ -817,16 +817,16 @@ class ReportController extends Controller
 								  'tagged_items' => $tagged_items,
 								  'params'=> $Params));
 								  
-					$zip->addFromString($filename,  $contents); 
+					$zip->addFromString($filename.".xml",  $contents); 
 					
 					$list .= $ItemColl->data['first_name'].';'.
 							 $ItemColl->data['last_name'].';'.
 						 	 $ItemColl->data['email'].';'.
-							 $filename.PHP_EOL;	
+							 $filename.".pdf".PHP_EOL;	
 							 
-					$file = fopen($path.$filename, "w") or die("Unable to open file!");
-					fwrite($file, $contents);
-					fclose($file);							 				
+					//$file = fopen($path.$filename.".xml", "w") or die("Unable to open file!");
+					//fwrite($file, $contents);
+					//fclose($file);							 				
 				}
 			}
 
@@ -844,7 +844,7 @@ class ReportController extends Controller
 				$zip->addFromString('list.csv',  $list); 
 			}
 			
-			$file = fopen('tmp/'.'list.csv', "w") or die("Unable to open file!");
+			$file = fopen($path.'list.csv', "w") or die("Unable to open file!");
 			fwrite($file, $list);
 			fclose($file);				
 		
