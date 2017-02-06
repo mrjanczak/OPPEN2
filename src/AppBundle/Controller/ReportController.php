@@ -844,9 +844,9 @@ class ReportController extends Controller
 				$zip->addFromString('list.csv',  $list); 
 			}
 			
-			$file = fopen($path.'list.csv', "w") or die("Unable to open file!");
-			fwrite($file, $list);
-			fclose($file);				
+			//$file = fopen($path.'list.csv', "w") or die("Unable to open file!");
+			//fwrite($file, $list);
+			//fclose($file);				
 		
 			$zip->close();
 		} 
