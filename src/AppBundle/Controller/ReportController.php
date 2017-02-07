@@ -368,17 +368,17 @@ class ReportController extends Controller
         	
         	if(empty($msg['errors'])) {
 
-				header('Content-Type', 'application/zip');
-				header('Content-disposition: attachment; filename="'. $zipName . '"');
-				header('Content-Length: ' . filesize($zipName)); 
+				//header('Content-Type', 'application/zip');
+				//header('Content-disposition: attachment; filename="'. $zipName . '"');
+				//header('Content-Length: ' . filesize($zipName)); 
 				
-				while (ob_get_level()) {
-					ob_end_clean();
-				} 
+				//while (ob_get_level()) {
+				//	ob_end_clean();
+				//} 
 				//readfile($zipName);
-				ob_end_flush();
+				//ob_end_flush();
 				
-				$contents = readfile($zipName);
+				$contents = file_get_contents($zipName);
 				//$contents = file_get_contents($zipName);
 				$filesize = filesize($zipName);				
 			}		
