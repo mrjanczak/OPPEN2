@@ -368,6 +368,14 @@ class ReportController extends Controller
         	
         	if(empty($msg['errors'])) {
 
+
+				$response = new Response(file_get_contents($zipName));
+				$response->headers->set('Content-Type', 'application/zip');
+				$response->headers->set('Content-Disposition', 'attachment;filename="' . $zipName . '"');
+				$response->headers->set('Content-length', filesize($zipName));
+
+				return $response;
+
 				//header('Content-Type', 'application/zip');
 				//header('Content-disposition: attachment; filename="'. $zipName . '"');
 				//header('Content-Length: ' . filesize($zipName)); 
@@ -378,9 +386,9 @@ class ReportController extends Controller
 				//readfile($zipName);
 				//ob_end_flush();
 				
-				$contents = file_get_contents($zipName);
 				//$contents = file_get_contents($zipName);
-				$filesize = filesize($zipName);				
+				//$contents = file_get_contents($zipName);
+				//$filesize = filesize($zipName);				
 			}		
 		}	
 				
