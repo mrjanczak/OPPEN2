@@ -863,7 +863,7 @@ class ReportController extends Controller
 	public function ItemColl2Filename($ReportShortname, $ICdata) {
 		return str_replace(array('ą','Ą','ć','Ć','ę','Ę','ł','Ł','ń','Ń','ó','Ó','ś','Ś','ż','Ż','ź','Ź'),
 						   array('a','A','c','C','e','E','l','L','n','N','o','O','s','S','z','Z','z','Z'),
-						   $ReportShortname.'_' .$ICdata['year'].'_'.trim($ICdata['first_name']).'_'.trim($ICdata['last_name']));
+						   $ReportShortname.'_'.trim($ICdata['first_name']).'_'.trim($ICdata['last_name'])); //.'_' .$ICdata['year']
 	}
 				
 	public function generateTurnOver($ReportList) {
