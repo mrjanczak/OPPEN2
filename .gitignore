@@ -1,10 +1,11 @@
 /app/bootstrap.php.cache
 /app/cache/*
 /app/logs/*
+/app/tmp/*
 /app/config/parameters.yml
 /bin/
 /ssl
 /vendor/
-/tmp/*.zip
+/tmp/*
 /composer.phar
 
