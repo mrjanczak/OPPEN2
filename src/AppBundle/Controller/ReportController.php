@@ -387,7 +387,9 @@ class ReportController extends Controller
 					  'total' =>$total,
 					  'errors' => $msg['errors'],
 					  'Params' => $Params,
-					  'zipName' => $zipName,));}
+					  'path' => $path,
+					  'zipName' => $zipName,
+					  ));}
 	}
 
 	// Fill Items of Report based on instruction from $Entry->data and data from $Items & $Params. 
