@@ -357,12 +357,11 @@ class ReportController extends Controller
 			}		
 		}
 		
-		$zipName = null;
+		$ReportShortname = $Report->getShortname();
+		$zipName = $ReportShortname.".zip";	
+		$path = realpath($this->get('kernel')->getRootDir() . '/../tmp/').'/';
+		
 		if ($form->get('downloadZIP')->isClicked()) {
-
-			$ReportShortname = $Report->getShortname();
-        	$path = realpath($this->get('kernel')->getRootDir() . '/../tmp/').'/';
-        	$zipName = $ReportShortname.".zip";	
         	
         	$msg = $this->createZIP($form, $msg, $zipName, $path, $Report, $Entries, $Params, $Template);     	
         	
