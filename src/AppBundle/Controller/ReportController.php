@@ -367,10 +367,10 @@ class ReportController extends Controller
         	
         	if(empty($msg['errors'])) {
 
-				header('Content-Type', 'application/zip');
-				header('Content-disposition: attachment; filename="'. $zipName . '"');
-				header('Content-Length: ' . filesize($zipName)); //$path.
-				readfile($zipName);	 //$path.			
+				//header('Content-Type', 'application/zip');
+				//header('Content-disposition: attachment; filename="'. $zipName . '"');
+				//header('Content-Length: ' . filesize($zipName)); //$path.
+				$contents = readfile($zipName);	 //$path.			
 			}		
 		}	
 				
@@ -388,6 +388,7 @@ class ReportController extends Controller
 					  'Params' => $Params,
 					  'path' => $path,
 					  'zipName' => $zipName,
+					  'contents' => $contents,
 					  ));}
 	}
 

@@ -102,8 +102,9 @@
 
 {{ form_row(form.objective) }}
 {{ form_widget(form.downloadZIP) }}	
-			
-<p>Archiwum zapisane w {{path}}{{zipName}}</p>			
+</br>			
+<p>Archiwum zapisane w {{path}}{{zipName}}</p>	
+{{dump(contents)}}		
 			
 {{ form_errors(form) }}
 	
