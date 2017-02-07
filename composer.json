@@ -64,7 +64,7 @@
             "compile": [
                 "chmod -R 777 app/cache",
                 "mkdir tmp",
-                "chmod -R 0755 tmp",
+                "chmod -R 777 tmp"
             ],
             "document-root": "web",
             "php-config": [
