@@ -369,8 +369,8 @@ class ReportController extends Controller
 
 				header('Content-Type', 'application/zip');
 				header('Content-disposition: attachment; filename="'. $zipName . '"');
-				header('Content-Length: ' . filesize($path.$zipName));
-				readfile($path.$zipName);				
+				header('Content-Length: ' . filesize($zipName)); //$path.
+				readfile($zipName);	 //$path.			
 			}		
 		}	
 				
