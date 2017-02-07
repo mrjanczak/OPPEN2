@@ -793,7 +793,7 @@ class ReportController extends Controller
 		
         $zip = new \ZipArchive();	
         
-		if(!($zip->open($path.$zipName,  ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE)) {
+		if(!($zip->open($zipName,  ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE)) {  //$path.
 			$msg['errors'][] = 'Archiwum nie otworzone ani nadpisane.'; }
 			
 		else {
