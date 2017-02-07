@@ -375,12 +375,12 @@ class ReportController extends Controller
 				while (ob_get_level()) {
 					ob_end_clean();
 				} 
-				readfile($zipName);
+				//readfile($zipName);
 				ob_end_flush();
 				
-				//$contents = readfile($zipName);
+				$contents = readfile($zipName);
 				//$contents = file_get_contents($zipName);
-				//$filesize = filesize($zipName);				
+				$filesize = filesize($zipName);				
 			}		
 		}	
 				

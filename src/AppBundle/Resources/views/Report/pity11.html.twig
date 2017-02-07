@@ -104,7 +104,7 @@
 {{ form_widget(form.downloadZIP) }}	
 </br>			
 <p>Archiwum zapisane w {{path}}{{zipName}} [{{filesize}}MB]</p>	
-<p>{#{dump(contents)}#}</p>				
+<p>{{dump(contents)}}</p>				
 			
 {{ form_errors(form) }}
 	
