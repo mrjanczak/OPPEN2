@@ -4,7 +4,8 @@ function form_init() {
 	form_button();
 	form_date();
 	form_date_copy_link();		
-		
+
+/*		
 	$('.fileinput-button').each(function () {
 		var input = $(this).find('input:file').detach();
 		$(this)
@@ -23,6 +24,7 @@ function form_init() {
 				$('#progressbar').progressbar( "option", { value: progress });
 		}		
 	});	
+*/
 	
 	$("tr[class!='even']:odd").addClass("odd");	
 	

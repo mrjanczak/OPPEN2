@@ -394,9 +394,10 @@ class DocController extends Controller
 					
 					switch($field) {
 						case 'bookking_date' :
-							if($form->get('bookking_date')->getData()) { 
+							//if($form->get('bookking_date')->getData()) { 
 								$bookking_date = $form->get('bookking_date')->getData();
-								$Doc->setBookkingDate($bookking_date)->save();}
+								$Doc->setBookkingDate($bookking_date)->save();
+							//}
 							break;
 						case 'payment_deadline_date' :
 							$payment_period = $form->get('payment_period')->getData();
@@ -405,9 +406,10 @@ class DocController extends Controller
 								$Doc->setPaymentDeadlineDate($payment_deadline_date)->save();}
 							break;
 						case 'payment_date' :
-							if($form->get('payment_date')->getData()) {
+							//if($form->get('payment_date')->getData()) {
 								$payment_date = $form->get('payment_date')->getData();
-								$Doc->setPaymentDate($payment_date)->save();}
+								$Doc->setPaymentDate($payment_date)->save();
+							//}
 							break;	
 					}
 				}
