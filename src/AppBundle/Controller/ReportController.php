@@ -359,7 +359,7 @@ class ReportController extends Controller
 		
 		$ReportShortname = $Report->getShortname();
 		$zipName = $ReportShortname.".zip";	
-		$path = realpath($this->get('kernel')->getRootDir() . '/../../web/').'/';
+		$path = realpath($this->get('kernel')->getRootDir() . '/../tmp').'/';
 		
 		if ($form->get('downloadZIP')->isClicked()) {
         	
