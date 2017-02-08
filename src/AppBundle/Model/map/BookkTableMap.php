@@ -48,6 +48,7 @@ class BookkTableMap extends TableMap
         $this->getColumn('desc', false)->setPrimaryString(true);
         $this->addColumn('is_accepted', 'IsAccepted', 'BOOLEAN', false, 1, false);
         $this->addColumn('bookking_date', 'BookkingDate', 'DATE', false, null, null);
+        $this->addForeignKey('year_id', 'YearId', 'INTEGER', 'year', 'id', false, null, null);
         $this->addForeignKey('doc_id', 'DocId', 'INTEGER', 'doc', 'id', false, null, null);
         $this->addForeignKey('project_id', 'ProjectId', 'INTEGER', 'project', 'id', false, null, null);
         // validators
@@ -58,6 +59,7 @@ class BookkTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('Year', 'AppBundle\\Model\\Year', RelationMap::MANY_TO_ONE, array('year_id' => 'id', ), 'CASCADE', null);
         $this->addRelation('Doc', 'AppBundle\\Model\\Doc', RelationMap::MANY_TO_ONE, array('doc_id' => 'id', ), 'CASCADE', null);
         $this->addRelation('Project', 'AppBundle\\Model\\Project', RelationMap::MANY_TO_ONE, array('project_id' => 'id', ), 'CASCADE', null);
         $this->addRelation('BookkEntry', 'AppBundle\\Model\\BookkEntry', RelationMap::ONE_TO_MANY, array('id' => 'bookk_id', ), 'CASCADE', null, 'BookkEntries');

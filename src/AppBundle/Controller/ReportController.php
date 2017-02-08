@@ -360,8 +360,7 @@ class ReportController extends Controller
 		$ReportShortname = $Report->getShortname();
 		$zipName = $ReportShortname.".zip";	
 		$path = realpath($this->get('kernel')->getRootDir() . '/../web').'/';
-		$contents = '';
-		$filesize = 0;
+		
 		if ($form->get('downloadZIP')->isClicked()) {
         	
         	$msg = $this->createZIP($form, $msg, $zipName, $path, $Report, $Entries, $Params, $Template);     	
@@ -375,20 +374,7 @@ class ReportController extends Controller
 				$response->headers->set('Content-length', filesize($zipName));
 
 				return $response;
-
-				//header('Content-Type', 'application/zip');
-				//header('Content-disposition: attachment; filename="'. $zipName . '"');
-				//header('Content-Length: ' . filesize($zipName)); 
 				
-				//while (ob_get_level()) {
-				//	ob_end_clean();
-				//} 
-				//readfile($zipName);
-				//ob_end_flush();
-				
-				//$contents = file_get_contents($zipName);
-				//$contents = file_get_contents($zipName);
-				//$filesize = filesize($zipName);				
 			}		
 		}	
 				
@@ -406,8 +392,6 @@ class ReportController extends Controller
 					  'Params' => $Params,
 					  'path' => $path,
 					  'zipName' => $zipName,
-					  'contents' => $contents,
-					  'filesize' => $filesize,
 					  ));}
 	}
 

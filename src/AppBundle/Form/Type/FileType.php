@@ -40,9 +40,21 @@ class FileType extends AbstractType
             ->add('secondName', 'text', array('label' => 'Drugie Imię','required' => false))
             ->add('lastName', 'text', array('label' => 'Nazwisko','required' => false))
             ->add('birth_date', 'date', array('label' => 'Data ur.','required' => false, 'widget' => 'single_text'))
-            ->add('NIP', 'text', array('label' => 'NIP','required' => false))
+            
             ->add('PESEL', 'text', array('label' => 'PESEL','required' => false))
-            ->add('Passport', 'text', array('label' => 'Nr Paszportu','required' => false))
+			->add('IDType', 'choice', array(
+				'label' => 'Typ dok. tożsam.', 'required' => false, 'choices' => array(             
+					 1 => "NUMER IDENTYFIKACYJNY TIN",
+					 2 => "NUMER UBEZPIECZENIOWY",
+					 3 => "PASZPORT",
+					 4 => "URZĘDOWY DOKUMENT STWIERDZJĄCY TOZSAMOŚĆ",
+					 5 => "INNY RODZAJ IDENTYFIKACJI PODATKOWEJ",
+					 6 => "INNY DOKUMENT STWIERDZAJACY TOŻSAMOŚĆ", )) )
+					  
+            ->add('IDNo', 'text', array('label' => 'Nr dok. tożsam.','required' => false))
+            ->add('IDCountry', 'country', array('label' => 'Kraj wydania dok. tożsam.','required' => false))
+            
+            ->add('NIP', 'text', array('label' => 'NIP','required' => false))
             ->add('profession', 'text', array('label' => 'Zawód','required' => false))
             
             ->add('street', 'text', array('label' => 'Ulica','required' => false))
@@ -72,44 +84,16 @@ class FileType extends AbstractType
 					'zachodniopomorskie' => 'zachodniopomorskie',
 				) ))            
 
-			->add('country', 'choice', array(
-				'label' => 'Kraj', 
-				'required' => false, 
-				'choices' => array( 
-					'AT' => 'Austria',
-					'BE' => 'Belgia',
-					'BG' => 'Bułgaria',
-					'HR' => 'Chorwacja',
-					'CY' => 'Cypr',
-					'CZ' => 'Czechy',
-					'DK' => 'Dania',
-					'EE' => 'Estonia',
-					'FI' => 'Finlandia',
-					'FR' => 'Francja',
-					'GR' => 'Grecja',
-					'ES' => 'Hiszpania',
-					'IE' => 'Irlandia',
-					'LT' => 'Litwa',
-					'LU' => 'Luksemburg',
-					'LV' => 'Łotwa',
-					'MT' => 'Malta',
-					'NL' => 'Holandia',
-					'DE' => 'Niemcy',
-					'PL' => 'Polska',
-					'PT' => 'Portugalia',
-					'RO' => 'Rumunia',
-					'SK' => 'Słowacja',
-					'SI' => 'Słowenia',
-					'SE' => 'Szwecja',
-					'HU' => 'Węgry',
-					'GB' => 'Wielka Brytania',
-					'IT' => 'Włochy',),
-				 )) 
+			->add('country', 'country', array('label' => 'Kraj', 'required' => false, )) 
 
-            ->add('post_office', 'text', array('label' => 'Poczta','required' => false))
+            ->add('postOffice', 'text', array('label' => 'Poczta','required' => false))
             
-			->add('bankAccount', 'text', array('label' => 'Konto bankowe','required' => false, 'attr' => array('size' => 30)) )
+			->add('bankAccount', 'text', array('label' => 'Krajowe Konto bankowe','required' => false, 'attr' => array('size' => 30)) )
+			
+			->add('bankIBAN', 'text', array('label' => 'IBAN','required' => false, 'attr' => array('size' => 30)) )
+			->add('bankSWIFT', 'text', array('label' => 'SWIFT','required' => false, 'attr' => array('size' => 30)) )
             ->add('bankName', 'text', array('label' => 'Nazwa banku','required' => false))
+            
             ->add('phone', 'text', array('label' => 'telefon','required' => false))
             ->add('email', 'text', array('label' => 'E-mail','required' => false));
             

@@ -24,6 +24,8 @@ use AppBundle\Model\Doc;
 use AppBundle\Model\DocQuery;
 use AppBundle\Model\Project;
 use AppBundle\Model\ProjectQuery;
+use AppBundle\Model\Year;
+use AppBundle\Model\YearQuery;
 
 abstract class BaseBookk extends BaseObject implements Persistent
 {
@@ -78,6 +80,12 @@ abstract class BaseBookk extends BaseObject implements Persistent
     protected $bookking_date;
 
     /**
+     * The value for the year_id field.
+     * @var        int
+     */
+    protected $year_id;
+
+    /**
      * The value for the doc_id field.
      * @var        int
      */
@@ -88,6 +96,11 @@ abstract class BaseBookk extends BaseObject implements Persistent
      * @var        int
      */
     protected $project_id;
+
+    /**
+     * @var        Year
+     */
+    protected $aYear;
 
     /**
      * @var        Doc
@@ -237,6 +250,17 @@ abstract class BaseBookk extends BaseObject implements Persistent
     }
 
     /**
+     * Get the [year_id] column value.
+     *
+     * @return int
+     */
+    public function getYearId()
+    {
+
+        return $this->year_id;
+    }
+
+    /**
      * Get the [doc_id] column value.
      *
      * @return int
@@ -374,6 +398,31 @@ abstract class BaseBookk extends BaseObject implements Persistent
     } // setBookkingDate()
 
     /**
+     * Set the value of [year_id] column.
+     *
+     * @param  int $v new value
+     * @return Bookk The current object (for fluent API support)
+     */
+    public function setYearId($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->year_id !== $v) {
+            $this->year_id = $v;
+            $this->modifiedColumns[] = BookkPeer::YEAR_ID;
+        }
+
+        if ($this->aYear !== null && $this->aYear->getId() !== $v) {
+            $this->aYear = null;
+        }
+
+
+        return $this;
+    } // setYearId()
+
+    /**
      * Set the value of [doc_id] column.
      *
      * @param  int $v new value
@@ -464,8 +513,9 @@ abstract class BaseBookk extends BaseObject implements Persistent
             $this->desc = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
             $this->is_accepted = ($row[$startcol + 3] !== null) ? (boolean) $row[$startcol + 3] : null;
             $this->bookking_date = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-            $this->doc_id = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
-            $this->project_id = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
+            $this->year_id = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
+            $this->doc_id = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
+            $this->project_id = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -475,7 +525,7 @@ abstract class BaseBookk extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 7; // 7 = BookkPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 8; // 8 = BookkPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Bookk object", $e);
@@ -498,6 +548,9 @@ abstract class BaseBookk extends BaseObject implements Persistent
     public function ensureConsistency()
     {
 
+        if ($this->aYear !== null && $this->year_id !== $this->aYear->getId()) {
+            $this->aYear = null;
+        }
         if ($this->aDoc !== null && $this->doc_id !== $this->aDoc->getId()) {
             $this->aDoc = null;
         }
@@ -543,6 +596,7 @@ abstract class BaseBookk extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->aYear = null;
             $this->aDoc = null;
             $this->aProject = null;
             $this->collBookkEntries = null;
@@ -665,6 +719,13 @@ abstract class BaseBookk extends BaseObject implements Persistent
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
+            if ($this->aYear !== null) {
+                if ($this->aYear->isModified() || $this->aYear->isNew()) {
+                    $affectedRows += $this->aYear->save($con);
+                }
+                $this->setYear($this->aYear);
+            }
+
             if ($this->aDoc !== null) {
                 if ($this->aDoc->isModified() || $this->aDoc->isNew()) {
                     $affectedRows += $this->aDoc->save($con);
@@ -748,6 +809,9 @@ abstract class BaseBookk extends BaseObject implements Persistent
         if ($this->isColumnModified(BookkPeer::BOOKKING_DATE)) {
             $modifiedColumns[':p' . $index++]  = '`bookking_date`';
         }
+        if ($this->isColumnModified(BookkPeer::YEAR_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`year_id`';
+        }
         if ($this->isColumnModified(BookkPeer::DOC_ID)) {
             $modifiedColumns[':p' . $index++]  = '`doc_id`';
         }
@@ -779,6 +843,9 @@ abstract class BaseBookk extends BaseObject implements Persistent
                         break;
                     case '`bookking_date`':
                         $stmt->bindValue($identifier, $this->bookking_date, PDO::PARAM_STR);
+                        break;
+                    case '`year_id`':
+                        $stmt->bindValue($identifier, $this->year_id, PDO::PARAM_INT);
                         break;
                     case '`doc_id`':
                         $stmt->bindValue($identifier, $this->doc_id, PDO::PARAM_INT);
@@ -885,6 +952,12 @@ abstract class BaseBookk extends BaseObject implements Persistent
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
+            if ($this->aYear !== null) {
+                if (!$this->aYear->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aYear->getValidationFailures());
+                }
+            }
+
             if ($this->aDoc !== null) {
                 if (!$this->aDoc->validate($columns)) {
                     $failureMap = array_merge($failureMap, $this->aDoc->getValidationFailures());
@@ -962,9 +1035,12 @@ abstract class BaseBookk extends BaseObject implements Persistent
                 return $this->getBookkingDate();
                 break;
             case 5:
-                return $this->getDocId();
+                return $this->getYearId();
                 break;
             case 6:
+                return $this->getDocId();
+                break;
+            case 7:
                 return $this->getProjectId();
                 break;
             default:
@@ -1001,8 +1077,9 @@ abstract class BaseBookk extends BaseObject implements Persistent
             $keys[2] => $this->getDesc(),
             $keys[3] => $this->getIsAccepted(),
             $keys[4] => $this->getBookkingDate(),
-            $keys[5] => $this->getDocId(),
-            $keys[6] => $this->getProjectId(),
+            $keys[5] => $this->getYearId(),
+            $keys[6] => $this->getDocId(),
+            $keys[7] => $this->getProjectId(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1010,6 +1087,9 @@ abstract class BaseBookk extends BaseObject implements Persistent
         }
 
         if ($includeForeignObjects) {
+            if (null !== $this->aYear) {
+                $result['Year'] = $this->aYear->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
             if (null !== $this->aDoc) {
                 $result['Doc'] = $this->aDoc->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
@@ -1069,9 +1149,12 @@ abstract class BaseBookk extends BaseObject implements Persistent
                 $this->setBookkingDate($value);
                 break;
             case 5:
-                $this->setDocId($value);
+                $this->setYearId($value);
                 break;
             case 6:
+                $this->setDocId($value);
+                break;
+            case 7:
                 $this->setProjectId($value);
                 break;
         } // switch()
@@ -1103,8 +1186,9 @@ abstract class BaseBookk extends BaseObject implements Persistent
         if (array_key_exists($keys[2], $arr)) $this->setDesc($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setIsAccepted($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setBookkingDate($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setDocId($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setProjectId($arr[$keys[6]]);
+        if (array_key_exists($keys[5], $arr)) $this->setYearId($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setDocId($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setProjectId($arr[$keys[7]]);
     }
 
     /**
@@ -1121,6 +1205,7 @@ abstract class BaseBookk extends BaseObject implements Persistent
         if ($this->isColumnModified(BookkPeer::DESC)) $criteria->add(BookkPeer::DESC, $this->desc);
         if ($this->isColumnModified(BookkPeer::IS_ACCEPTED)) $criteria->add(BookkPeer::IS_ACCEPTED, $this->is_accepted);
         if ($this->isColumnModified(BookkPeer::BOOKKING_DATE)) $criteria->add(BookkPeer::BOOKKING_DATE, $this->bookking_date);
+        if ($this->isColumnModified(BookkPeer::YEAR_ID)) $criteria->add(BookkPeer::YEAR_ID, $this->year_id);
         if ($this->isColumnModified(BookkPeer::DOC_ID)) $criteria->add(BookkPeer::DOC_ID, $this->doc_id);
         if ($this->isColumnModified(BookkPeer::PROJECT_ID)) $criteria->add(BookkPeer::PROJECT_ID, $this->project_id);
 
@@ -1190,6 +1275,7 @@ abstract class BaseBookk extends BaseObject implements Persistent
         $copyObj->setDesc($this->getDesc());
         $copyObj->setIsAccepted($this->getIsAccepted());
         $copyObj->setBookkingDate($this->getBookkingDate());
+        $copyObj->setYearId($this->getYearId());
         $copyObj->setDocId($this->getDocId());
         $copyObj->setProjectId($this->getProjectId());
 
@@ -1254,6 +1340,58 @@ abstract class BaseBookk extends BaseObject implements Persistent
         }
 
         return self::$peer;
+    }
+
+    /**
+     * Declares an association between this object and a Year object.
+     *
+     * @param                  Year $v
+     * @return Bookk The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setYear(Year $v = null)
+    {
+        if ($v === null) {
+            $this->setYearId(NULL);
+        } else {
+            $this->setYearId($v->getId());
+        }
+
+        $this->aYear = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the Year object, it will not be re-added.
+        if ($v !== null) {
+            $v->addBookk($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated Year object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return Year The associated Year object.
+     * @throws PropelException
+     */
+    public function getYear(PropelPDO $con = null, $doQuery = true)
+    {
+        if ($this->aYear === null && ($this->year_id !== null) && $doQuery) {
+            $this->aYear = YearQuery::create()->findPk($this->year_id, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aYear->addBookks($this);
+             */
+        }
+
+        return $this->aYear;
     }
 
     /**
@@ -1711,6 +1849,7 @@ abstract class BaseBookk extends BaseObject implements Persistent
         $this->desc = null;
         $this->is_accepted = null;
         $this->bookking_date = null;
+        $this->year_id = null;
         $this->doc_id = null;
         $this->project_id = null;
         $this->alreadyInSave = false;
@@ -1741,6 +1880,9 @@ abstract class BaseBookk extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->aYear instanceof Persistent) {
+              $this->aYear->clearAllReferences($deep);
+            }
             if ($this->aDoc instanceof Persistent) {
               $this->aDoc->clearAllReferences($deep);
             }
@@ -1755,6 +1897,7 @@ abstract class BaseBookk extends BaseObject implements Persistent
             $this->collBookkEntries->clearIterator();
         }
         $this->collBookkEntries = null;
+        $this->aYear = null;
         $this->aDoc = null;
         $this->aProject = null;
     }

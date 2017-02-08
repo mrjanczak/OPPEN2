@@ -13,7 +13,9 @@ framework:
         strict_requirements: true
     form:            ~
     csrf_protection: ~
-    validation:      { enable_annotations: true }
+    validation:      
+        enabled: true
+        enable_annotations: true
     templating:
         engines: ['twig']
     default_locale:  "%locale%"

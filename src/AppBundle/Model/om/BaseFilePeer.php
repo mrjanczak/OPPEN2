@@ -30,13 +30,13 @@ abstract class BaseFilePeer
     const TM_CLASS = 'AppBundle\\Model\\map\\FileTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 31;
+    const NUM_COLUMNS = 35;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 31;
+    const NUM_HYDRATE_COLUMNS = 35;
 
     /** the column name for the id field */
     const ID = 'file.id';
@@ -80,8 +80,14 @@ abstract class BaseFilePeer
     /** the column name for the PESEL field */
     const PESEL = 'file.PESEL';
 
-    /** the column name for the Passport field */
-    const PASSPORT = 'file.Passport';
+    /** the column name for the ID_type field */
+    const ID_TYPE = 'file.ID_type';
+
+    /** the column name for the ID_no field */
+    const ID_NO = 'file.ID_no';
+
+    /** the column name for the ID_country field */
+    const ID_COUNTRY = 'file.ID_country';
 
     /** the column name for the NIP field */
     const NIP = 'file.NIP';
@@ -122,6 +128,12 @@ abstract class BaseFilePeer
     /** the column name for the bank_account field */
     const BANK_ACCOUNT = 'file.bank_account';
 
+    /** the column name for the bank_IBAN field */
+    const BANK_IBAN = 'file.bank_IBAN';
+
+    /** the column name for the bank_SWIFT field */
+    const BANK_SWIFT = 'file.bank_SWIFT';
+
     /** the column name for the bank_name field */
     const BANK_NAME = 'file.bank_name';
 
@@ -150,12 +162,12 @@ abstract class BaseFilePeer
      * e.g. FilePeer::$fieldNames[FilePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'AccNo', 'FileCatId', 'SubFileId', 'FirstName', 'SecondName', 'LastName', 'MaidenName', 'FatherName', 'MotherName', 'BirthDate', 'BirthPlace', 'Pesel', 'Passport', 'Nip', 'Profession', 'Street', 'House', 'Flat', 'Code', 'City', 'District2', 'District', 'Province', 'Country', 'PostOffice', 'BankAccount', 'BankName', 'Phone', 'Email', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'accNo', 'fileCatId', 'subFileId', 'firstName', 'secondName', 'lastName', 'maidenName', 'fatherName', 'motherName', 'birthDate', 'birthPlace', 'pesel', 'passport', 'nip', 'profession', 'street', 'house', 'flat', 'code', 'city', 'district2', 'district', 'province', 'country', 'postOffice', 'bankAccount', 'bankName', 'phone', 'email', ),
-        BasePeer::TYPE_COLNAME => array (FilePeer::ID, FilePeer::NAME, FilePeer::ACC_NO, FilePeer::FILE_CAT_ID, FilePeer::SUB_FILE_ID, FilePeer::FIRST_NAME, FilePeer::SECOND_NAME, FilePeer::LAST_NAME, FilePeer::MAIDEN_NAME, FilePeer::FATHER_NAME, FilePeer::MOTHER_NAME, FilePeer::BIRTH_DATE, FilePeer::BIRTH_PLACE, FilePeer::PESEL, FilePeer::PASSPORT, FilePeer::NIP, FilePeer::PROFESSION, FilePeer::STREET, FilePeer::HOUSE, FilePeer::FLAT, FilePeer::CODE, FilePeer::CITY, FilePeer::DISTRICT2, FilePeer::DISTRICT, FilePeer::PROVINCE, FilePeer::COUNTRY, FilePeer::POST_OFFICE, FilePeer::BANK_ACCOUNT, FilePeer::BANK_NAME, FilePeer::PHONE, FilePeer::EMAIL, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'NAME', 'ACC_NO', 'FILE_CAT_ID', 'SUB_FILE_ID', 'FIRST_NAME', 'SECOND_NAME', 'LAST_NAME', 'MAIDEN_NAME', 'FATHER_NAME', 'MOTHER_NAME', 'BIRTH_DATE', 'BIRTH_PLACE', 'PESEL', 'PASSPORT', 'NIP', 'PROFESSION', 'STREET', 'HOUSE', 'FLAT', 'CODE', 'CITY', 'DISTRICT2', 'DISTRICT', 'PROVINCE', 'COUNTRY', 'POST_OFFICE', 'BANK_ACCOUNT', 'BANK_NAME', 'PHONE', 'EMAIL', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'acc_no', 'file_cat_id', 'sub_file_id', 'first_name', 'second_name', 'last_name', 'maiden_name', 'father_name', 'mother_name', 'birth_date', 'birth_place', 'PESEL', 'Passport', 'NIP', 'profession', 'street', 'house', 'flat', 'code', 'city', 'district2', 'district', 'province', 'country', 'post_office', 'bank_account', 'bank_name', 'phone', 'email', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'AccNo', 'FileCatId', 'SubFileId', 'FirstName', 'SecondName', 'LastName', 'MaidenName', 'FatherName', 'MotherName', 'BirthDate', 'BirthPlace', 'Pesel', 'IdType', 'IdNo', 'IdCountry', 'Nip', 'Profession', 'Street', 'House', 'Flat', 'Code', 'City', 'District2', 'District', 'Province', 'Country', 'PostOffice', 'BankAccount', 'BankIban', 'BankSwift', 'BankName', 'Phone', 'Email', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'accNo', 'fileCatId', 'subFileId', 'firstName', 'secondName', 'lastName', 'maidenName', 'fatherName', 'motherName', 'birthDate', 'birthPlace', 'pesel', 'idType', 'idNo', 'idCountry', 'nip', 'profession', 'street', 'house', 'flat', 'code', 'city', 'district2', 'district', 'province', 'country', 'postOffice', 'bankAccount', 'bankIban', 'bankSwift', 'bankName', 'phone', 'email', ),
+        BasePeer::TYPE_COLNAME => array (FilePeer::ID, FilePeer::NAME, FilePeer::ACC_NO, FilePeer::FILE_CAT_ID, FilePeer::SUB_FILE_ID, FilePeer::FIRST_NAME, FilePeer::SECOND_NAME, FilePeer::LAST_NAME, FilePeer::MAIDEN_NAME, FilePeer::FATHER_NAME, FilePeer::MOTHER_NAME, FilePeer::BIRTH_DATE, FilePeer::BIRTH_PLACE, FilePeer::PESEL, FilePeer::ID_TYPE, FilePeer::ID_NO, FilePeer::ID_COUNTRY, FilePeer::NIP, FilePeer::PROFESSION, FilePeer::STREET, FilePeer::HOUSE, FilePeer::FLAT, FilePeer::CODE, FilePeer::CITY, FilePeer::DISTRICT2, FilePeer::DISTRICT, FilePeer::PROVINCE, FilePeer::COUNTRY, FilePeer::POST_OFFICE, FilePeer::BANK_ACCOUNT, FilePeer::BANK_IBAN, FilePeer::BANK_SWIFT, FilePeer::BANK_NAME, FilePeer::PHONE, FilePeer::EMAIL, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'NAME', 'ACC_NO', 'FILE_CAT_ID', 'SUB_FILE_ID', 'FIRST_NAME', 'SECOND_NAME', 'LAST_NAME', 'MAIDEN_NAME', 'FATHER_NAME', 'MOTHER_NAME', 'BIRTH_DATE', 'BIRTH_PLACE', 'PESEL', 'ID_TYPE', 'ID_NO', 'ID_COUNTRY', 'NIP', 'PROFESSION', 'STREET', 'HOUSE', 'FLAT', 'CODE', 'CITY', 'DISTRICT2', 'DISTRICT', 'PROVINCE', 'COUNTRY', 'POST_OFFICE', 'BANK_ACCOUNT', 'BANK_IBAN', 'BANK_SWIFT', 'BANK_NAME', 'PHONE', 'EMAIL', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'acc_no', 'file_cat_id', 'sub_file_id', 'first_name', 'second_name', 'last_name', 'maiden_name', 'father_name', 'mother_name', 'birth_date', 'birth_place', 'PESEL', 'ID_type', 'ID_no', 'ID_country', 'NIP', 'profession', 'street', 'house', 'flat', 'code', 'city', 'district2', 'district', 'province', 'country', 'post_office', 'bank_account', 'bank_IBAN', 'bank_SWIFT', 'bank_name', 'phone', 'email', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, )
     );
 
     /**
@@ -165,12 +177,12 @@ abstract class BaseFilePeer
      * e.g. FilePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'AccNo' => 2, 'FileCatId' => 3, 'SubFileId' => 4, 'FirstName' => 5, 'SecondName' => 6, 'LastName' => 7, 'MaidenName' => 8, 'FatherName' => 9, 'MotherName' => 10, 'BirthDate' => 11, 'BirthPlace' => 12, 'Pesel' => 13, 'Passport' => 14, 'Nip' => 15, 'Profession' => 16, 'Street' => 17, 'House' => 18, 'Flat' => 19, 'Code' => 20, 'City' => 21, 'District2' => 22, 'District' => 23, 'Province' => 24, 'Country' => 25, 'PostOffice' => 26, 'BankAccount' => 27, 'BankName' => 28, 'Phone' => 29, 'Email' => 30, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'accNo' => 2, 'fileCatId' => 3, 'subFileId' => 4, 'firstName' => 5, 'secondName' => 6, 'lastName' => 7, 'maidenName' => 8, 'fatherName' => 9, 'motherName' => 10, 'birthDate' => 11, 'birthPlace' => 12, 'pesel' => 13, 'passport' => 14, 'nip' => 15, 'profession' => 16, 'street' => 17, 'house' => 18, 'flat' => 19, 'code' => 20, 'city' => 21, 'district2' => 22, 'district' => 23, 'province' => 24, 'country' => 25, 'postOffice' => 26, 'bankAccount' => 27, 'bankName' => 28, 'phone' => 29, 'email' => 30, ),
-        BasePeer::TYPE_COLNAME => array (FilePeer::ID => 0, FilePeer::NAME => 1, FilePeer::ACC_NO => 2, FilePeer::FILE_CAT_ID => 3, FilePeer::SUB_FILE_ID => 4, FilePeer::FIRST_NAME => 5, FilePeer::SECOND_NAME => 6, FilePeer::LAST_NAME => 7, FilePeer::MAIDEN_NAME => 8, FilePeer::FATHER_NAME => 9, FilePeer::MOTHER_NAME => 10, FilePeer::BIRTH_DATE => 11, FilePeer::BIRTH_PLACE => 12, FilePeer::PESEL => 13, FilePeer::PASSPORT => 14, FilePeer::NIP => 15, FilePeer::PROFESSION => 16, FilePeer::STREET => 17, FilePeer::HOUSE => 18, FilePeer::FLAT => 19, FilePeer::CODE => 20, FilePeer::CITY => 21, FilePeer::DISTRICT2 => 22, FilePeer::DISTRICT => 23, FilePeer::PROVINCE => 24, FilePeer::COUNTRY => 25, FilePeer::POST_OFFICE => 26, FilePeer::BANK_ACCOUNT => 27, FilePeer::BANK_NAME => 28, FilePeer::PHONE => 29, FilePeer::EMAIL => 30, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'NAME' => 1, 'ACC_NO' => 2, 'FILE_CAT_ID' => 3, 'SUB_FILE_ID' => 4, 'FIRST_NAME' => 5, 'SECOND_NAME' => 6, 'LAST_NAME' => 7, 'MAIDEN_NAME' => 8, 'FATHER_NAME' => 9, 'MOTHER_NAME' => 10, 'BIRTH_DATE' => 11, 'BIRTH_PLACE' => 12, 'PESEL' => 13, 'PASSPORT' => 14, 'NIP' => 15, 'PROFESSION' => 16, 'STREET' => 17, 'HOUSE' => 18, 'FLAT' => 19, 'CODE' => 20, 'CITY' => 21, 'DISTRICT2' => 22, 'DISTRICT' => 23, 'PROVINCE' => 24, 'COUNTRY' => 25, 'POST_OFFICE' => 26, 'BANK_ACCOUNT' => 27, 'BANK_NAME' => 28, 'PHONE' => 29, 'EMAIL' => 30, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'acc_no' => 2, 'file_cat_id' => 3, 'sub_file_id' => 4, 'first_name' => 5, 'second_name' => 6, 'last_name' => 7, 'maiden_name' => 8, 'father_name' => 9, 'mother_name' => 10, 'birth_date' => 11, 'birth_place' => 12, 'PESEL' => 13, 'Passport' => 14, 'NIP' => 15, 'profession' => 16, 'street' => 17, 'house' => 18, 'flat' => 19, 'code' => 20, 'city' => 21, 'district2' => 22, 'district' => 23, 'province' => 24, 'country' => 25, 'post_office' => 26, 'bank_account' => 27, 'bank_name' => 28, 'phone' => 29, 'email' => 30, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'AccNo' => 2, 'FileCatId' => 3, 'SubFileId' => 4, 'FirstName' => 5, 'SecondName' => 6, 'LastName' => 7, 'MaidenName' => 8, 'FatherName' => 9, 'MotherName' => 10, 'BirthDate' => 11, 'BirthPlace' => 12, 'Pesel' => 13, 'IdType' => 14, 'IdNo' => 15, 'IdCountry' => 16, 'Nip' => 17, 'Profession' => 18, 'Street' => 19, 'House' => 20, 'Flat' => 21, 'Code' => 22, 'City' => 23, 'District2' => 24, 'District' => 25, 'Province' => 26, 'Country' => 27, 'PostOffice' => 28, 'BankAccount' => 29, 'BankIban' => 30, 'BankSwift' => 31, 'BankName' => 32, 'Phone' => 33, 'Email' => 34, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'accNo' => 2, 'fileCatId' => 3, 'subFileId' => 4, 'firstName' => 5, 'secondName' => 6, 'lastName' => 7, 'maidenName' => 8, 'fatherName' => 9, 'motherName' => 10, 'birthDate' => 11, 'birthPlace' => 12, 'pesel' => 13, 'idType' => 14, 'idNo' => 15, 'idCountry' => 16, 'nip' => 17, 'profession' => 18, 'street' => 19, 'house' => 20, 'flat' => 21, 'code' => 22, 'city' => 23, 'district2' => 24, 'district' => 25, 'province' => 26, 'country' => 27, 'postOffice' => 28, 'bankAccount' => 29, 'bankIban' => 30, 'bankSwift' => 31, 'bankName' => 32, 'phone' => 33, 'email' => 34, ),
+        BasePeer::TYPE_COLNAME => array (FilePeer::ID => 0, FilePeer::NAME => 1, FilePeer::ACC_NO => 2, FilePeer::FILE_CAT_ID => 3, FilePeer::SUB_FILE_ID => 4, FilePeer::FIRST_NAME => 5, FilePeer::SECOND_NAME => 6, FilePeer::LAST_NAME => 7, FilePeer::MAIDEN_NAME => 8, FilePeer::FATHER_NAME => 9, FilePeer::MOTHER_NAME => 10, FilePeer::BIRTH_DATE => 11, FilePeer::BIRTH_PLACE => 12, FilePeer::PESEL => 13, FilePeer::ID_TYPE => 14, FilePeer::ID_NO => 15, FilePeer::ID_COUNTRY => 16, FilePeer::NIP => 17, FilePeer::PROFESSION => 18, FilePeer::STREET => 19, FilePeer::HOUSE => 20, FilePeer::FLAT => 21, FilePeer::CODE => 22, FilePeer::CITY => 23, FilePeer::DISTRICT2 => 24, FilePeer::DISTRICT => 25, FilePeer::PROVINCE => 26, FilePeer::COUNTRY => 27, FilePeer::POST_OFFICE => 28, FilePeer::BANK_ACCOUNT => 29, FilePeer::BANK_IBAN => 30, FilePeer::BANK_SWIFT => 31, FilePeer::BANK_NAME => 32, FilePeer::PHONE => 33, FilePeer::EMAIL => 34, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'NAME' => 1, 'ACC_NO' => 2, 'FILE_CAT_ID' => 3, 'SUB_FILE_ID' => 4, 'FIRST_NAME' => 5, 'SECOND_NAME' => 6, 'LAST_NAME' => 7, 'MAIDEN_NAME' => 8, 'FATHER_NAME' => 9, 'MOTHER_NAME' => 10, 'BIRTH_DATE' => 11, 'BIRTH_PLACE' => 12, 'PESEL' => 13, 'ID_TYPE' => 14, 'ID_NO' => 15, 'ID_COUNTRY' => 16, 'NIP' => 17, 'PROFESSION' => 18, 'STREET' => 19, 'HOUSE' => 20, 'FLAT' => 21, 'CODE' => 22, 'CITY' => 23, 'DISTRICT2' => 24, 'DISTRICT' => 25, 'PROVINCE' => 26, 'COUNTRY' => 27, 'POST_OFFICE' => 28, 'BANK_ACCOUNT' => 29, 'BANK_IBAN' => 30, 'BANK_SWIFT' => 31, 'BANK_NAME' => 32, 'PHONE' => 33, 'EMAIL' => 34, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'acc_no' => 2, 'file_cat_id' => 3, 'sub_file_id' => 4, 'first_name' => 5, 'second_name' => 6, 'last_name' => 7, 'maiden_name' => 8, 'father_name' => 9, 'mother_name' => 10, 'birth_date' => 11, 'birth_place' => 12, 'PESEL' => 13, 'ID_type' => 14, 'ID_no' => 15, 'ID_country' => 16, 'NIP' => 17, 'profession' => 18, 'street' => 19, 'house' => 20, 'flat' => 21, 'code' => 22, 'city' => 23, 'district2' => 24, 'district' => 25, 'province' => 26, 'country' => 27, 'post_office' => 28, 'bank_account' => 29, 'bank_IBAN' => 30, 'bank_SWIFT' => 31, 'bank_name' => 32, 'phone' => 33, 'email' => 34, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, )
     );
 
     /**
@@ -258,7 +270,9 @@ abstract class BaseFilePeer
             $criteria->addSelectColumn(FilePeer::BIRTH_DATE);
             $criteria->addSelectColumn(FilePeer::BIRTH_PLACE);
             $criteria->addSelectColumn(FilePeer::PESEL);
-            $criteria->addSelectColumn(FilePeer::PASSPORT);
+            $criteria->addSelectColumn(FilePeer::ID_TYPE);
+            $criteria->addSelectColumn(FilePeer::ID_NO);
+            $criteria->addSelectColumn(FilePeer::ID_COUNTRY);
             $criteria->addSelectColumn(FilePeer::NIP);
             $criteria->addSelectColumn(FilePeer::PROFESSION);
             $criteria->addSelectColumn(FilePeer::STREET);
@@ -272,6 +286,8 @@ abstract class BaseFilePeer
             $criteria->addSelectColumn(FilePeer::COUNTRY);
             $criteria->addSelectColumn(FilePeer::POST_OFFICE);
             $criteria->addSelectColumn(FilePeer::BANK_ACCOUNT);
+            $criteria->addSelectColumn(FilePeer::BANK_IBAN);
+            $criteria->addSelectColumn(FilePeer::BANK_SWIFT);
             $criteria->addSelectColumn(FilePeer::BANK_NAME);
             $criteria->addSelectColumn(FilePeer::PHONE);
             $criteria->addSelectColumn(FilePeer::EMAIL);
@@ -290,7 +306,9 @@ abstract class BaseFilePeer
             $criteria->addSelectColumn($alias . '.birth_date');
             $criteria->addSelectColumn($alias . '.birth_place');
             $criteria->addSelectColumn($alias . '.PESEL');
-            $criteria->addSelectColumn($alias . '.Passport');
+            $criteria->addSelectColumn($alias . '.ID_type');
+            $criteria->addSelectColumn($alias . '.ID_no');
+            $criteria->addSelectColumn($alias . '.ID_country');
             $criteria->addSelectColumn($alias . '.NIP');
             $criteria->addSelectColumn($alias . '.profession');
             $criteria->addSelectColumn($alias . '.street');
@@ -304,6 +322,8 @@ abstract class BaseFilePeer
             $criteria->addSelectColumn($alias . '.country');
             $criteria->addSelectColumn($alias . '.post_office');
             $criteria->addSelectColumn($alias . '.bank_account');
+            $criteria->addSelectColumn($alias . '.bank_IBAN');
+            $criteria->addSelectColumn($alias . '.bank_SWIFT');
             $criteria->addSelectColumn($alias . '.bank_name');
             $criteria->addSelectColumn($alias . '.phone');
             $criteria->addSelectColumn($alias . '.email');

@@ -101,10 +101,7 @@
 <div class="s"></div>	
 
 {{ form_row(form.objective) }}
-{{ form_widget(form.downloadZIP) }}	
-</br>			
-<p>Archiwum zapisane w {{path}}{{zipName}} [{{filesize/1000}}MB]</p>	
-<p>{{dump(contents)}}</p>				
+{{ form_widget(form.downloadZIP) }}				
 			
 {{ form_errors(form) }}
 	

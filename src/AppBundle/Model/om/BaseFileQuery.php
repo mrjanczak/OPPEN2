@@ -38,7 +38,9 @@ use AppBundle\Model\Project;
  * @method FileQuery orderByBirthDate($order = Criteria::ASC) Order by the birth_date column
  * @method FileQuery orderByBirthPlace($order = Criteria::ASC) Order by the birth_place column
  * @method FileQuery orderByPesel($order = Criteria::ASC) Order by the PESEL column
- * @method FileQuery orderByPassport($order = Criteria::ASC) Order by the Passport column
+ * @method FileQuery orderByIdType($order = Criteria::ASC) Order by the ID_type column
+ * @method FileQuery orderByIdNo($order = Criteria::ASC) Order by the ID_no column
+ * @method FileQuery orderByIdCountry($order = Criteria::ASC) Order by the ID_country column
  * @method FileQuery orderByNip($order = Criteria::ASC) Order by the NIP column
  * @method FileQuery orderByProfession($order = Criteria::ASC) Order by the profession column
  * @method FileQuery orderByStreet($order = Criteria::ASC) Order by the street column
@@ -52,6 +54,8 @@ use AppBundle\Model\Project;
  * @method FileQuery orderByCountry($order = Criteria::ASC) Order by the country column
  * @method FileQuery orderByPostOffice($order = Criteria::ASC) Order by the post_office column
  * @method FileQuery orderByBankAccount($order = Criteria::ASC) Order by the bank_account column
+ * @method FileQuery orderByBankIban($order = Criteria::ASC) Order by the bank_IBAN column
+ * @method FileQuery orderByBankSwift($order = Criteria::ASC) Order by the bank_SWIFT column
  * @method FileQuery orderByBankName($order = Criteria::ASC) Order by the bank_name column
  * @method FileQuery orderByPhone($order = Criteria::ASC) Order by the phone column
  * @method FileQuery orderByEmail($order = Criteria::ASC) Order by the email column
@@ -70,7 +74,9 @@ use AppBundle\Model\Project;
  * @method FileQuery groupByBirthDate() Group by the birth_date column
  * @method FileQuery groupByBirthPlace() Group by the birth_place column
  * @method FileQuery groupByPesel() Group by the PESEL column
- * @method FileQuery groupByPassport() Group by the Passport column
+ * @method FileQuery groupByIdType() Group by the ID_type column
+ * @method FileQuery groupByIdNo() Group by the ID_no column
+ * @method FileQuery groupByIdCountry() Group by the ID_country column
  * @method FileQuery groupByNip() Group by the NIP column
  * @method FileQuery groupByProfession() Group by the profession column
  * @method FileQuery groupByStreet() Group by the street column
@@ -84,6 +90,8 @@ use AppBundle\Model\Project;
  * @method FileQuery groupByCountry() Group by the country column
  * @method FileQuery groupByPostOffice() Group by the post_office column
  * @method FileQuery groupByBankAccount() Group by the bank_account column
+ * @method FileQuery groupByBankIban() Group by the bank_IBAN column
+ * @method FileQuery groupByBankSwift() Group by the bank_SWIFT column
  * @method FileQuery groupByBankName() Group by the bank_name column
  * @method FileQuery groupByPhone() Group by the phone column
  * @method FileQuery groupByEmail() Group by the email column
@@ -152,7 +160,9 @@ use AppBundle\Model\Project;
  * @method File findOneByBirthDate(string $birth_date) Return the first File filtered by the birth_date column
  * @method File findOneByBirthPlace(string $birth_place) Return the first File filtered by the birth_place column
  * @method File findOneByPesel(string $PESEL) Return the first File filtered by the PESEL column
- * @method File findOneByPassport(string $Passport) Return the first File filtered by the Passport column
+ * @method File findOneByIdType(string $ID_type) Return the first File filtered by the ID_type column
+ * @method File findOneByIdNo(string $ID_no) Return the first File filtered by the ID_no column
+ * @method File findOneByIdCountry(string $ID_country) Return the first File filtered by the ID_country column
  * @method File findOneByNip(string $NIP) Return the first File filtered by the NIP column
  * @method File findOneByProfession(string $profession) Return the first File filtered by the profession column
  * @method File findOneByStreet(string $street) Return the first File filtered by the street column
@@ -166,6 +176,8 @@ use AppBundle\Model\Project;
  * @method File findOneByCountry(string $country) Return the first File filtered by the country column
  * @method File findOneByPostOffice(string $post_office) Return the first File filtered by the post_office column
  * @method File findOneByBankAccount(string $bank_account) Return the first File filtered by the bank_account column
+ * @method File findOneByBankIban(string $bank_IBAN) Return the first File filtered by the bank_IBAN column
+ * @method File findOneByBankSwift(string $bank_SWIFT) Return the first File filtered by the bank_SWIFT column
  * @method File findOneByBankName(string $bank_name) Return the first File filtered by the bank_name column
  * @method File findOneByPhone(string $phone) Return the first File filtered by the phone column
  * @method File findOneByEmail(string $email) Return the first File filtered by the email column
@@ -184,7 +196,9 @@ use AppBundle\Model\Project;
  * @method array findByBirthDate(string $birth_date) Return File objects filtered by the birth_date column
  * @method array findByBirthPlace(string $birth_place) Return File objects filtered by the birth_place column
  * @method array findByPesel(string $PESEL) Return File objects filtered by the PESEL column
- * @method array findByPassport(string $Passport) Return File objects filtered by the Passport column
+ * @method array findByIdType(string $ID_type) Return File objects filtered by the ID_type column
+ * @method array findByIdNo(string $ID_no) Return File objects filtered by the ID_no column
+ * @method array findByIdCountry(string $ID_country) Return File objects filtered by the ID_country column
  * @method array findByNip(string $NIP) Return File objects filtered by the NIP column
  * @method array findByProfession(string $profession) Return File objects filtered by the profession column
  * @method array findByStreet(string $street) Return File objects filtered by the street column
@@ -198,6 +212,8 @@ use AppBundle\Model\Project;
  * @method array findByCountry(string $country) Return File objects filtered by the country column
  * @method array findByPostOffice(string $post_office) Return File objects filtered by the post_office column
  * @method array findByBankAccount(string $bank_account) Return File objects filtered by the bank_account column
+ * @method array findByBankIban(string $bank_IBAN) Return File objects filtered by the bank_IBAN column
+ * @method array findByBankSwift(string $bank_SWIFT) Return File objects filtered by the bank_SWIFT column
  * @method array findByBankName(string $bank_name) Return File objects filtered by the bank_name column
  * @method array findByPhone(string $phone) Return File objects filtered by the phone column
  * @method array findByEmail(string $email) Return File objects filtered by the email column
@@ -306,7 +322,7 @@ abstract class BaseFileQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `name`, `acc_no`, `file_cat_id`, `sub_file_id`, `first_name`, `second_name`, `last_name`, `maiden_name`, `father_name`, `mother_name`, `birth_date`, `birth_place`, `PESEL`, `Passport`, `NIP`, `profession`, `street`, `house`, `flat`, `code`, `city`, `district2`, `district`, `province`, `country`, `post_office`, `bank_account`, `bank_name`, `phone`, `email` FROM `file` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `name`, `acc_no`, `file_cat_id`, `sub_file_id`, `first_name`, `second_name`, `last_name`, `maiden_name`, `father_name`, `mother_name`, `birth_date`, `birth_place`, `PESEL`, `ID_type`, `ID_no`, `ID_country`, `NIP`, `profession`, `street`, `house`, `flat`, `code`, `city`, `district2`, `district`, `province`, `country`, `post_office`, `bank_account`, `bank_IBAN`, `bank_SWIFT`, `bank_name`, `phone`, `email` FROM `file` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -872,32 +888,90 @@ abstract class BaseFileQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the Passport column
+     * Filter the query on the ID_type column
      *
      * Example usage:
      * <code>
-     * $query->filterByPassport('fooValue');   // WHERE Passport = 'fooValue'
-     * $query->filterByPassport('%fooValue%'); // WHERE Passport LIKE '%fooValue%'
+     * $query->filterByIdType('fooValue');   // WHERE ID_type = 'fooValue'
+     * $query->filterByIdType('%fooValue%'); // WHERE ID_type LIKE '%fooValue%'
      * </code>
      *
-     * @param     string $passport The value to use as filter.
+     * @param     string $idType The value to use as filter.
      *              Accepts wildcards (* and % trigger a LIKE)
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return FileQuery The current query, for fluid interface
      */
-    public function filterByPassport($passport = null, $comparison = null)
+    public function filterByIdType($idType = null, $comparison = null)
     {
         if (null === $comparison) {
-            if (is_array($passport)) {
+            if (is_array($idType)) {
                 $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $passport)) {
-                $passport = str_replace('*', '%', $passport);
+            } elseif (preg_match('/[\%\*]/', $idType)) {
+                $idType = str_replace('*', '%', $idType);
                 $comparison = Criteria::LIKE;
             }
         }
 
-        return $this->addUsingAlias(FilePeer::PASSPORT, $passport, $comparison);
+        return $this->addUsingAlias(FilePeer::ID_TYPE, $idType, $comparison);
+    }
+
+    /**
+     * Filter the query on the ID_no column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByIdNo('fooValue');   // WHERE ID_no = 'fooValue'
+     * $query->filterByIdNo('%fooValue%'); // WHERE ID_no LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $idNo The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return FileQuery The current query, for fluid interface
+     */
+    public function filterByIdNo($idNo = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($idNo)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $idNo)) {
+                $idNo = str_replace('*', '%', $idNo);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(FilePeer::ID_NO, $idNo, $comparison);
+    }
+
+    /**
+     * Filter the query on the ID_country column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByIdCountry('fooValue');   // WHERE ID_country = 'fooValue'
+     * $query->filterByIdCountry('%fooValue%'); // WHERE ID_country LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $idCountry The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return FileQuery The current query, for fluid interface
+     */
+    public function filterByIdCountry($idCountry = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($idCountry)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $idCountry)) {
+                $idCountry = str_replace('*', '%', $idCountry);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(FilePeer::ID_COUNTRY, $idCountry, $comparison);
     }
 
     /**
@@ -1275,6 +1349,64 @@ abstract class BaseFileQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(FilePeer::BANK_ACCOUNT, $bankAccount, $comparison);
+    }
+
+    /**
+     * Filter the query on the bank_IBAN column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByBankIban('fooValue');   // WHERE bank_IBAN = 'fooValue'
+     * $query->filterByBankIban('%fooValue%'); // WHERE bank_IBAN LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $bankIban The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return FileQuery The current query, for fluid interface
+     */
+    public function filterByBankIban($bankIban = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($bankIban)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $bankIban)) {
+                $bankIban = str_replace('*', '%', $bankIban);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(FilePeer::BANK_IBAN, $bankIban, $comparison);
+    }
+
+    /**
+     * Filter the query on the bank_SWIFT column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByBankSwift('fooValue');   // WHERE bank_SWIFT = 'fooValue'
+     * $query->filterByBankSwift('%fooValue%'); // WHERE bank_SWIFT LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $bankSwift The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return FileQuery The current query, for fluid interface
+     */
+    public function filterByBankSwift($bankSwift = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($bankSwift)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $bankSwift)) {
+                $bankSwift = str_replace('*', '%', $bankSwift);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(FilePeer::BANK_SWIFT, $bankSwift, $comparison);
     }
 
     /**

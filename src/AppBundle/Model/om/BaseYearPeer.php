@@ -10,6 +10,7 @@ use \Propel;
 use \PropelException;
 use \PropelPDO;
 use AppBundle\Model\AccountPeer;
+use AppBundle\Model\BookkPeer;
 use AppBundle\Model\DocCatPeer;
 use AppBundle\Model\FileCatPeer;
 use AppBundle\Model\MonthPeer;
@@ -413,6 +414,9 @@ abstract class BaseYearPeer
         // Invalidate objects in DocCatPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         DocCatPeer::clearInstancePool();
+        // Invalidate objects in BookkPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        BookkPeer::clearInstancePool();
         // Invalidate objects in AccountPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         AccountPeer::clearInstancePool();
@@ -773,6 +777,12 @@ abstract class BaseYearPeer
 
             $criteria->add(DocCatPeer::YEAR_ID, $obj->getId());
             $affectedRows += DocCatPeer::doDelete($criteria, $con);
+
+            // delete related Bookk objects
+            $criteria = new Criteria(BookkPeer::DATABASE_NAME);
+
+            $criteria->add(BookkPeer::YEAR_ID, $obj->getId());
+            $affectedRows += BookkPeer::doDelete($criteria, $con);
 
             // delete related Account objects
             $criteria = new Criteria(AccountPeer::DATABASE_NAME);

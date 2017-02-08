@@ -139,10 +139,22 @@ abstract class BaseFile extends BaseObject implements Persistent
     protected $pesel;
 
     /**
-     * The value for the passport field.
+     * The value for the id_type field.
      * @var        string
      */
-    protected $passport;
+    protected $id_type;
+
+    /**
+     * The value for the id_no field.
+     * @var        string
+     */
+    protected $id_no;
+
+    /**
+     * The value for the id_country field.
+     * @var        string
+     */
+    protected $id_country;
 
     /**
      * The value for the nip field.
@@ -221,6 +233,18 @@ abstract class BaseFile extends BaseObject implements Persistent
      * @var        string
      */
     protected $bank_account;
+
+    /**
+     * The value for the bank_iban field.
+     * @var        string
+     */
+    protected $bank_iban;
+
+    /**
+     * The value for the bank_swift field.
+     * @var        string
+     */
+    protected $bank_swift;
 
     /**
      * The value for the bank_name field.
@@ -562,14 +586,36 @@ abstract class BaseFile extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [passport] column value.
+     * Get the [id_type] column value.
      *
      * @return string
      */
-    public function getPassport()
+    public function getIdType()
     {
 
-        return $this->passport;
+        return $this->id_type;
+    }
+
+    /**
+     * Get the [id_no] column value.
+     *
+     * @return string
+     */
+    public function getIdNo()
+    {
+
+        return $this->id_no;
+    }
+
+    /**
+     * Get the [id_country] column value.
+     *
+     * @return string
+     */
+    public function getIdCountry()
+    {
+
+        return $this->id_country;
     }
 
     /**
@@ -713,6 +759,28 @@ abstract class BaseFile extends BaseObject implements Persistent
     {
 
         return $this->bank_account;
+    }
+
+    /**
+     * Get the [bank_iban] column value.
+     *
+     * @return string
+     */
+    public function getBankIban()
+    {
+
+        return $this->bank_iban;
+    }
+
+    /**
+     * Get the [bank_swift] column value.
+     *
+     * @return string
+     */
+    public function getBankSwift()
+    {
+
+        return $this->bank_swift;
     }
 
     /**
@@ -1053,25 +1121,67 @@ abstract class BaseFile extends BaseObject implements Persistent
     } // setPesel()
 
     /**
-     * Set the value of [passport] column.
+     * Set the value of [id_type] column.
      *
      * @param  string $v new value
      * @return File The current object (for fluent API support)
      */
-    public function setPassport($v)
+    public function setIdType($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->passport !== $v) {
-            $this->passport = $v;
-            $this->modifiedColumns[] = FilePeer::PASSPORT;
+        if ($this->id_type !== $v) {
+            $this->id_type = $v;
+            $this->modifiedColumns[] = FilePeer::ID_TYPE;
         }
 
 
         return $this;
-    } // setPassport()
+    } // setIdType()
+
+    /**
+     * Set the value of [id_no] column.
+     *
+     * @param  string $v new value
+     * @return File The current object (for fluent API support)
+     */
+    public function setIdNo($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->id_no !== $v) {
+            $this->id_no = $v;
+            $this->modifiedColumns[] = FilePeer::ID_NO;
+        }
+
+
+        return $this;
+    } // setIdNo()
+
+    /**
+     * Set the value of [id_country] column.
+     *
+     * @param  string $v new value
+     * @return File The current object (for fluent API support)
+     */
+    public function setIdCountry($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->id_country !== $v) {
+            $this->id_country = $v;
+            $this->modifiedColumns[] = FilePeer::ID_COUNTRY;
+        }
+
+
+        return $this;
+    } // setIdCountry()
 
     /**
      * Set the value of [nip] column.
@@ -1347,6 +1457,48 @@ abstract class BaseFile extends BaseObject implements Persistent
     } // setBankAccount()
 
     /**
+     * Set the value of [bank_iban] column.
+     *
+     * @param  string $v new value
+     * @return File The current object (for fluent API support)
+     */
+    public function setBankIban($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->bank_iban !== $v) {
+            $this->bank_iban = $v;
+            $this->modifiedColumns[] = FilePeer::BANK_IBAN;
+        }
+
+
+        return $this;
+    } // setBankIban()
+
+    /**
+     * Set the value of [bank_swift] column.
+     *
+     * @param  string $v new value
+     * @return File The current object (for fluent API support)
+     */
+    public function setBankSwift($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->bank_swift !== $v) {
+            $this->bank_swift = $v;
+            $this->modifiedColumns[] = FilePeer::BANK_SWIFT;
+        }
+
+
+        return $this;
+    } // setBankSwift()
+
+    /**
      * Set the value of [bank_name] column.
      *
      * @param  string $v new value
@@ -1455,23 +1607,27 @@ abstract class BaseFile extends BaseObject implements Persistent
             $this->birth_date = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
             $this->birth_place = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
             $this->pesel = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
-            $this->passport = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
-            $this->nip = ($row[$startcol + 15] !== null) ? (string) $row[$startcol + 15] : null;
-            $this->profession = ($row[$startcol + 16] !== null) ? (string) $row[$startcol + 16] : null;
-            $this->street = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
-            $this->house = ($row[$startcol + 18] !== null) ? (string) $row[$startcol + 18] : null;
-            $this->flat = ($row[$startcol + 19] !== null) ? (string) $row[$startcol + 19] : null;
-            $this->code = ($row[$startcol + 20] !== null) ? (string) $row[$startcol + 20] : null;
-            $this->city = ($row[$startcol + 21] !== null) ? (string) $row[$startcol + 21] : null;
-            $this->district2 = ($row[$startcol + 22] !== null) ? (string) $row[$startcol + 22] : null;
-            $this->district = ($row[$startcol + 23] !== null) ? (string) $row[$startcol + 23] : null;
-            $this->province = ($row[$startcol + 24] !== null) ? (string) $row[$startcol + 24] : null;
-            $this->country = ($row[$startcol + 25] !== null) ? (string) $row[$startcol + 25] : null;
-            $this->post_office = ($row[$startcol + 26] !== null) ? (string) $row[$startcol + 26] : null;
-            $this->bank_account = ($row[$startcol + 27] !== null) ? (string) $row[$startcol + 27] : null;
-            $this->bank_name = ($row[$startcol + 28] !== null) ? (string) $row[$startcol + 28] : null;
-            $this->phone = ($row[$startcol + 29] !== null) ? (string) $row[$startcol + 29] : null;
-            $this->email = ($row[$startcol + 30] !== null) ? (string) $row[$startcol + 30] : null;
+            $this->id_type = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
+            $this->id_no = ($row[$startcol + 15] !== null) ? (string) $row[$startcol + 15] : null;
+            $this->id_country = ($row[$startcol + 16] !== null) ? (string) $row[$startcol + 16] : null;
+            $this->nip = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
+            $this->profession = ($row[$startcol + 18] !== null) ? (string) $row[$startcol + 18] : null;
+            $this->street = ($row[$startcol + 19] !== null) ? (string) $row[$startcol + 19] : null;
+            $this->house = ($row[$startcol + 20] !== null) ? (string) $row[$startcol + 20] : null;
+            $this->flat = ($row[$startcol + 21] !== null) ? (string) $row[$startcol + 21] : null;
+            $this->code = ($row[$startcol + 22] !== null) ? (string) $row[$startcol + 22] : null;
+            $this->city = ($row[$startcol + 23] !== null) ? (string) $row[$startcol + 23] : null;
+            $this->district2 = ($row[$startcol + 24] !== null) ? (string) $row[$startcol + 24] : null;
+            $this->district = ($row[$startcol + 25] !== null) ? (string) $row[$startcol + 25] : null;
+            $this->province = ($row[$startcol + 26] !== null) ? (string) $row[$startcol + 26] : null;
+            $this->country = ($row[$startcol + 27] !== null) ? (string) $row[$startcol + 27] : null;
+            $this->post_office = ($row[$startcol + 28] !== null) ? (string) $row[$startcol + 28] : null;
+            $this->bank_account = ($row[$startcol + 29] !== null) ? (string) $row[$startcol + 29] : null;
+            $this->bank_iban = ($row[$startcol + 30] !== null) ? (string) $row[$startcol + 30] : null;
+            $this->bank_swift = ($row[$startcol + 31] !== null) ? (string) $row[$startcol + 31] : null;
+            $this->bank_name = ($row[$startcol + 32] !== null) ? (string) $row[$startcol + 32] : null;
+            $this->phone = ($row[$startcol + 33] !== null) ? (string) $row[$startcol + 33] : null;
+            $this->email = ($row[$startcol + 34] !== null) ? (string) $row[$startcol + 34] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -1481,7 +1637,7 @@ abstract class BaseFile extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 31; // 31 = FilePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 35; // 35 = FilePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating File object", $e);
@@ -1942,8 +2098,14 @@ abstract class BaseFile extends BaseObject implements Persistent
         if ($this->isColumnModified(FilePeer::PESEL)) {
             $modifiedColumns[':p' . $index++]  = '`PESEL`';
         }
-        if ($this->isColumnModified(FilePeer::PASSPORT)) {
-            $modifiedColumns[':p' . $index++]  = '`Passport`';
+        if ($this->isColumnModified(FilePeer::ID_TYPE)) {
+            $modifiedColumns[':p' . $index++]  = '`ID_type`';
+        }
+        if ($this->isColumnModified(FilePeer::ID_NO)) {
+            $modifiedColumns[':p' . $index++]  = '`ID_no`';
+        }
+        if ($this->isColumnModified(FilePeer::ID_COUNTRY)) {
+            $modifiedColumns[':p' . $index++]  = '`ID_country`';
         }
         if ($this->isColumnModified(FilePeer::NIP)) {
             $modifiedColumns[':p' . $index++]  = '`NIP`';
@@ -1983,6 +2145,12 @@ abstract class BaseFile extends BaseObject implements Persistent
         }
         if ($this->isColumnModified(FilePeer::BANK_ACCOUNT)) {
             $modifiedColumns[':p' . $index++]  = '`bank_account`';
+        }
+        if ($this->isColumnModified(FilePeer::BANK_IBAN)) {
+            $modifiedColumns[':p' . $index++]  = '`bank_IBAN`';
+        }
+        if ($this->isColumnModified(FilePeer::BANK_SWIFT)) {
+            $modifiedColumns[':p' . $index++]  = '`bank_SWIFT`';
         }
         if ($this->isColumnModified(FilePeer::BANK_NAME)) {
             $modifiedColumns[':p' . $index++]  = '`bank_name`';
@@ -2046,8 +2214,14 @@ abstract class BaseFile extends BaseObject implements Persistent
                     case '`PESEL`':
                         $stmt->bindValue($identifier, $this->pesel, PDO::PARAM_STR);
                         break;
-                    case '`Passport`':
-                        $stmt->bindValue($identifier, $this->passport, PDO::PARAM_STR);
+                    case '`ID_type`':
+                        $stmt->bindValue($identifier, $this->id_type, PDO::PARAM_STR);
+                        break;
+                    case '`ID_no`':
+                        $stmt->bindValue($identifier, $this->id_no, PDO::PARAM_STR);
+                        break;
+                    case '`ID_country`':
+                        $stmt->bindValue($identifier, $this->id_country, PDO::PARAM_STR);
                         break;
                     case '`NIP`':
                         $stmt->bindValue($identifier, $this->nip, PDO::PARAM_STR);
@@ -2087,6 +2261,12 @@ abstract class BaseFile extends BaseObject implements Persistent
                         break;
                     case '`bank_account`':
                         $stmt->bindValue($identifier, $this->bank_account, PDO::PARAM_STR);
+                        break;
+                    case '`bank_IBAN`':
+                        $stmt->bindValue($identifier, $this->bank_iban, PDO::PARAM_STR);
+                        break;
+                    case '`bank_SWIFT`':
+                        $stmt->bindValue($identifier, $this->bank_swift, PDO::PARAM_STR);
                         break;
                     case '`bank_name`':
                         $stmt->bindValue($identifier, $this->bank_name, PDO::PARAM_STR);
@@ -2364,54 +2544,66 @@ abstract class BaseFile extends BaseObject implements Persistent
                 return $this->getPesel();
                 break;
             case 14:
-                return $this->getPassport();
+                return $this->getIdType();
                 break;
             case 15:
-                return $this->getNip();
+                return $this->getIdNo();
                 break;
             case 16:
-                return $this->getProfession();
+                return $this->getIdCountry();
                 break;
             case 17:
-                return $this->getStreet();
+                return $this->getNip();
                 break;
             case 18:
-                return $this->getHouse();
+                return $this->getProfession();
                 break;
             case 19:
-                return $this->getFlat();
+                return $this->getStreet();
                 break;
             case 20:
-                return $this->getCode();
+                return $this->getHouse();
                 break;
             case 21:
-                return $this->getCity();
+                return $this->getFlat();
                 break;
             case 22:
-                return $this->getDistrict2();
+                return $this->getCode();
                 break;
             case 23:
-                return $this->getDistrict();
+                return $this->getCity();
                 break;
             case 24:
-                return $this->getProvince();
+                return $this->getDistrict2();
                 break;
             case 25:
-                return $this->getCountry();
+                return $this->getDistrict();
                 break;
             case 26:
-                return $this->getPostOffice();
+                return $this->getProvince();
                 break;
             case 27:
-                return $this->getBankAccount();
+                return $this->getCountry();
                 break;
             case 28:
-                return $this->getBankName();
+                return $this->getPostOffice();
                 break;
             case 29:
-                return $this->getPhone();
+                return $this->getBankAccount();
                 break;
             case 30:
+                return $this->getBankIban();
+                break;
+            case 31:
+                return $this->getBankSwift();
+                break;
+            case 32:
+                return $this->getBankName();
+                break;
+            case 33:
+                return $this->getPhone();
+                break;
+            case 34:
                 return $this->getEmail();
                 break;
             default:
@@ -2457,23 +2649,27 @@ abstract class BaseFile extends BaseObject implements Persistent
             $keys[11] => $this->getBirthDate(),
             $keys[12] => $this->getBirthPlace(),
             $keys[13] => $this->getPesel(),
-            $keys[14] => $this->getPassport(),
-            $keys[15] => $this->getNip(),
-            $keys[16] => $this->getProfession(),
-            $keys[17] => $this->getStreet(),
-            $keys[18] => $this->getHouse(),
-            $keys[19] => $this->getFlat(),
-            $keys[20] => $this->getCode(),
-            $keys[21] => $this->getCity(),
-            $keys[22] => $this->getDistrict2(),
-            $keys[23] => $this->getDistrict(),
-            $keys[24] => $this->getProvince(),
-            $keys[25] => $this->getCountry(),
-            $keys[26] => $this->getPostOffice(),
-            $keys[27] => $this->getBankAccount(),
-            $keys[28] => $this->getBankName(),
-            $keys[29] => $this->getPhone(),
-            $keys[30] => $this->getEmail(),
+            $keys[14] => $this->getIdType(),
+            $keys[15] => $this->getIdNo(),
+            $keys[16] => $this->getIdCountry(),
+            $keys[17] => $this->getNip(),
+            $keys[18] => $this->getProfession(),
+            $keys[19] => $this->getStreet(),
+            $keys[20] => $this->getHouse(),
+            $keys[21] => $this->getFlat(),
+            $keys[22] => $this->getCode(),
+            $keys[23] => $this->getCity(),
+            $keys[24] => $this->getDistrict2(),
+            $keys[25] => $this->getDistrict(),
+            $keys[26] => $this->getProvince(),
+            $keys[27] => $this->getCountry(),
+            $keys[28] => $this->getPostOffice(),
+            $keys[29] => $this->getBankAccount(),
+            $keys[30] => $this->getBankIban(),
+            $keys[31] => $this->getBankSwift(),
+            $keys[32] => $this->getBankName(),
+            $keys[33] => $this->getPhone(),
+            $keys[34] => $this->getEmail(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -2591,54 +2787,66 @@ abstract class BaseFile extends BaseObject implements Persistent
                 $this->setPesel($value);
                 break;
             case 14:
-                $this->setPassport($value);
+                $this->setIdType($value);
                 break;
             case 15:
-                $this->setNip($value);
+                $this->setIdNo($value);
                 break;
             case 16:
-                $this->setProfession($value);
+                $this->setIdCountry($value);
                 break;
             case 17:
-                $this->setStreet($value);
+                $this->setNip($value);
                 break;
             case 18:
-                $this->setHouse($value);
+                $this->setProfession($value);
                 break;
             case 19:
-                $this->setFlat($value);
+                $this->setStreet($value);
                 break;
             case 20:
-                $this->setCode($value);
+                $this->setHouse($value);
                 break;
             case 21:
-                $this->setCity($value);
+                $this->setFlat($value);
                 break;
             case 22:
-                $this->setDistrict2($value);
+                $this->setCode($value);
                 break;
             case 23:
-                $this->setDistrict($value);
+                $this->setCity($value);
                 break;
             case 24:
-                $this->setProvince($value);
+                $this->setDistrict2($value);
                 break;
             case 25:
-                $this->setCountry($value);
+                $this->setDistrict($value);
                 break;
             case 26:
-                $this->setPostOffice($value);
+                $this->setProvince($value);
                 break;
             case 27:
-                $this->setBankAccount($value);
+                $this->setCountry($value);
                 break;
             case 28:
-                $this->setBankName($value);
+                $this->setPostOffice($value);
                 break;
             case 29:
-                $this->setPhone($value);
+                $this->setBankAccount($value);
                 break;
             case 30:
+                $this->setBankIban($value);
+                break;
+            case 31:
+                $this->setBankSwift($value);
+                break;
+            case 32:
+                $this->setBankName($value);
+                break;
+            case 33:
+                $this->setPhone($value);
+                break;
+            case 34:
                 $this->setEmail($value);
                 break;
         } // switch()
@@ -2679,23 +2887,27 @@ abstract class BaseFile extends BaseObject implements Persistent
         if (array_key_exists($keys[11], $arr)) $this->setBirthDate($arr[$keys[11]]);
         if (array_key_exists($keys[12], $arr)) $this->setBirthPlace($arr[$keys[12]]);
         if (array_key_exists($keys[13], $arr)) $this->setPesel($arr[$keys[13]]);
-        if (array_key_exists($keys[14], $arr)) $this->setPassport($arr[$keys[14]]);
-        if (array_key_exists($keys[15], $arr)) $this->setNip($arr[$keys[15]]);
-        if (array_key_exists($keys[16], $arr)) $this->setProfession($arr[$keys[16]]);
-        if (array_key_exists($keys[17], $arr)) $this->setStreet($arr[$keys[17]]);
-        if (array_key_exists($keys[18], $arr)) $this->setHouse($arr[$keys[18]]);
-        if (array_key_exists($keys[19], $arr)) $this->setFlat($arr[$keys[19]]);
-        if (array_key_exists($keys[20], $arr)) $this->setCode($arr[$keys[20]]);
-        if (array_key_exists($keys[21], $arr)) $this->setCity($arr[$keys[21]]);
-        if (array_key_exists($keys[22], $arr)) $this->setDistrict2($arr[$keys[22]]);
-        if (array_key_exists($keys[23], $arr)) $this->setDistrict($arr[$keys[23]]);
-        if (array_key_exists($keys[24], $arr)) $this->setProvince($arr[$keys[24]]);
-        if (array_key_exists($keys[25], $arr)) $this->setCountry($arr[$keys[25]]);
-        if (array_key_exists($keys[26], $arr)) $this->setPostOffice($arr[$keys[26]]);
-        if (array_key_exists($keys[27], $arr)) $this->setBankAccount($arr[$keys[27]]);
-        if (array_key_exists($keys[28], $arr)) $this->setBankName($arr[$keys[28]]);
-        if (array_key_exists($keys[29], $arr)) $this->setPhone($arr[$keys[29]]);
-        if (array_key_exists($keys[30], $arr)) $this->setEmail($arr[$keys[30]]);
+        if (array_key_exists($keys[14], $arr)) $this->setIdType($arr[$keys[14]]);
+        if (array_key_exists($keys[15], $arr)) $this->setIdNo($arr[$keys[15]]);
+        if (array_key_exists($keys[16], $arr)) $this->setIdCountry($arr[$keys[16]]);
+        if (array_key_exists($keys[17], $arr)) $this->setNip($arr[$keys[17]]);
+        if (array_key_exists($keys[18], $arr)) $this->setProfession($arr[$keys[18]]);
+        if (array_key_exists($keys[19], $arr)) $this->setStreet($arr[$keys[19]]);
+        if (array_key_exists($keys[20], $arr)) $this->setHouse($arr[$keys[20]]);
+        if (array_key_exists($keys[21], $arr)) $this->setFlat($arr[$keys[21]]);
+        if (array_key_exists($keys[22], $arr)) $this->setCode($arr[$keys[22]]);
+        if (array_key_exists($keys[23], $arr)) $this->setCity($arr[$keys[23]]);
+        if (array_key_exists($keys[24], $arr)) $this->setDistrict2($arr[$keys[24]]);
+        if (array_key_exists($keys[25], $arr)) $this->setDistrict($arr[$keys[25]]);
+        if (array_key_exists($keys[26], $arr)) $this->setProvince($arr[$keys[26]]);
+        if (array_key_exists($keys[27], $arr)) $this->setCountry($arr[$keys[27]]);
+        if (array_key_exists($keys[28], $arr)) $this->setPostOffice($arr[$keys[28]]);
+        if (array_key_exists($keys[29], $arr)) $this->setBankAccount($arr[$keys[29]]);
+        if (array_key_exists($keys[30], $arr)) $this->setBankIban($arr[$keys[30]]);
+        if (array_key_exists($keys[31], $arr)) $this->setBankSwift($arr[$keys[31]]);
+        if (array_key_exists($keys[32], $arr)) $this->setBankName($arr[$keys[32]]);
+        if (array_key_exists($keys[33], $arr)) $this->setPhone($arr[$keys[33]]);
+        if (array_key_exists($keys[34], $arr)) $this->setEmail($arr[$keys[34]]);
     }
 
     /**
@@ -2721,7 +2933,9 @@ abstract class BaseFile extends BaseObject implements Persistent
         if ($this->isColumnModified(FilePeer::BIRTH_DATE)) $criteria->add(FilePeer::BIRTH_DATE, $this->birth_date);
         if ($this->isColumnModified(FilePeer::BIRTH_PLACE)) $criteria->add(FilePeer::BIRTH_PLACE, $this->birth_place);
         if ($this->isColumnModified(FilePeer::PESEL)) $criteria->add(FilePeer::PESEL, $this->pesel);
-        if ($this->isColumnModified(FilePeer::PASSPORT)) $criteria->add(FilePeer::PASSPORT, $this->passport);
+        if ($this->isColumnModified(FilePeer::ID_TYPE)) $criteria->add(FilePeer::ID_TYPE, $this->id_type);
+        if ($this->isColumnModified(FilePeer::ID_NO)) $criteria->add(FilePeer::ID_NO, $this->id_no);
+        if ($this->isColumnModified(FilePeer::ID_COUNTRY)) $criteria->add(FilePeer::ID_COUNTRY, $this->id_country);
         if ($this->isColumnModified(FilePeer::NIP)) $criteria->add(FilePeer::NIP, $this->nip);
         if ($this->isColumnModified(FilePeer::PROFESSION)) $criteria->add(FilePeer::PROFESSION, $this->profession);
         if ($this->isColumnModified(FilePeer::STREET)) $criteria->add(FilePeer::STREET, $this->street);
@@ -2735,6 +2949,8 @@ abstract class BaseFile extends BaseObject implements Persistent
         if ($this->isColumnModified(FilePeer::COUNTRY)) $criteria->add(FilePeer::COUNTRY, $this->country);
         if ($this->isColumnModified(FilePeer::POST_OFFICE)) $criteria->add(FilePeer::POST_OFFICE, $this->post_office);
         if ($this->isColumnModified(FilePeer::BANK_ACCOUNT)) $criteria->add(FilePeer::BANK_ACCOUNT, $this->bank_account);
+        if ($this->isColumnModified(FilePeer::BANK_IBAN)) $criteria->add(FilePeer::BANK_IBAN, $this->bank_iban);
+        if ($this->isColumnModified(FilePeer::BANK_SWIFT)) $criteria->add(FilePeer::BANK_SWIFT, $this->bank_swift);
         if ($this->isColumnModified(FilePeer::BANK_NAME)) $criteria->add(FilePeer::BANK_NAME, $this->bank_name);
         if ($this->isColumnModified(FilePeer::PHONE)) $criteria->add(FilePeer::PHONE, $this->phone);
         if ($this->isColumnModified(FilePeer::EMAIL)) $criteria->add(FilePeer::EMAIL, $this->email);
@@ -2814,7 +3030,9 @@ abstract class BaseFile extends BaseObject implements Persistent
         $copyObj->setBirthDate($this->getBirthDate());
         $copyObj->setBirthPlace($this->getBirthPlace());
         $copyObj->setPesel($this->getPesel());
-        $copyObj->setPassport($this->getPassport());
+        $copyObj->setIdType($this->getIdType());
+        $copyObj->setIdNo($this->getIdNo());
+        $copyObj->setIdCountry($this->getIdCountry());
         $copyObj->setNip($this->getNip());
         $copyObj->setProfession($this->getProfession());
         $copyObj->setStreet($this->getStreet());
@@ -2828,6 +3046,8 @@ abstract class BaseFile extends BaseObject implements Persistent
         $copyObj->setCountry($this->getCountry());
         $copyObj->setPostOffice($this->getPostOffice());
         $copyObj->setBankAccount($this->getBankAccount());
+        $copyObj->setBankIban($this->getBankIban());
+        $copyObj->setBankSwift($this->getBankSwift());
         $copyObj->setBankName($this->getBankName());
         $copyObj->setPhone($this->getPhone());
         $copyObj->setEmail($this->getEmail());
@@ -5756,7 +5976,9 @@ abstract class BaseFile extends BaseObject implements Persistent
         $this->birth_date = null;
         $this->birth_place = null;
         $this->pesel = null;
-        $this->passport = null;
+        $this->id_type = null;
+        $this->id_no = null;
+        $this->id_country = null;
         $this->nip = null;
         $this->profession = null;
         $this->street = null;
@@ -5770,6 +5992,8 @@ abstract class BaseFile extends BaseObject implements Persistent
         $this->country = null;
         $this->post_office = null;
         $this->bank_account = null;
+        $this->bank_iban = null;
+        $this->bank_swift = null;
         $this->bank_name = null;
         $this->phone = null;
         $this->email = null;

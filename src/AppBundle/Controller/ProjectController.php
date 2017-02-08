@@ -662,6 +662,9 @@ class ProjectController extends Controller
 								
 								$B_IBA_Data = $B['IBA'][$IBA];
 								
+								$arr = explode('|',$B_IBA_Data['IncomeBankAcc']->getName());
+								$orgBankAcc = $arr[2];
+								
 								if(array_key_exists('Doc', $B['SUM'][0])) {
 									$SelDoc = $B['SUM'][0]['Doc'];
 									if(!($SelDoc instanceOf Doc)) {
@@ -696,6 +699,7 @@ class ProjectController extends Controller
 												  'project'=>$Project,
 												  'IBA' =>   $B['IBA'][$IBA],
 												  'FirstIF'=>$FirstIF,
+												  'orgBankAcc'=>$orgBankAcc,
 												   )).PHP_EOL;
 								if($D != $D_max) {			   
 									//$content .= PHP_EOL;

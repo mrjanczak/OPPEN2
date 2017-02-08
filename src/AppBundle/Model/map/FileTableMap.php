@@ -57,7 +57,9 @@ class FileTableMap extends TableMap
         $this->addColumn('birth_date', 'BirthDate', 'DATE', false, null, null);
         $this->addColumn('birth_place', 'BirthPlace', 'VARCHAR', false, 50, null);
         $this->addColumn('PESEL', 'Pesel', 'VARCHAR', false, 50, null);
-        $this->addColumn('Passport', 'Passport', 'VARCHAR', false, 50, null);
+        $this->addColumn('ID_type', 'IdType', 'VARCHAR', false, 50, null);
+        $this->addColumn('ID_no', 'IdNo', 'VARCHAR', false, 50, null);
+        $this->addColumn('ID_country', 'IdCountry', 'VARCHAR', false, 2, null);
         $this->addColumn('NIP', 'Nip', 'VARCHAR', false, 50, null);
         $this->addColumn('profession', 'Profession', 'VARCHAR', false, 50, null);
         $this->addColumn('street', 'Street', 'VARCHAR', false, 50, null);
@@ -71,6 +73,8 @@ class FileTableMap extends TableMap
         $this->addColumn('country', 'Country', 'VARCHAR', false, 50, null);
         $this->addColumn('post_office', 'PostOffice', 'VARCHAR', false, 50, null);
         $this->addColumn('bank_account', 'BankAccount', 'VARCHAR', false, 100, null);
+        $this->addColumn('bank_IBAN', 'BankIban', 'VARCHAR', false, 100, null);
+        $this->addColumn('bank_SWIFT', 'BankSwift', 'VARCHAR', false, 100, null);
         $this->addColumn('bank_name', 'BankName', 'VARCHAR', false, 50, null);
         $this->addColumn('phone', 'Phone', 'VARCHAR', false, 50, null);
         $this->addColumn('email', 'Email', 'VARCHAR', false, 50, null);

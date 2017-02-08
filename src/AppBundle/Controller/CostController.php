@@ -394,7 +394,8 @@ class CostController extends Controller
                             $CDInetto = $netto - $nettoSum;
                             $CDItax = $tax - $taxSum;
                         }
-                    
+						
+						// for each document
                         if(!array_key_exists($IBA,$Data[$D]['IBA'])) { 
                             $Data[$D]['IBA'][$IBA] = array(
                                 'gross'=>0, 'netto'=>0, 'tax'=>0, 'IncomeBankAcc' => $CDIBankAcc);}                         
@@ -412,7 +413,7 @@ class CostController extends Controller
                         $Data[$D]['IF'][$IF]['netto'] += $CDInetto;
                         $Data[$D]['IF'][$IF]['tax']   += $CDItax;
                                 
-                                                
+                        // for summary                        
                         if(!array_key_exists($IBA,$Data[0]['IBA'])) { 
                             $Data[0]['IBA'][$IBA] = array(
                                 'gross'=>0,'netto'=>0,'tax'=>0, 'IncomeBankAcc' => $CDIBankAcc); }                                              
@@ -444,67 +445,6 @@ class CostController extends Controller
         } else {
             return $msg;
         }
-    }   
-    
-    static public function downloadTransfers($form, $desc_temp, $transfer_temp, $msg) {
-        $env = new \Twig_Environment(new \Twig_Loader_String());
-                        
-        $Project = $form->getData();
-        $Year = $Project->getYear();        
-        
-        $i=0;
-        $contents = '';     
-        foreach ($form->get('SortedCosts') as $FCost) {       
-            foreach ($FCost->get('SortedCostDocs') as $FCostDoc) {
-                if(($FCostDoc->get('select')->getData()) && 
-                    ($FCostDoc->getData()->getValue() > 0)) {
-                        
-                    $i++;
-                    
-                    $Cost = $FCost->getData();
-                    $CostDoc = $FCostDoc->getData();
-                        
-                    $Doc = $CostDoc->getDoc();
-                    if($Doc){
-                        $doc_no = $Doc->getDocNo();}
-                        
-                    $Contract = ContractQuery::create()->findOneByDoc($Doc);
-                    if(!($Contract instanceOf Contract)) { 
-                        $msg['errors'][] = 'Brak Umowy przypisanej do Dokumentu';
-                        return $msg; 
-                    }
-                    
-                    $value = $Contract->getNetto(); 
-                                        
-                    $File = $Doc->getFile();                    
-                    if(!($File instanceOf File)) {
-                        $msg['errors'][] = 'Brak kartoteki przypisanej do Dokumentu';
-                        return $msg;
-                    }
-                    
-                    $desc = $desc_temp;         
-                    $desc = str_replace('__SelDocFile_Name__', $File->getName(), $desc);
-                    $desc = str_replace('__SelDoc_No__',       $doc_no, $desc);
-                    $desc = str_replace('__Project_Name__',    $Project->getName(), $desc);
-                                    
-                    $contents .= $env->render($transfer_temp,
-                              array('i' => $i,
-									'myAccount'=>$Cost->getBankAccount()->getName(),
-                                    'account' => $File->getBankAccount(), 
-                                    'name' =>    $File->getName(), 
-                                    'street' =>  SettingsController::street_prefix($File->getStreet()).$File->getStreet(),
-                                    'house' => $File->getHouse(),
-                                    'flat' => SettingsController::flat_prefix($File->getFlat()).$File->getFlat(),
-                                    'code' =>    $File->getCode(), 
-                                    'city' =>    $File->getCity(),  
-                                    'desc' =>    $desc,
-                                    'value' =>   $value)).PHP_EOL;                  
-
-                }
-            }
-        }
-        $msg['contents'] = $contents;
-        return $msg;
-    }           
+    }            
     
 }

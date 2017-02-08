@@ -17,6 +17,8 @@ use \PropelObjectCollection;
 use \PropelPDO;
 use AppBundle\Model\Account;
 use AppBundle\Model\AccountQuery;
+use AppBundle\Model\Bookk;
+use AppBundle\Model\BookkQuery;
 use AppBundle\Model\DocCat;
 use AppBundle\Model\DocCatQuery;
 use AppBundle\Model\FileCat;
@@ -115,6 +117,12 @@ abstract class BaseYear extends BaseObject implements Persistent
     protected $collDocCatsPartial;
 
     /**
+     * @var        PropelObjectCollection|Bookk[] Collection to store aggregation of Bookk objects.
+     */
+    protected $collBookks;
+    protected $collBookksPartial;
+
+    /**
      * @var        PropelObjectCollection|Account[] Collection to store aggregation of Account objects.
      */
     protected $collAccounts;
@@ -177,6 +185,12 @@ abstract class BaseYear extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $docCatsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $bookksScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -644,6 +658,8 @@ abstract class BaseYear extends BaseObject implements Persistent
 
             $this->collDocCats = null;
 
+            $this->collBookks = null;
+
             $this->collAccounts = null;
 
             $this->collReports = null;
@@ -831,6 +847,23 @@ abstract class BaseYear extends BaseObject implements Persistent
 
             if ($this->collDocCats !== null) {
                 foreach ($this->collDocCats as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->bookksScheduledForDeletion !== null) {
+                if (!$this->bookksScheduledForDeletion->isEmpty()) {
+                    BookkQuery::create()
+                        ->filterByPrimaryKeys($this->bookksScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->bookksScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collBookks !== null) {
+                foreach ($this->collBookks as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -1090,6 +1123,14 @@ abstract class BaseYear extends BaseObject implements Persistent
                     }
                 }
 
+                if ($this->collBookks !== null) {
+                    foreach ($this->collBookks as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
                 if ($this->collAccounts !== null) {
                     foreach ($this->collAccounts as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
@@ -1221,6 +1262,9 @@ abstract class BaseYear extends BaseObject implements Persistent
             }
             if (null !== $this->collDocCats) {
                 $result['DocCats'] = $this->collDocCats->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collBookks) {
+                $result['Bookks'] = $this->collBookks->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collAccounts) {
                 $result['Accounts'] = $this->collAccounts->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -1430,6 +1474,12 @@ abstract class BaseYear extends BaseObject implements Persistent
                 }
             }
 
+            foreach ($this->getBookks() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addBookk($relObj->copy($deepCopy));
+                }
+            }
+
             foreach ($this->getAccounts() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addAccount($relObj->copy($deepCopy));
@@ -1517,6 +1567,9 @@ abstract class BaseYear extends BaseObject implements Persistent
         }
         if ('DocCat' == $relationName) {
             $this->initDocCats();
+        }
+        if ('Bookk' == $relationName) {
+            $this->initBookks();
         }
         if ('Account' == $relationName) {
             $this->initAccounts();
@@ -2302,6 +2355,281 @@ abstract class BaseYear extends BaseObject implements Persistent
         $query->joinWith('TaxCommitmentAcc', $join_behavior);
 
         return $this->getDocCats($query, $con);
+    }
+
+    /**
+     * Clears out the collBookks collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Year The current object (for fluent API support)
+     * @see        addBookks()
+     */
+    public function clearBookks()
+    {
+        $this->collBookks = null; // important to set this to null since that means it is uninitialized
+        $this->collBookksPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collBookks collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialBookks($v = true)
+    {
+        $this->collBookksPartial = $v;
+    }
+
+    /**
+     * Initializes the collBookks collection.
+     *
+     * By default this just sets the collBookks collection to an empty array (like clearcollBookks());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initBookks($overrideExisting = true)
+    {
+        if (null !== $this->collBookks && !$overrideExisting) {
+            return;
+        }
+        $this->collBookks = new PropelObjectCollection();
+        $this->collBookks->setModel('Bookk');
+    }
+
+    /**
+     * Gets an array of Bookk objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Year is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|Bookk[] List of Bookk objects
+     * @throws PropelException
+     */
+    public function getBookks($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collBookksPartial && !$this->isNew();
+        if (null === $this->collBookks || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collBookks) {
+                // return empty collection
+                $this->initBookks();
+            } else {
+                $collBookks = BookkQuery::create(null, $criteria)
+                    ->filterByYear($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collBookksPartial && count($collBookks)) {
+                      $this->initBookks(false);
+
+                      foreach ($collBookks as $obj) {
+                        if (false == $this->collBookks->contains($obj)) {
+                          $this->collBookks->append($obj);
+                        }
+                      }
+
+                      $this->collBookksPartial = true;
+                    }
+
+                    $collBookks->getInternalIterator()->rewind();
+
+                    return $collBookks;
+                }
+
+                if ($partial && $this->collBookks) {
+                    foreach ($this->collBookks as $obj) {
+                        if ($obj->isNew()) {
+                            $collBookks[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collBookks = $collBookks;
+                $this->collBookksPartial = false;
+            }
+        }
+
+        return $this->collBookks;
+    }
+
+    /**
+     * Sets a collection of Bookk objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $bookks A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Year The current object (for fluent API support)
+     */
+    public function setBookks(PropelCollection $bookks, PropelPDO $con = null)
+    {
+        $bookksToDelete = $this->getBookks(new Criteria(), $con)->diff($bookks);
+
+
+        $this->bookksScheduledForDeletion = $bookksToDelete;
+
+        foreach ($bookksToDelete as $bookkRemoved) {
+            $bookkRemoved->setYear(null);
+        }
+
+        $this->collBookks = null;
+        foreach ($bookks as $bookk) {
+            $this->addBookk($bookk);
+        }
+
+        $this->collBookks = $bookks;
+        $this->collBookksPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Bookk objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related Bookk objects.
+     * @throws PropelException
+     */
+    public function countBookks(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collBookksPartial && !$this->isNew();
+        if (null === $this->collBookks || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collBookks) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getBookks());
+            }
+            $query = BookkQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByYear($this)
+                ->count($con);
+        }
+
+        return count($this->collBookks);
+    }
+
+    /**
+     * Method called to associate a Bookk object to this object
+     * through the Bookk foreign key attribute.
+     *
+     * @param    Bookk $l Bookk
+     * @return Year The current object (for fluent API support)
+     */
+    public function addBookk(Bookk $l)
+    {
+        if ($this->collBookks === null) {
+            $this->initBookks();
+            $this->collBookksPartial = true;
+        }
+
+        if (!in_array($l, $this->collBookks->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddBookk($l);
+
+            if ($this->bookksScheduledForDeletion and $this->bookksScheduledForDeletion->contains($l)) {
+                $this->bookksScheduledForDeletion->remove($this->bookksScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	Bookk $bookk The bookk object to add.
+     */
+    protected function doAddBookk($bookk)
+    {
+        $this->collBookks[]= $bookk;
+        $bookk->setYear($this);
+    }
+
+    /**
+     * @param	Bookk $bookk The bookk object to remove.
+     * @return Year The current object (for fluent API support)
+     */
+    public function removeBookk($bookk)
+    {
+        if ($this->getBookks()->contains($bookk)) {
+            $this->collBookks->remove($this->collBookks->search($bookk));
+            if (null === $this->bookksScheduledForDeletion) {
+                $this->bookksScheduledForDeletion = clone $this->collBookks;
+                $this->bookksScheduledForDeletion->clear();
+            }
+            $this->bookksScheduledForDeletion[]= $bookk;
+            $bookk->setYear(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Year is new, it will return
+     * an empty collection; or if this Year has previously
+     * been saved, it will retrieve related Bookks from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Year.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Bookk[] List of Bookk objects
+     */
+    public function getBookksJoinDoc($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = BookkQuery::create(null, $criteria);
+        $query->joinWith('Doc', $join_behavior);
+
+        return $this->getBookks($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Year is new, it will return
+     * an empty collection; or if this Year has previously
+     * been saved, it will retrieve related Bookks from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Year.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Bookk[] List of Bookk objects
+     */
+    public function getBookksJoinProject($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = BookkQuery::create(null, $criteria);
+        $query->joinWith('Project', $join_behavior);
+
+        return $this->getBookks($query, $con);
     }
 
     /**
@@ -3254,6 +3582,11 @@ abstract class BaseYear extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collBookks) {
+                foreach ($this->collBookks as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collAccounts) {
                 foreach ($this->collAccounts as $o) {
                     $o->clearAllReferences($deep);
@@ -3285,6 +3618,10 @@ abstract class BaseYear extends BaseObject implements Persistent
             $this->collDocCats->clearIterator();
         }
         $this->collDocCats = null;
+        if ($this->collBookks instanceof PropelCollection) {
+            $this->collBookks->clearIterator();
+        }
+        $this->collBookks = null;
         if ($this->collAccounts instanceof PropelCollection) {
             $this->collAccounts->clearIterator();
         }

@@ -50,53 +50,62 @@
 	</table>    
 
 	<table name="file">
-        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
-        <column name="name" type="varchar" primaryString="true" size="100" />
-        <column name="acc_no" type="integer" />  
+		<column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+		<column name="name" type="varchar" primaryString="true" size="100" />
+		<column name="acc_no" type="integer" />  
 
-        <column name="file_cat_id" type="integer" />
-        <foreign-key foreignTable="file_cat"  onDelete = "cascade">
-            <reference local="file_cat_id" foreign="id" />
-        </foreign-key> 
-              
-        <column name="sub_file_id" type="integer" />
-        <foreign-key foreignTable="file"
-                     phpName="SubFile"
+		<column name="file_cat_id" type="integer" />
+		<foreign-key foreignTable="file_cat"  onDelete = "cascade">
+			<reference local="file_cat_id" foreign="id" />
+		</foreign-key> 
+			  
+		<column name="sub_file_id" type="integer" />
+		<foreign-key foreignTable="file"
+					 phpName="SubFile"
 					 refPhpName="File">
-            <reference local="sub_file_id" foreign="id" />
-        </foreign-key>
-           
-       <column name="first_name" type="varchar" size="50" />        
-       <column name="second_name" type="varchar" size="50" />        
-       <column name="last_name" type="varchar" size="50" />  
-       <column name="maiden_name" type="varchar" size="50" />  
-       <column name="father_name" type="varchar" size="50" />  
-       <column name="mother_name" type="varchar" size="50" />  
-       
-       <column name="birth_date" type="date" />
-       <column name="birth_place" type="varchar" size="50" />        
-       <column name="PESEL" type="varchar" size="50" />        
-       <column name="Passport" type="varchar" size="50" />        
-       <column name="NIP" type="varchar" size="50" />        
-       <column name="profession" type="varchar" size="50" />   
-                  
-       <column name="street" type="varchar" size="50" />  
-       <column name="house" type="varchar" size="5" />  
-       <column name="flat" type="varchar" size="5" />  
-       <column name="code" type="varchar" size="6" />  
-       <column name="city" type="varchar" size="50" />    
-       <column name="district2" type="varchar" size="50" />  
-       <column name="district" type="varchar" size="50" />  
-       <column name="province" type="varchar" size="50" />  
-       <column name="country" type="varchar" size="50" />
-       <column name="post_office" type="varchar" size="50" />
-         
-       <column name="bank_account" type="varchar" size="100" />  
-       <column name="bank_name" type="varchar" size="50" />
+			<reference local="sub_file_id" foreign="id" />
+		</foreign-key>
+		   
+		<column name="first_name" type="varchar" size="50" />        
+		<column name="second_name" type="varchar" size="50" />        
+		<column name="last_name" type="varchar" size="50" />  
+		<column name="maiden_name" type="varchar" size="50" />  
+		<column name="father_name" type="varchar" size="50" />  
+		<column name="mother_name" type="varchar" size="50" />  
 
-       
-       <column name="phone" type="varchar" size="50" />                                
-       <column name="email" type="varchar" size="50" />  
+		<column name="birth_date" type="date" />
+		<column name="birth_place" type="varchar" size="50" />        
+		<column name="PESEL" type="varchar" size="50" />        
+		<column name="ID_type" type="varchar" size="50" />        
+		<column name="ID_no" type="varchar" size="50" />   
+		<column name="ID_country" type="varchar" size="2" />     
+		<column name="NIP" type="varchar" size="50" />        
+		<column name="profession" type="varchar" size="50" />   
+				  
+		<column name="street" type="varchar" size="50" />  
+		<column name="house" type="varchar" size="5" />  
+		<column name="flat" type="varchar" size="5" />  
+		<column name="code" type="varchar" size="6" />  
+		<column name="city" type="varchar" size="50" />    
+		<column name="district2" type="varchar" size="50" />  
+		<column name="district" type="varchar" size="50" />  
+		<column name="province" type="varchar" size="50" />  
+		<column name="country" type="varchar" size="50" />
+		<column name="post_office" type="varchar" size="50" />
+		 
+		<column name="bank_account" type="varchar" size="100" />  
+		<column name="bank_IBAN" type="varchar" size="100" /> 
+		<column name="bank_SWIFT" type="varchar" size="100" />  
+		<column name="bank_name" type="varchar" size="50" />
+
+		<column name="phone" type="varchar" size="50" />                                
+		<column name="email" type="varchar" size="50" /> 
+<!--		 
+		<behavior name="validate">
+			<parameter name="rule1" value="{column: bank_IBAN, validator: IBAN}" />
+			<parameter name="rule2" value="{column: email, validator: Email}" />
+		</behavior>     
+-->		  
 	</table> 
 
 	<table name="doc_cat">

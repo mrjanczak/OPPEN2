@@ -13,6 +13,7 @@ use \PropelException;
 use \PropelObjectCollection;
 use \PropelPDO;
 use AppBundle\Model\Account;
+use AppBundle\Model\Bookk;
 use AppBundle\Model\DocCat;
 use AppBundle\Model\FileCat;
 use AppBundle\Model\Month;
@@ -54,6 +55,10 @@ use AppBundle\Model\YearQuery;
  * @method YearQuery leftJoinDocCat($relationAlias = null) Adds a LEFT JOIN clause to the query using the DocCat relation
  * @method YearQuery rightJoinDocCat($relationAlias = null) Adds a RIGHT JOIN clause to the query using the DocCat relation
  * @method YearQuery innerJoinDocCat($relationAlias = null) Adds a INNER JOIN clause to the query using the DocCat relation
+ *
+ * @method YearQuery leftJoinBookk($relationAlias = null) Adds a LEFT JOIN clause to the query using the Bookk relation
+ * @method YearQuery rightJoinBookk($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Bookk relation
+ * @method YearQuery innerJoinBookk($relationAlias = null) Adds a INNER JOIN clause to the query using the Bookk relation
  *
  * @method YearQuery leftJoinAccount($relationAlias = null) Adds a LEFT JOIN clause to the query using the Account relation
  * @method YearQuery rightJoinAccount($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Account relation
@@ -751,6 +756,80 @@ abstract class BaseYearQuery extends ModelCriteria
         return $this
             ->joinDocCat($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'DocCat', '\AppBundle\Model\DocCatQuery');
+    }
+
+    /**
+     * Filter the query by a related Bookk object
+     *
+     * @param   Bookk|PropelObjectCollection $bookk  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 YearQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByBookk($bookk, $comparison = null)
+    {
+        if ($bookk instanceof Bookk) {
+            return $this
+                ->addUsingAlias(YearPeer::ID, $bookk->getYearId(), $comparison);
+        } elseif ($bookk instanceof PropelObjectCollection) {
+            return $this
+                ->useBookkQuery()
+                ->filterByPrimaryKeys($bookk->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByBookk() only accepts arguments of type Bookk or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Bookk relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return YearQuery The current query, for fluid interface
+     */
+    public function joinBookk($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Bookk');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Bookk');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Bookk relation Bookk object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \AppBundle\Model\BookkQuery A secondary query class using the current class as primary query
+     */
+    public function useBookkQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinBookk($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Bookk', '\AppBundle\Model\BookkQuery');
     }
 
     /**

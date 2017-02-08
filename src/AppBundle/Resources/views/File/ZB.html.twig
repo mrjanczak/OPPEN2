@@ -6,7 +6,11 @@
 {{ form_row(form.lastName) }} 
 {{ form_row(form.birth_date,{'attr':{'class':'date'}}) }} 
 {{ form_row(form.PESEL) }} 
-{{ form_row(form.Passport) }} 
+
+{{ form_row(form.IDType) }} 
+{{ form_row(form.IDNo) }} 
+{{ form_row(form.IDCountry) }} 
+
 {{ form_row(form.profession) }} 
 
 <tr><td><h2> Adres </h2></td> </tr>
@@ -19,10 +23,12 @@
 {{ form_row(form.district) }} 
 {{ form_row(form.province) }} 
 {{ form_row(form.country) }} 
-{{ form_row(form.post_office) }} 
+{{ form_row(form.postOffice) }} 
 
 <tr><td><h2> Konto bankowe i US </h2></td> </tr>
 {{ form_row(form.bankAccount) }} 
+{{ form_row(form.bankIBAN) }} 
+{{ form_row(form.bankSWIFT) }} 
 {{ form_row(form.bankName) }} 		
 {{ form_row(form.SubFile) }} 
 

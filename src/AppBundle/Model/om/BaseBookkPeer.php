@@ -14,6 +14,7 @@ use AppBundle\Model\BookkEntryPeer;
 use AppBundle\Model\BookkPeer;
 use AppBundle\Model\DocPeer;
 use AppBundle\Model\ProjectPeer;
+use AppBundle\Model\YearPeer;
 use AppBundle\Model\map\BookkTableMap;
 
 abstract class BaseBookkPeer
@@ -32,13 +33,13 @@ abstract class BaseBookkPeer
     const TM_CLASS = 'AppBundle\\Model\\map\\BookkTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 7;
+    const NUM_COLUMNS = 8;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 7;
+    const NUM_HYDRATE_COLUMNS = 8;
 
     /** the column name for the id field */
     const ID = 'bookk.id';
@@ -54,6 +55,9 @@ abstract class BaseBookkPeer
 
     /** the column name for the bookking_date field */
     const BOOKKING_DATE = 'bookk.bookking_date';
+
+    /** the column name for the year_id field */
+    const YEAR_ID = 'bookk.year_id';
 
     /** the column name for the doc_id field */
     const DOC_ID = 'bookk.doc_id';
@@ -80,12 +84,12 @@ abstract class BaseBookkPeer
      * e.g. BookkPeer::$fieldNames[BookkPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'No', 'Desc', 'IsAccepted', 'BookkingDate', 'DocId', 'ProjectId', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'no', 'desc', 'isAccepted', 'bookkingDate', 'docId', 'projectId', ),
-        BasePeer::TYPE_COLNAME => array (BookkPeer::ID, BookkPeer::NO, BookkPeer::DESC, BookkPeer::IS_ACCEPTED, BookkPeer::BOOKKING_DATE, BookkPeer::DOC_ID, BookkPeer::PROJECT_ID, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'NO', 'DESC', 'IS_ACCEPTED', 'BOOKKING_DATE', 'DOC_ID', 'PROJECT_ID', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'no', 'desc', 'is_accepted', 'bookking_date', 'doc_id', 'project_id', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'No', 'Desc', 'IsAccepted', 'BookkingDate', 'YearId', 'DocId', 'ProjectId', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'no', 'desc', 'isAccepted', 'bookkingDate', 'yearId', 'docId', 'projectId', ),
+        BasePeer::TYPE_COLNAME => array (BookkPeer::ID, BookkPeer::NO, BookkPeer::DESC, BookkPeer::IS_ACCEPTED, BookkPeer::BOOKKING_DATE, BookkPeer::YEAR_ID, BookkPeer::DOC_ID, BookkPeer::PROJECT_ID, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'NO', 'DESC', 'IS_ACCEPTED', 'BOOKKING_DATE', 'YEAR_ID', 'DOC_ID', 'PROJECT_ID', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'no', 'desc', 'is_accepted', 'bookking_date', 'year_id', 'doc_id', 'project_id', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
     );
 
     /**
@@ -95,12 +99,12 @@ abstract class BaseBookkPeer
      * e.g. BookkPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'No' => 1, 'Desc' => 2, 'IsAccepted' => 3, 'BookkingDate' => 4, 'DocId' => 5, 'ProjectId' => 6, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'no' => 1, 'desc' => 2, 'isAccepted' => 3, 'bookkingDate' => 4, 'docId' => 5, 'projectId' => 6, ),
-        BasePeer::TYPE_COLNAME => array (BookkPeer::ID => 0, BookkPeer::NO => 1, BookkPeer::DESC => 2, BookkPeer::IS_ACCEPTED => 3, BookkPeer::BOOKKING_DATE => 4, BookkPeer::DOC_ID => 5, BookkPeer::PROJECT_ID => 6, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'NO' => 1, 'DESC' => 2, 'IS_ACCEPTED' => 3, 'BOOKKING_DATE' => 4, 'DOC_ID' => 5, 'PROJECT_ID' => 6, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'no' => 1, 'desc' => 2, 'is_accepted' => 3, 'bookking_date' => 4, 'doc_id' => 5, 'project_id' => 6, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'No' => 1, 'Desc' => 2, 'IsAccepted' => 3, 'BookkingDate' => 4, 'YearId' => 5, 'DocId' => 6, 'ProjectId' => 7, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'no' => 1, 'desc' => 2, 'isAccepted' => 3, 'bookkingDate' => 4, 'yearId' => 5, 'docId' => 6, 'projectId' => 7, ),
+        BasePeer::TYPE_COLNAME => array (BookkPeer::ID => 0, BookkPeer::NO => 1, BookkPeer::DESC => 2, BookkPeer::IS_ACCEPTED => 3, BookkPeer::BOOKKING_DATE => 4, BookkPeer::YEAR_ID => 5, BookkPeer::DOC_ID => 6, BookkPeer::PROJECT_ID => 7, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'NO' => 1, 'DESC' => 2, 'IS_ACCEPTED' => 3, 'BOOKKING_DATE' => 4, 'YEAR_ID' => 5, 'DOC_ID' => 6, 'PROJECT_ID' => 7, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'no' => 1, 'desc' => 2, 'is_accepted' => 3, 'bookking_date' => 4, 'year_id' => 5, 'doc_id' => 6, 'project_id' => 7, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
     );
 
     /**
@@ -179,6 +183,7 @@ abstract class BaseBookkPeer
             $criteria->addSelectColumn(BookkPeer::DESC);
             $criteria->addSelectColumn(BookkPeer::IS_ACCEPTED);
             $criteria->addSelectColumn(BookkPeer::BOOKKING_DATE);
+            $criteria->addSelectColumn(BookkPeer::YEAR_ID);
             $criteria->addSelectColumn(BookkPeer::DOC_ID);
             $criteria->addSelectColumn(BookkPeer::PROJECT_ID);
         } else {
@@ -187,6 +192,7 @@ abstract class BaseBookkPeer
             $criteria->addSelectColumn($alias . '.desc');
             $criteria->addSelectColumn($alias . '.is_accepted');
             $criteria->addSelectColumn($alias . '.bookking_date');
+            $criteria->addSelectColumn($alias . '.year_id');
             $criteria->addSelectColumn($alias . '.doc_id');
             $criteria->addSelectColumn($alias . '.project_id');
         }
@@ -494,6 +500,57 @@ abstract class BaseBookkPeer
 
 
     /**
+     * Returns the number of rows matching criteria, joining the related Year table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinYear(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(BookkPeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            BookkPeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
+
+        // Set the correct dbName
+        $criteria->setDbName(BookkPeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(BookkPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(BookkPeer::YEAR_ID, YearPeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
      * Returns the number of rows matching criteria, joining the related Doc table
      *
      * @param      Criteria $criteria
@@ -592,6 +649,73 @@ abstract class BaseBookkPeer
         $stmt->closeCursor();
 
         return $count;
+    }
+
+
+    /**
+     * Selects a collection of Bookk objects pre-filled with their Year objects.
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of Bookk objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinYear(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(BookkPeer::DATABASE_NAME);
+        }
+
+        BookkPeer::addSelectColumns($criteria);
+        $startcol = BookkPeer::NUM_HYDRATE_COLUMNS;
+        YearPeer::addSelectColumns($criteria);
+
+        $criteria->addJoin(BookkPeer::YEAR_ID, YearPeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = BookkPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = BookkPeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+
+                $cls = BookkPeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                BookkPeer::addInstanceToPool($obj1, $key1);
+            } // if $obj1 already loaded
+
+            $key2 = YearPeer::getPrimaryKeyHashFromRow($row, $startcol);
+            if ($key2 !== null) {
+                $obj2 = YearPeer::getInstanceFromPool($key2);
+                if (!$obj2) {
+
+                    $cls = YearPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol);
+                    YearPeer::addInstanceToPool($obj2, $key2);
+                } // if obj2 already loaded
+
+                // Add the $obj1 (Bookk) to $obj2 (Year)
+                $obj2->addBookk($obj1);
+
+            } // if joined row was not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
     }
 
 
@@ -765,6 +889,8 @@ abstract class BaseBookkPeer
             $con = Propel::getConnection(BookkPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
+        $criteria->addJoin(BookkPeer::YEAR_ID, YearPeer::ID, $join_behavior);
+
         $criteria->addJoin(BookkPeer::DOC_ID, DocPeer::ID, $join_behavior);
 
         $criteria->addJoin(BookkPeer::PROJECT_ID, ProjectPeer::ID, $join_behavior);
@@ -803,11 +929,16 @@ abstract class BaseBookkPeer
         BookkPeer::addSelectColumns($criteria);
         $startcol2 = BookkPeer::NUM_HYDRATE_COLUMNS;
 
+        YearPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + YearPeer::NUM_HYDRATE_COLUMNS;
+
         DocPeer::addSelectColumns($criteria);
-        $startcol3 = $startcol2 + DocPeer::NUM_HYDRATE_COLUMNS;
+        $startcol4 = $startcol3 + DocPeer::NUM_HYDRATE_COLUMNS;
 
         ProjectPeer::addSelectColumns($criteria);
-        $startcol4 = $startcol3 + ProjectPeer::NUM_HYDRATE_COLUMNS;
+        $startcol5 = $startcol4 + ProjectPeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(BookkPeer::YEAR_ID, YearPeer::ID, $join_behavior);
 
         $criteria->addJoin(BookkPeer::DOC_ID, DocPeer::ID, $join_behavior);
 
@@ -830,40 +961,58 @@ abstract class BaseBookkPeer
                 BookkPeer::addInstanceToPool($obj1, $key1);
             } // if obj1 already loaded
 
-            // Add objects for joined Doc rows
+            // Add objects for joined Year rows
 
-            $key2 = DocPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+            $key2 = YearPeer::getPrimaryKeyHashFromRow($row, $startcol2);
             if ($key2 !== null) {
-                $obj2 = DocPeer::getInstanceFromPool($key2);
+                $obj2 = YearPeer::getInstanceFromPool($key2);
                 if (!$obj2) {
 
-                    $cls = DocPeer::getOMClass();
+                    $cls = YearPeer::getOMClass();
 
                     $obj2 = new $cls();
                     $obj2->hydrate($row, $startcol2);
-                    DocPeer::addInstanceToPool($obj2, $key2);
+                    YearPeer::addInstanceToPool($obj2, $key2);
                 } // if obj2 loaded
 
-                // Add the $obj1 (Bookk) to the collection in $obj2 (Doc)
+                // Add the $obj1 (Bookk) to the collection in $obj2 (Year)
                 $obj2->addBookk($obj1);
+            } // if joined row not null
+
+            // Add objects for joined Doc rows
+
+            $key3 = DocPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+            if ($key3 !== null) {
+                $obj3 = DocPeer::getInstanceFromPool($key3);
+                if (!$obj3) {
+
+                    $cls = DocPeer::getOMClass();
+
+                    $obj3 = new $cls();
+                    $obj3->hydrate($row, $startcol3);
+                    DocPeer::addInstanceToPool($obj3, $key3);
+                } // if obj3 loaded
+
+                // Add the $obj1 (Bookk) to the collection in $obj3 (Doc)
+                $obj3->addBookk($obj1);
             } // if joined row not null
 
             // Add objects for joined Project rows
 
-            $key3 = ProjectPeer::getPrimaryKeyHashFromRow($row, $startcol3);
-            if ($key3 !== null) {
-                $obj3 = ProjectPeer::getInstanceFromPool($key3);
-                if (!$obj3) {
+            $key4 = ProjectPeer::getPrimaryKeyHashFromRow($row, $startcol4);
+            if ($key4 !== null) {
+                $obj4 = ProjectPeer::getInstanceFromPool($key4);
+                if (!$obj4) {
 
                     $cls = ProjectPeer::getOMClass();
 
-                    $obj3 = new $cls();
-                    $obj3->hydrate($row, $startcol3);
-                    ProjectPeer::addInstanceToPool($obj3, $key3);
-                } // if obj3 loaded
+                    $obj4 = new $cls();
+                    $obj4->hydrate($row, $startcol4);
+                    ProjectPeer::addInstanceToPool($obj4, $key4);
+                } // if obj4 loaded
 
-                // Add the $obj1 (Bookk) to the collection in $obj3 (Project)
-                $obj3->addBookk($obj1);
+                // Add the $obj1 (Bookk) to the collection in $obj4 (Project)
+                $obj4->addBookk($obj1);
             } // if joined row not null
 
             $results[] = $obj1;
@@ -871,6 +1020,59 @@ abstract class BaseBookkPeer
         $stmt->closeCursor();
 
         return $results;
+    }
+
+
+    /**
+     * Returns the number of rows matching criteria, joining the related Year table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinAllExceptYear(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(BookkPeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            BookkPeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY should not affect count
+
+        // Set the correct dbName
+        $criteria->setDbName(BookkPeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(BookkPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(BookkPeer::DOC_ID, DocPeer::ID, $join_behavior);
+
+        $criteria->addJoin(BookkPeer::PROJECT_ID, ProjectPeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
     }
 
 
@@ -909,6 +1111,8 @@ abstract class BaseBookkPeer
         if ($con === null) {
             $con = Propel::getConnection(BookkPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
+
+        $criteria->addJoin(BookkPeer::YEAR_ID, YearPeer::ID, $join_behavior);
 
         $criteria->addJoin(BookkPeer::PROJECT_ID, ProjectPeer::ID, $join_behavior);
 
@@ -961,6 +1165,8 @@ abstract class BaseBookkPeer
             $con = Propel::getConnection(BookkPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
+        $criteria->addJoin(BookkPeer::YEAR_ID, YearPeer::ID, $join_behavior);
+
         $criteria->addJoin(BookkPeer::DOC_ID, DocPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
@@ -977,7 +1183,7 @@ abstract class BaseBookkPeer
 
 
     /**
-     * Selects a collection of Bookk objects pre-filled with all related objects except Doc.
+     * Selects a collection of Bookk objects pre-filled with all related objects except Year.
      *
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
@@ -986,81 +1192,7 @@ abstract class BaseBookkPeer
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
-    public static function doSelectJoinAllExceptDoc(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $criteria = clone $criteria;
-
-        // Set the correct dbName if it has not been overridden
-        // $criteria->getDbName() will return the same object if not set to another value
-        // so == check is okay and faster
-        if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(BookkPeer::DATABASE_NAME);
-        }
-
-        BookkPeer::addSelectColumns($criteria);
-        $startcol2 = BookkPeer::NUM_HYDRATE_COLUMNS;
-
-        ProjectPeer::addSelectColumns($criteria);
-        $startcol3 = $startcol2 + ProjectPeer::NUM_HYDRATE_COLUMNS;
-
-        $criteria->addJoin(BookkPeer::PROJECT_ID, ProjectPeer::ID, $join_behavior);
-
-
-        $stmt = BasePeer::doSelect($criteria, $con);
-        $results = array();
-
-        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = BookkPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = BookkPeer::getInstanceFromPool($key1))) {
-                // We no longer rehydrate the object, since this can cause data loss.
-                // See http://www.propelorm.org/ticket/509
-                // $obj1->hydrate($row, 0, true); // rehydrate
-            } else {
-                $cls = BookkPeer::getOMClass();
-
-                $obj1 = new $cls();
-                $obj1->hydrate($row);
-                BookkPeer::addInstanceToPool($obj1, $key1);
-            } // if obj1 already loaded
-
-                // Add objects for joined Project rows
-
-                $key2 = ProjectPeer::getPrimaryKeyHashFromRow($row, $startcol2);
-                if ($key2 !== null) {
-                    $obj2 = ProjectPeer::getInstanceFromPool($key2);
-                    if (!$obj2) {
-
-                        $cls = ProjectPeer::getOMClass();
-
-                    $obj2 = new $cls();
-                    $obj2->hydrate($row, $startcol2);
-                    ProjectPeer::addInstanceToPool($obj2, $key2);
-                } // if $obj2 already loaded
-
-                // Add the $obj1 (Bookk) to the collection in $obj2 (Project)
-                $obj2->addBookk($obj1);
-
-            } // if joined row is not null
-
-            $results[] = $obj1;
-        }
-        $stmt->closeCursor();
-
-        return $results;
-    }
-
-
-    /**
-     * Selects a collection of Bookk objects pre-filled with all related objects except Project.
-     *
-     * @param      Criteria  $criteria
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of Bookk objects.
-     * @throws PropelException Any exceptions caught during processing will be
-     *		 rethrown wrapped into a PropelException.
-     */
-    public static function doSelectJoinAllExceptProject(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doSelectJoinAllExceptYear(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $criteria = clone $criteria;
 
@@ -1077,7 +1209,12 @@ abstract class BaseBookkPeer
         DocPeer::addSelectColumns($criteria);
         $startcol3 = $startcol2 + DocPeer::NUM_HYDRATE_COLUMNS;
 
+        ProjectPeer::addSelectColumns($criteria);
+        $startcol4 = $startcol3 + ProjectPeer::NUM_HYDRATE_COLUMNS;
+
         $criteria->addJoin(BookkPeer::DOC_ID, DocPeer::ID, $join_behavior);
+
+        $criteria->addJoin(BookkPeer::PROJECT_ID, ProjectPeer::ID, $join_behavior);
 
 
         $stmt = BasePeer::doSelect($criteria, $con);
@@ -1113,6 +1250,221 @@ abstract class BaseBookkPeer
 
                 // Add the $obj1 (Bookk) to the collection in $obj2 (Doc)
                 $obj2->addBookk($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined Project rows
+
+                $key3 = ProjectPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+                if ($key3 !== null) {
+                    $obj3 = ProjectPeer::getInstanceFromPool($key3);
+                    if (!$obj3) {
+
+                        $cls = ProjectPeer::getOMClass();
+
+                    $obj3 = new $cls();
+                    $obj3->hydrate($row, $startcol3);
+                    ProjectPeer::addInstanceToPool($obj3, $key3);
+                } // if $obj3 already loaded
+
+                // Add the $obj1 (Bookk) to the collection in $obj3 (Project)
+                $obj3->addBookk($obj1);
+
+            } // if joined row is not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Selects a collection of Bookk objects pre-filled with all related objects except Doc.
+     *
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of Bookk objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinAllExceptDoc(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        // $criteria->getDbName() will return the same object if not set to another value
+        // so == check is okay and faster
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(BookkPeer::DATABASE_NAME);
+        }
+
+        BookkPeer::addSelectColumns($criteria);
+        $startcol2 = BookkPeer::NUM_HYDRATE_COLUMNS;
+
+        YearPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + YearPeer::NUM_HYDRATE_COLUMNS;
+
+        ProjectPeer::addSelectColumns($criteria);
+        $startcol4 = $startcol3 + ProjectPeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(BookkPeer::YEAR_ID, YearPeer::ID, $join_behavior);
+
+        $criteria->addJoin(BookkPeer::PROJECT_ID, ProjectPeer::ID, $join_behavior);
+
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = BookkPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = BookkPeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+                $cls = BookkPeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                BookkPeer::addInstanceToPool($obj1, $key1);
+            } // if obj1 already loaded
+
+                // Add objects for joined Year rows
+
+                $key2 = YearPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+                if ($key2 !== null) {
+                    $obj2 = YearPeer::getInstanceFromPool($key2);
+                    if (!$obj2) {
+
+                        $cls = YearPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol2);
+                    YearPeer::addInstanceToPool($obj2, $key2);
+                } // if $obj2 already loaded
+
+                // Add the $obj1 (Bookk) to the collection in $obj2 (Year)
+                $obj2->addBookk($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined Project rows
+
+                $key3 = ProjectPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+                if ($key3 !== null) {
+                    $obj3 = ProjectPeer::getInstanceFromPool($key3);
+                    if (!$obj3) {
+
+                        $cls = ProjectPeer::getOMClass();
+
+                    $obj3 = new $cls();
+                    $obj3->hydrate($row, $startcol3);
+                    ProjectPeer::addInstanceToPool($obj3, $key3);
+                } // if $obj3 already loaded
+
+                // Add the $obj1 (Bookk) to the collection in $obj3 (Project)
+                $obj3->addBookk($obj1);
+
+            } // if joined row is not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Selects a collection of Bookk objects pre-filled with all related objects except Project.
+     *
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of Bookk objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinAllExceptProject(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        // $criteria->getDbName() will return the same object if not set to another value
+        // so == check is okay and faster
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(BookkPeer::DATABASE_NAME);
+        }
+
+        BookkPeer::addSelectColumns($criteria);
+        $startcol2 = BookkPeer::NUM_HYDRATE_COLUMNS;
+
+        YearPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + YearPeer::NUM_HYDRATE_COLUMNS;
+
+        DocPeer::addSelectColumns($criteria);
+        $startcol4 = $startcol3 + DocPeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(BookkPeer::YEAR_ID, YearPeer::ID, $join_behavior);
+
+        $criteria->addJoin(BookkPeer::DOC_ID, DocPeer::ID, $join_behavior);
+
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = BookkPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = BookkPeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+                $cls = BookkPeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                BookkPeer::addInstanceToPool($obj1, $key1);
+            } // if obj1 already loaded
+
+                // Add objects for joined Year rows
+
+                $key2 = YearPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+                if ($key2 !== null) {
+                    $obj2 = YearPeer::getInstanceFromPool($key2);
+                    if (!$obj2) {
+
+                        $cls = YearPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol2);
+                    YearPeer::addInstanceToPool($obj2, $key2);
+                } // if $obj2 already loaded
+
+                // Add the $obj1 (Bookk) to the collection in $obj2 (Year)
+                $obj2->addBookk($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined Doc rows
+
+                $key3 = DocPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+                if ($key3 !== null) {
+                    $obj3 = DocPeer::getInstanceFromPool($key3);
+                    if (!$obj3) {
+
+                        $cls = DocPeer::getOMClass();
+
+                    $obj3 = new $cls();
+                    $obj3->hydrate($row, $startcol3);
+                    DocPeer::addInstanceToPool($obj3, $key3);
+                } // if $obj3 already loaded
+
+                // Add the $obj1 (Bookk) to the collection in $obj3 (Doc)
+                $obj3->addBookk($obj1);
 
             } // if joined row is not null
 

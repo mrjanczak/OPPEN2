@@ -61,6 +61,7 @@ class YearTableMap extends TableMap
         $this->addRelation('Month', 'AppBundle\\Model\\Month', RelationMap::ONE_TO_MANY, array('id' => 'year_id', ), 'CASCADE', null, 'Months');
         $this->addRelation('FileCat', 'AppBundle\\Model\\FileCat', RelationMap::ONE_TO_MANY, array('id' => 'year_id', ), 'CASCADE', null, 'FileCats');
         $this->addRelation('DocCat', 'AppBundle\\Model\\DocCat', RelationMap::ONE_TO_MANY, array('id' => 'year_id', ), 'CASCADE', null, 'DocCats');
+        $this->addRelation('Bookk', 'AppBundle\\Model\\Bookk', RelationMap::ONE_TO_MANY, array('id' => 'year_id', ), 'CASCADE', null, 'Bookks');
         $this->addRelation('Account', 'AppBundle\\Model\\Account', RelationMap::ONE_TO_MANY, array('id' => 'year_id', ), 'CASCADE', null, 'Accounts');
         $this->addRelation('Report', 'AppBundle\\Model\\Report', RelationMap::ONE_TO_MANY, array('id' => 'year_id', ), 'CASCADE', null, 'Reports');
         $this->addRelation('Project', 'AppBundle\\Model\\Project', RelationMap::ONE_TO_MANY, array('id' => 'year_id', ), 'CASCADE', null, 'Projects');

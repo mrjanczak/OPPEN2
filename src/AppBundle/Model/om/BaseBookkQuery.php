@@ -18,6 +18,7 @@ use AppBundle\Model\BookkPeer;
 use AppBundle\Model\BookkQuery;
 use AppBundle\Model\Doc;
 use AppBundle\Model\Project;
+use AppBundle\Model\Year;
 
 /**
  * @method BookkQuery orderById($order = Criteria::ASC) Order by the id column
@@ -25,6 +26,7 @@ use AppBundle\Model\Project;
  * @method BookkQuery orderByDesc($order = Criteria::ASC) Order by the desc column
  * @method BookkQuery orderByIsAccepted($order = Criteria::ASC) Order by the is_accepted column
  * @method BookkQuery orderByBookkingDate($order = Criteria::ASC) Order by the bookking_date column
+ * @method BookkQuery orderByYearId($order = Criteria::ASC) Order by the year_id column
  * @method BookkQuery orderByDocId($order = Criteria::ASC) Order by the doc_id column
  * @method BookkQuery orderByProjectId($order = Criteria::ASC) Order by the project_id column
  *
@@ -33,12 +35,17 @@ use AppBundle\Model\Project;
  * @method BookkQuery groupByDesc() Group by the desc column
  * @method BookkQuery groupByIsAccepted() Group by the is_accepted column
  * @method BookkQuery groupByBookkingDate() Group by the bookking_date column
+ * @method BookkQuery groupByYearId() Group by the year_id column
  * @method BookkQuery groupByDocId() Group by the doc_id column
  * @method BookkQuery groupByProjectId() Group by the project_id column
  *
  * @method BookkQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method BookkQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method BookkQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ *
+ * @method BookkQuery leftJoinYear($relationAlias = null) Adds a LEFT JOIN clause to the query using the Year relation
+ * @method BookkQuery rightJoinYear($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Year relation
+ * @method BookkQuery innerJoinYear($relationAlias = null) Adds a INNER JOIN clause to the query using the Year relation
  *
  * @method BookkQuery leftJoinDoc($relationAlias = null) Adds a LEFT JOIN clause to the query using the Doc relation
  * @method BookkQuery rightJoinDoc($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Doc relation
@@ -59,6 +66,7 @@ use AppBundle\Model\Project;
  * @method Bookk findOneByDesc(string $desc) Return the first Bookk filtered by the desc column
  * @method Bookk findOneByIsAccepted(boolean $is_accepted) Return the first Bookk filtered by the is_accepted column
  * @method Bookk findOneByBookkingDate(string $bookking_date) Return the first Bookk filtered by the bookking_date column
+ * @method Bookk findOneByYearId(int $year_id) Return the first Bookk filtered by the year_id column
  * @method Bookk findOneByDocId(int $doc_id) Return the first Bookk filtered by the doc_id column
  * @method Bookk findOneByProjectId(int $project_id) Return the first Bookk filtered by the project_id column
  *
@@ -67,6 +75,7 @@ use AppBundle\Model\Project;
  * @method array findByDesc(string $desc) Return Bookk objects filtered by the desc column
  * @method array findByIsAccepted(boolean $is_accepted) Return Bookk objects filtered by the is_accepted column
  * @method array findByBookkingDate(string $bookking_date) Return Bookk objects filtered by the bookking_date column
+ * @method array findByYearId(int $year_id) Return Bookk objects filtered by the year_id column
  * @method array findByDocId(int $doc_id) Return Bookk objects filtered by the doc_id column
  * @method array findByProjectId(int $project_id) Return Bookk objects filtered by the project_id column
  */
@@ -174,7 +183,7 @@ abstract class BaseBookkQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `no`, `desc`, `is_accepted`, `bookking_date`, `doc_id`, `project_id` FROM `bookk` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `no`, `desc`, `is_accepted`, `bookking_date`, `year_id`, `doc_id`, `project_id` FROM `bookk` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -447,6 +456,50 @@ abstract class BaseBookkQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the year_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByYearId(1234); // WHERE year_id = 1234
+     * $query->filterByYearId(array(12, 34)); // WHERE year_id IN (12, 34)
+     * $query->filterByYearId(array('min' => 12)); // WHERE year_id >= 12
+     * $query->filterByYearId(array('max' => 12)); // WHERE year_id <= 12
+     * </code>
+     *
+     * @see       filterByYear()
+     *
+     * @param     mixed $yearId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return BookkQuery The current query, for fluid interface
+     */
+    public function filterByYearId($yearId = null, $comparison = null)
+    {
+        if (is_array($yearId)) {
+            $useMinMax = false;
+            if (isset($yearId['min'])) {
+                $this->addUsingAlias(BookkPeer::YEAR_ID, $yearId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($yearId['max'])) {
+                $this->addUsingAlias(BookkPeer::YEAR_ID, $yearId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(BookkPeer::YEAR_ID, $yearId, $comparison);
+    }
+
+    /**
      * Filter the query on the doc_id column
      *
      * Example usage:
@@ -532,6 +585,82 @@ abstract class BaseBookkQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(BookkPeer::PROJECT_ID, $projectId, $comparison);
+    }
+
+    /**
+     * Filter the query by a related Year object
+     *
+     * @param   Year|PropelObjectCollection $year The related object(s) to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 BookkQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByYear($year, $comparison = null)
+    {
+        if ($year instanceof Year) {
+            return $this
+                ->addUsingAlias(BookkPeer::YEAR_ID, $year->getId(), $comparison);
+        } elseif ($year instanceof PropelObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(BookkPeer::YEAR_ID, $year->toKeyValue('PrimaryKey', 'Id'), $comparison);
+        } else {
+            throw new PropelException('filterByYear() only accepts arguments of type Year or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Year relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return BookkQuery The current query, for fluid interface
+     */
+    public function joinYear($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Year');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Year');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Year relation Year object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \AppBundle\Model\YearQuery A secondary query class using the current class as primary query
+     */
+    public function useYearQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinYear($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Year', '\AppBundle\Model\YearQuery');
     }
 
     /**
