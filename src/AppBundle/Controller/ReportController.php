@@ -809,7 +809,7 @@ class ReportController extends Controller
 					
 					if($list == '') {
 						// Headers for Mail Merge Google Docs Plugin
-						$list= 'First Name; Last Name; Email Address; Filename;';
+						$list= 'First Name; Last Name; Email Address; File Attachments;';
 						foreach($ItemColl->Items as $Item) {
 							$list.= $Item->data['symbol'].';';
 						}			
