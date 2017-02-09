@@ -812,7 +812,7 @@ class ReportController extends Controller
 						foreach($ItemColl->Items as $Item) {
 							$list.= $Item->data['symbol'].';';
 						}			
-						$list.=PHP_EOL;	
+						$list.= 'Projects; Scheduled Date; Mail Merge Status;'.PHP_EOL;	
 					}
 						
 					$tagged_items = '';
@@ -840,7 +840,11 @@ class ReportController extends Controller
 					foreach($ItemColl->Items as $Item) {
 						$list .= $Item->data['value'].';';
 					}
-					$list .= PHP_EOL;	
+					$projects = '';
+					foreach($ItemColl->data['projects'] as $p) {
+						$projects .= $p[name].' ('.$p['brutto'].'PLN), '
+					}
+					$list .= $projects.';'.PHP_EOL;	
 							 
 					//$file = fopen($path.$filename.".xml", "w") or die("Unable to open file!");
 					//fwrite($file, $contents);
