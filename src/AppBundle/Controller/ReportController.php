@@ -802,15 +802,19 @@ class ReportController extends Controller
 			
 		else {
 			
-			$list= 'First Name; Second Name; Email; Filename;';
-			foreach($ItemColl->Items as $Item) {
-				$list.= $Item->data['symbol'].';';
-			}			
-			$list.=PHP_EOL;
+			$list = '';
 			
 			if($Report->ItemColls != null) {
 				foreach($Report->ItemColls as $ItemColl) {
 					
+					if($list == '') {
+						$list= 'First Name; Second Name; Email; Filename;';
+						foreach($ItemColl->Items as $Item) {
+							$list.= $Item->data['symbol'].';';
+						}			
+						$list.=PHP_EOL;	
+					}
+						
 					$tagged_items = '';
 					foreach($ItemColl->Items as $Item) {
 						$tag = $Item->data['symbol'];
