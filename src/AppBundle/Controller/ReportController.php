@@ -842,7 +842,7 @@ class ReportController extends Controller
 					}
 					$projects = '';
 					foreach($ItemColl->data['projects'] as $p) {
-						$projects .= $p[name].' ('.$p['brutto'].'PLN), ';
+						$projects .= $p[name].' ('.$p['gross'].'PLN) </br> ';
 					}
 					$list .= $projects.';'.PHP_EOL;	
 							 
