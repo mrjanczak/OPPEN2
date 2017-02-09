@@ -802,9 +802,9 @@ class ReportController extends Controller
 			
 		else {
 			
-			$list= 'First Name; Second Name; Email; Filename';
+			$list= 'First Name; Second Name; Email; Filename;';
 			foreach($ItemColl->Items as $Item) {
-				$list.= $Item->data['symbol'];
+				$list.= $Item->data['symbol'].';';
 			}			
 			$list.=PHP_EOL;
 			
@@ -834,7 +834,7 @@ class ReportController extends Controller
 						 	 $ItemColl->data['email'].';'.
 							 $filename.".pdf";
 					foreach($ItemColl->Items as $Item) {
-						$list .= $Item->data['value'];
+						$list .= $Item->data['value'].';';
 					}
 					$list .= PHP_EOL;	
 							 
