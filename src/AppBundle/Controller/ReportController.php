@@ -808,7 +808,8 @@ class ReportController extends Controller
 				foreach($Report->ItemColls as $ItemColl) {
 					
 					if($list == '') {
-						$list= 'First Name; Second Name; Email; Filename;';
+						// Headers for Mail Merge Google Docs Plugin
+						$list= 'First Name; Second Name; Email Address; Filename;';
 						foreach($ItemColl->Items as $Item) {
 							$list.= $Item->data['symbol'].';';
 						}			
