@@ -683,7 +683,7 @@ class ReportController extends Controller
 			$File = $Contract->getFile(); // from last Contract
 
 			$US_name = ''; 
-			$US_accNo = 'XXXX'; 
+			$US_accNo = ''; 
 			$US_address1 = ''; 
 			$US_address2 = '';
 			
@@ -809,7 +809,7 @@ class ReportController extends Controller
 					
 					if($list == '') {
 						// Headers for Mail Merge Google Docs Plugin
-						$list= 'First Name; Second Name; Email Address; Filename;';
+						$list= 'First Name; Last Name; Email Address; Filename;';
 						foreach($ItemColl->Items as $Item) {
 							$list.= $Item->data['symbol'].';';
 						}			
