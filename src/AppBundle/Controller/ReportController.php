@@ -830,9 +830,9 @@ class ReportController extends Controller
 					$zip->addFromString($filename.".xml",  $contents); 
 					
 					$list .= $ItemColl->data['first_name'].';'.
-							 $ItemColl->data['last_name'].';'.
-						 	 $ItemColl->data['email'].';'.
-							 $filename.".pdf";
+						 $ItemColl->data['last_name'].';'.
+						 $ItemColl->data['email'].';'.
+						 $filename.".pdf;";
 					foreach($ItemColl->Items as $Item) {
 						$list .= $Item->data['value'].';';
 					}
