@@ -802,7 +802,11 @@ class ReportController extends Controller
 			
 		else {
 			
-			$list= 'First Name; Second Name; Email; Filename'.PHP_EOL;
+			$list= 'First Name; Second Name; Email; Filename';
+			foreach($ItemColl->Items as $Item) {
+				$list.= $Item->data['symbol'];
+			}			
+			$list.=PHP_EOL;
 			
 			if($Report->ItemColls != null) {
 				foreach($Report->ItemColls as $ItemColl) {
@@ -828,7 +832,11 @@ class ReportController extends Controller
 					$list .= $ItemColl->data['first_name'].';'.
 							 $ItemColl->data['last_name'].';'.
 						 	 $ItemColl->data['email'].';'.
-							 $filename.".pdf".PHP_EOL;	
+							 $filename.".pdf";
+					foreach($ItemColl->Items as $Item) {
+						$list .= $Item->data['value'];
+					}
+					$list .= PHP_EOL;	
 							 
 					//$file = fopen($path.$filename.".xml", "w") or die("Unable to open file!");
 					//fwrite($file, $contents);
