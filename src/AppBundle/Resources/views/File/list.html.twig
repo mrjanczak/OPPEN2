@@ -76,6 +76,10 @@
 				{% elseif File.country == "PL" %} <span class="red">Brak email-a</span>
 				{% endif %} |
 				
+				{% if File.phone is not empty %}  {{ File.phone }} 
+				{% elseif File.country == "PL" %} <span class="red">Brak telefonu</span>
+				{% endif %} |				
+				
 				{% if File.profession is not empty %}  {{ File.profession }} 
 				{% else %} <span class="red">Brak zawodu</span>
 				{% endif %} 				
