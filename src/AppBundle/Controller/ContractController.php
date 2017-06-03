@@ -279,8 +279,6 @@ class ContractController extends Controller
 					$contractor_ID = '';
 					if(strlen($File->getPesel()) > 0) {
 						$contractor_ID = 'PESEL: '. $File->getPesel(); }
-					elseif(strlen($File->getPassport()) > 0) {
-						$contractor_ID = 'Nr Paszportu: '. $File->getPassport(); }
 					
 					$c = str_replace('__contractor_address1__',$contractor_address1, $c);
 					$c = str_replace('__contractor_address2__',$contractor_address2, $c);
