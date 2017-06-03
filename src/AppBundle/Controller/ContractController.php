@@ -88,7 +88,7 @@ class ContractController extends Controller
 			if (($form->get('save')->isClicked()) && ($form->isValid())) { 
 				
 				$Month = $Contract->getMonth();
-				$Date = $form->get('file')->getData();
+				$Date = $form->get('contract_date')->getData();
 				$File = $form->get('File')->getData();
 				if(!is_null($File)) { 
 					$NAME = substr($File->getFirstName(),0,3).substr($File->getLastName(),0,3); }
