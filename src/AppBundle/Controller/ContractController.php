@@ -177,7 +177,7 @@ class ContractController extends Controller
 					
 					// comment $RegIdx= NULL; $RegNo = NULL:
 					$Doc->setNewDocIdx(); 
-					$Doc->setNewDocNo(); 
+					$Doc->setNewDocNo($ProjectFile->getAccNo()); 
 					
 					$Doc->setReceiptDate($receipt_date );
 					$Doc->setDocumentDate($document_date ? $contract_date : $document_date);
