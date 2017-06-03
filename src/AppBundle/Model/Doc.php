@@ -24,6 +24,7 @@ class Doc extends BaseDoc
 		$Month = $this->getMonth();
 		$Year = $Month->getYear();
 		$DocCat = $this->getDocCat();
+		$DocCat = $this->getDocCat();
 		
 		$DocNoTmp = $DocCat->getDocNoTmp();
 		if(strpos($DocNoTmp,'|') == false ) {
@@ -57,6 +58,7 @@ class Doc extends BaseDoc
 		$Month = $this->getMonth();
 		$Year = $Month->getYear();			
 		$DocCat = $this->getDocCat();
+		$File = $this->getFile();
 		
 		$DocNoTmp = $DocCat->getDocNoTmp();
 		if(strpos($DocNoTmp,'|') == false ) {
@@ -66,10 +68,13 @@ class Doc extends BaseDoc
 		$DCsymbol = $DocCat->getSymbol();
 		$M = $Month->getName();
 		$Y = $Year->getName();
+		$NAME = substr($File->getFirstName(),0,3).substr($File->getLastName(),0,3);
+			
 		$tmp = str_replace('#S',   $DCsymbol,   $tmp);
 		$tmp = str_replace('#i',   $DocIdx, $tmp);
 		$tmp = str_replace('#M',   $M,     $tmp);
 		$tmp = str_replace('#Y',   $Y,     $tmp);
+		$tmp = str_replace('#NAME',$NAME,  $tmp);
 		
 		return $this->setDocNo($tmp);
 	}
