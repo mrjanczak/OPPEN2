@@ -313,7 +313,9 @@ class ContractController extends Controller
 					elseif ($Doc instanceOf Doc) 
 					{
 						$c = str_replace('__document_no__',$Doc->getDocNo(), $c); 
-						$c = str_replace('__document_date__',$Doc->getDocumentDate()->format('d-m-Y'), $c); 
+						
+						if ($Doc->getDocumentDate() instanceOf DateTime) {
+							$c = str_replace('__document_date__',$Doc->getDocumentDate()->format('d-m-Y'), $c); }
 					} else {
 						$c = str_replace('__document_no__','', $c); 
 						$c = str_replace('__document_date__','', $c); 						
