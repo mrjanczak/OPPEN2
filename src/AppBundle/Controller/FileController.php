@@ -75,7 +75,7 @@ class FileController extends Controller
 						$Contract->setEventRole($File->getProfession());
 						
 						$ContractDate =  $Contract->getContractDate();
-						$NAME = substr($File->getFirstName(),0,3).substr($File->getLastName(),0,3); }
+						$NAME = substr($File->getFirstName(),0,3).substr($File->getLastName(),0,3); 
 						$Contract->setContractNo('UoD '.$ContractDate->format('Y-m-d').'/'.$NAME);
 						/*
 						if($Month instanceOf Month) {
