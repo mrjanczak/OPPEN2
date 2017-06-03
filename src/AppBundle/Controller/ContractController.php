@@ -92,7 +92,7 @@ class ContractController extends Controller
 				$File = $form->get('file')->getData();
 				if(!is_null($File)) { 
 					$NAME = substr($File->getFirstName(),0,3).substr($File->getLastName(),0,3); }
-				else {$NAME=''}
+				else {$NAME='';}
 					
 				if(($form->get('contract_no')->getData() == '') && ($Month instanceOf Month)) {
 					$contract_no = ContractQuery::create()->filterByMonth($Month)->count() + 1;
