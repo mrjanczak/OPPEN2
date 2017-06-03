@@ -88,9 +88,16 @@ class ContractController extends Controller
 			if (($form->get('save')->isClicked()) && ($form->isValid())) { 
 				
 				$Month = $Contract->getMonth();
+				$Date = $form->get('file')->getData();
+				$File = $form->get('file')->getData();
+				if(!is_null($File)) { 
+					$NAME = substr($File->getFirstName(),0,3).substr($File->getLastName(),0,3); }
+				else {$NAME=''}
+					
 				if(($form->get('contract_no')->getData() == '') && ($Month instanceOf Month)) {
 					$contract_no = ContractQuery::create()->filterByMonth($Month)->count() + 1;
-					$Contract->setContractNo('UoD '.$Year->getName().'/'.$Month->getName().'/'.$contract_no);
+					//$Contract->setContractNo('UoD '.$Year->getName().'/'.$Month->getName().'/'.$contract_no);
+					$Contract->setContractNo('UoD '.$Date.'/'.$NAME);
 				}
 				
 				$gross = $form->get('gross')->getData();
