@@ -53,7 +53,7 @@ class Doc extends BaseDoc
 		return $this->setDocIdx($DocIdx);
 	}
 
-	public function setNewDocNo() {
+	public function setNewDocNo($PROJ = '001') {
 		$DocIdx = $this->getDocIdx(); 
 		$Month = $this->getMonth();
 		$Year = $Month->getYear();			
@@ -74,6 +74,7 @@ class Doc extends BaseDoc
 		$tmp = str_replace('#i',   $DocIdx, $tmp);
 		$tmp = str_replace('#M',   $M,     $tmp);
 		$tmp = str_replace('#Y',   $Y,     $tmp);
+		$tmp = str_replace('#PROJ',$PROJ,  $tmp);
 		$tmp = str_replace('#NAME',$NAME,  $tmp);
 		
 		return $this->setDocNo($tmp);
