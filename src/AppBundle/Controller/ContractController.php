@@ -88,20 +88,19 @@ class ContractController extends Controller
 			if (($form->get('save')->isClicked()) && ($form->isValid())) { 
 				
 				$Month = $Contract->getMonth();
-				$Date = $form->get('contract_date')->getData();
-				if(!is_null($Date)) { 
-					$Date_str = $Date->format('Y-m-d');}
-				else {$Date_str='';}
-				$File = $form->get('File')->getData();
+				
+				$ContractDate =  $Contract->getContractDate();
+				$File = $Contract->getFile();
 				if(!is_null($File)) { 
 					$NAME = substr($File->getFirstName(),0,3).substr($File->getLastName(),0,3); }
 				else {$NAME='';}
-					
+				$Contract->setContractNo('UoD '.$ContractDate->format('Y-m-d').'/'.$NAME);
+				/*	
 				if(($form->get('contract_no')->getData() == '') && ($Month instanceOf Month)) {
 					$contract_no = ContractQuery::create()->filterByMonth($Month)->count() + 1;
-					//$Contract->setContractNo('UoD '.$Year->getName().'/'.$Month->getName().'/'.$contract_no);
-					$Contract->setContractNo('UoD '.$Date_str.'/'.$NAME);
-				}
+					$Contract->setContractNo('UoD '.$Year->getName().'/'.$Month->getName().'/'.$contract_no);
+				} 
+				*/
 				
 				$gross = $form->get('gross')->getData();
 				$cost_coef = $form->get('cost_coef')->getData();
