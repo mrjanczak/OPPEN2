@@ -89,7 +89,7 @@ class ContractController extends Controller
 				
 				$Month = $Contract->getMonth();
 				$Date = $form->get('file')->getData();
-				$File = $form->get('file')->getData();
+				$File = $form->get('File')->getData();
 				if(!is_null($File)) { 
 					$NAME = substr($File->getFirstName(),0,3).substr($File->getLastName(),0,3); }
 				else {$NAME='';}
