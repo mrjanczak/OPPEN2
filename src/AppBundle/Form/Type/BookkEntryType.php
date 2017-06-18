@@ -44,7 +44,7 @@ class BookkEntryType extends AbstractType
 			      
 			->add('save', 'submit', array('label' => 'Zapisz','disabled' => $this->disabled))	
 			
-			->add('delete', 'submit', array('label' => 'Usuń','disabled' => $this->disabled
+			->add('delete', 'submit', array('label' => 'Usuń','disabled' => $this->disabled,
 				  'attr' => array('class' => 'confirm', 'data-confirm' => 'Czy chcesz usunąć dokument?')
 			))  
 			
