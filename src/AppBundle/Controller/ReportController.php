@@ -1002,16 +1002,18 @@ class ReportController extends Controller
 		$BookkEntries = BookkEntryQuery::create()		
 			->useBookkQuery()
 				->filterByIsAccepted(1)  //***************************** to be enabled in prod
-				->filterByBookkingDate( array('min'=> $FromDate, 'max'=> $ToDate) )
-				->orderByBookkingDate()
-				//->useDocQuery()
-					//->useDocCatQuery()
-						//->filterBySymbol('BO',\Criteria::NOT_EQUAL)
-						//->filterByYear($Year)
-					//->endUse()	
-					//->filterByOperationDate(array('min'=>$FromDate, 'max'=>$ToDate))		
-					//->orderByOperationDate()			
-				//->endUse()						
+				//->filterByBookkingDate( array('min'=> $FromDate, 'max'=> $ToDate) )
+				//->orderByBookkingDate()
+			
+				->useDocQuery()
+					->useDocCatQuery()
+						->filterBySymbol('BO',\Criteria::NOT_EQUAL)
+						->filterByYear($Year)
+					->endUse()	
+					->filterByBookkingDate(array('min'=>$FromDate, 'max'=>$ToDate))		
+					->orderByBookkingDate()			
+				->endUse()	
+			
 			->endUse()
 			->filterByAccNo($ReportList->accNo)	
 			->find();			
@@ -1067,16 +1069,19 @@ class ReportController extends Controller
 			->joinWith('Bookk.Doc')
 			->joinWith('Doc.DocCat')
 			->useBookkQuery()
-				->filterByBookkingDate( array('min'=> $Month->getFromDate(),
-											  'max'=> $Month->getToDate()) )
+				//->filterByBookkingDate( array('min'=> $Month->getFromDate(),
+				//							  'max'=> $Month->getToDate()) )
+			
 				->useDocQuery()
-					->orderByRegIdx('asc')
-					//->orderByDocumentDate('asc')
+					->orderByRegIdx('asc')	
+					->filterByBookkingDate(array('min'=>$FromDate, 'max'=>$ToDate))		
 					
 					->useDocCatQuery()
 						->filterBySymbol('BO',\Criteria::NOT_EQUAL)
+						->filterByYear($Year)			
 					->endUse()
 				->endUse()
+			
 				->orderByBookkingDate('asc')
 			->endUse()
 			->find();
@@ -1162,7 +1167,18 @@ class ReportController extends Controller
 									
 						->useBookkQuery()
 							->filterByIsAccepted(1)
-							->filterByBookkingDate(array('min'=> $FromDate, 'max'=> $ToDate) )
+						
+							->useDocQuery()
+								->filterByBookkingDate(array('min'=>$FromDate, 'max'=>$ToDate))		
+
+								//->useDocCatQuery()
+								//	->filterBySymbol('BO',\Criteria::NOT_EQUAL)
+								//	->filterByYear($Year)			
+								//->endUse()
+							->endUse()						
+						
+						
+							//->filterByBookkingDate(array('min'=> $FromDate, 'max'=> $ToDate) )
 						->endUse()
 						
 						->withColumn('SUM(bookk_entry.value)', 'sum')
