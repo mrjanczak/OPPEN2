@@ -941,14 +941,14 @@ class ReportController extends Controller
 						->filterByIsAccepted(1)
 						
 						// by Bookk date
-						->filterByBookkingDate( array('min'=> $Item->data['Month']->getFromDate(),
-												 	  'max'=> $Item->data['Month']->getToDate()) )
+						//->filterByBookkingDate( array('min'=> $Item->data['Month']->getFromDate(),
+						//						 	  'max'=> $Item->data['Month']->getToDate()) )
 												 	  
 						->useDocQuery()
 						
 							// by Doc date
-							//->filterByBookkingDate(array('min'=> $Item->data['Month']->getFromDate(),
-							//					 	  'max'=> $Item->data['Month']->getToDate()) )
+							->filterByBookkingDate(array('min'=> $Item->data['Month']->getFromDate(),
+												 	  'max'=> $Item->data['Month']->getToDate()) )
 						
 							->useDocCatQuery()
 								->filterBySymbol('BO', $Item->data['BOcrit'])
