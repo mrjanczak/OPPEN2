@@ -540,6 +540,11 @@ class ReportController extends Controller
 											->endUse()
 											// ******************************************************************
 										->endUse()
+									
+										//metoda memoriałowa wg dekret.	
+										->_if($method_id == 3) 
+											->filterByBookkingDate(array('min'=>$fromDate, 'max'=>$toDate))
+										->_endif()									
 										
 										->_if($p4 != '0')
 											->filterByDesc('%'.$p4.'%')
@@ -955,7 +960,7 @@ class ReportController extends Controller
 							->endUse()	
 												
 							//->filterByMonth($Item->data['Month'])	
-						->endUse()	
+						->endUse()										
 											
 					->endUse()
 					->filterByAccNo($ReportList->accNo)	
