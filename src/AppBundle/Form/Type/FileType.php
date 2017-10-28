@@ -40,7 +40,8 @@ class FileType extends AbstractType
             ->add('secondName', 'text', array('label' => 'Drugie Imię','required' => false))
             ->add('lastName', 'text', array('label' => 'Nazwisko','required' => false))
             ->add('birth_date', 'date', array('label' => 'Data ur.','required' => false, 'widget' => 'single_text'))
-            
+            ->add('birth_place', 'text', array('label' => 'Miejsce ur.','required' => false))
+				
             ->add('PESEL', 'text', array('label' => 'PESEL','required' => false))
 			->add('IDType', 'choice', array(
 				'label' => 'Typ dok. tożsam.', 'required' => false, 'choices' => array(             
