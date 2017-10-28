@@ -266,23 +266,24 @@ class ContractController extends Controller
 					//$f = SettingsController::flat_prefix($File->getFlat());					
 					//$contractor_address1 = $st.$File->getStreet().' '.$File->getHouse().$f.$File->getFlat();
 					//$contractor_address2 = $File->getCode().' '.$File->getCity().', '.$File->getCountry();
-					
+										
+					$contractor_ID = ($File->getPesel() == NULL )?'______________':$File->getPesel(); 					
+					$contractor_birth_date = ($File->getBirthDate() == NULL )?'______________':date_format($File->getBirthDate(), 'd-m-Y');
+					$contractor_birth_place = ($File->getBirthPlace() == NULL )?'______________':$File->getBirthPlace();
 					$contractor_address1 = $File->getAddress1();
 					$contractor_address2 = $File->getAddress2();
-					
-					
-					$contractor_birth_date = ($File->getBirthDate() == NULL )?'':date_format($File->getBirthDate(), 'd-m-Y');
+					$contractor_email = ($File->getEmail() == NULL )?'______________':$File->getEmail();
+					$contractor_phone = ($File->getPhone() == NULL )?'______________':$File->getPhone();
 					$contractor_US = ($File->getSubFile() == NULL )?'___________________________':$File->getSubFile()->getName(); 
 					$contractor_country = $File->getCountry(); 
-					
-					$contractor_ID = '';
-					if(strlen($File->getPesel()) > 0) {
-						$contractor_ID = 'PESEL: '. $File->getPesel(); }
-					
-					$c = str_replace('__contractor_address1__',$contractor_address1, $c);
-					$c = str_replace('__contractor_address2__',$contractor_address2, $c);
+										
 					$c = str_replace('__contractor_ID__',$contractor_ID, $c);
 					$c = str_replace('__contractor_birth_date__',$contractor_birth_date, $c);
+					$c = str_replace('__contractor_birth_place__',$contractor_birth_place, $c);
+					$c = str_replace('__contractor_address1__',$contractor_address1, $c);
+					$c = str_replace('__contractor_address2__',$contractor_address2, $c);					
+					$c = str_replace('__contractor_phone__',$contractor_phone, $c);
+					$c = str_replace('__contractor_email__',$contractor_email, $c);
 					$c = str_replace('__contractor_US__',$contractor_US, $c);
 					$c = str_replace('__contractor_country__',$contractor_country, $c);
 					
