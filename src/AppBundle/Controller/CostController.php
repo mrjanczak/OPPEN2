@@ -188,13 +188,13 @@ class CostController extends Controller
                     if($Doc instanceOf Doc) {
                         $CostDoc = new CostDoc();
                         
-                        $maxValue = BookkEntryQuery::create()
+                        $maxValue = 0; /*BookkEntryQuery::create()
                                         ->select('value')
                                         ->useBookkQuery()
                                             ->filterByDoc($Doc)
                                         ->endUse()
                                         ->orderByValue('desc')
-                                        ->findOne();
+                                        ->findOne(); */
                                         
                         $CostDoc->setValue($maxValue);
                         $CostDoc->setDoc($Doc);
