@@ -679,13 +679,13 @@ class ProjectController extends Controller
 									}
 								}										
 								
-								$IF = FileQuery::create()
+								$IF = null; /*FileQuery::create()
 									->select('Id')
 									->useIncomeQuery()
 										->filterByProject($Project)
 										->orderByRank()
 									->endUse()
-									->findOne(); 
+									->findOne(); */
 								
 								if(array_key_exists($IF,$B['IF'])) {
 									$FirstIF = $B['IF'][$IF]; }
