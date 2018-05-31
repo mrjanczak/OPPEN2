@@ -21,6 +21,7 @@ class Doc extends BaseDoc
     }	
     
 	public function setNewDocIdx() {
+		/*
 		$Month = $this->getMonth();
 		$Year = $Month->getYear();
 		$DocCat = $this->getDocCat();
@@ -44,7 +45,7 @@ class Doc extends BaseDoc
 			->filterByDocIdx(null, Criteria::NOT_EQUAL) 
 			->orderByDocIdx('desc')
 			->findOne();
-		
+		*/
 		if($DocIdx === null) {
 			$DocIdx = 1;
 		} else { 
