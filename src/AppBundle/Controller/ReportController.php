@@ -632,6 +632,7 @@ class ReportController extends Controller
 				->groupByPESEL()
 				->useFileCatQuery()
 					->filterByAsContractor(1)
+					->filterByYear($Year)
 				->endUse()
 				->orderByName()
 				->find();				
