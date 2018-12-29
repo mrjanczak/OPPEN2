@@ -629,7 +629,7 @@ class ReportController extends Controller
 		// Find all unique PESELS
 		$FileIDs = FileQuery::create()
 				->select('PESEL')
-				->groupByPESEL()
+				//->groupByPESEL()
 				->useFileCatQuery()
 					->filterByAsContractor(1)
 					->filterByYear($Year)
