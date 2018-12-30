@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use \PropelObjectCollection;
+use \PropelObjectFormatter;
 use Symfony\Component\Process\ProcessBuilder;
 use Swift_Attachment;
 use \Exception;
@@ -627,17 +628,29 @@ class ReportController extends Controller
 		$ReportShortname = $Report->getShortname();
 		
 		// Find all unique PESELS
-		$FileIDs = FileQuery::create()
-				->select('PESEL')
+		
+		$Files = FileQuery::create()
+				//->select('PESEL')
 				//->groupByPESEL()
+				->setFormatter(ModelCriteria::FORMAT_ON_DEMAND)
 				->useFileCatQuery()
 					->filterByAsContractor(1)
 					->filterByYear($Year)
 				->endUse()
 				->orderByName()
-				->find();				
-			
-		foreach($FileIDs as $FileID) {			
+				->find();
+		/*
+		$con = Propel::getConnection(FilePeer::DATABASE_NAME);
+		$sql = "SELECT * FROM file as F INNER JOIN file_cat as FC ON (F.file_cat_id = FC.id) "
+			."where FC.year_id = :year_id and FC.as_contractor = 1";
+		$stmt = $con->prepare($sql);
+		$stmt->execute(array(':year_id' => $Year.id));
+		$formatter = new PropelObjectFormatter();
+		$formatter->setClass('File');
+		$Files = $formatter->format($stmt);
+		*/
+					
+		foreach($Files as $File) {			
 			$gross = 0;
 			$netto = 0;
 			$income_cost = 0;
@@ -648,7 +661,7 @@ class ReportController extends Controller
 			$Contracts = ContractQuery::create()
 				->filterByTax(array('min'=> 0.01))
 				->useFileQuery()
-					->filterByPESEL($FileID)
+					->filterByPESEL($File->getPESEL())
 				->endUse()
 				->useDocQuery()
 					->orderByDocumentDate()
@@ -686,7 +699,7 @@ class ReportController extends Controller
 									'tax' => $Contract->getTax());				
 			}
 			
-			$File = $Contract->getFile(); // from last Contract
+			//$File = $Contract->getFile(); // from last Contract
 
 			$US_name = ''; 
 			$US_accNo = ''; 
