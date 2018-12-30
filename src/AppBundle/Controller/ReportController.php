@@ -740,6 +740,9 @@ class ReportController extends Controller
 						  
 				'birth_date' => $birth_date,
 				'PESEL' => $File->getPESEL(),
+				'ID_no' => $File->getIDNo(),
+				'ID_type' => $File->getIDType(),
+				'ID_country' => $File->getIDCountry(),
 				
 				'gross' => $gross, 
 				'netto' => $netto, 
