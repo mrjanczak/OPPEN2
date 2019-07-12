@@ -112,7 +112,7 @@
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="name" type="varchar" primaryString="true" size="100" />
         <column name="symbol" type="varchar" size="10" />   
-        <column name="doc_no_tmp" type="varchar" size="20" />   
+        <column name="doc_no_tmp" type="varchar" size="32" />   
         
         <column name="as_income" type="boolean" defaultValue="false" />
         <column name="as_cost" type="boolean" defaultValue="false" />
