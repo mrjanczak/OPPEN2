@@ -54,7 +54,7 @@ class Doc extends BaseDoc
 		return $this->setDocIdx($DocIdx);
 	}
 
-	public function setNewDocNo($PROJ = '001') {
+	public function setNewDocNo($PROJ = '001',$COST = '01') {
 		$DocIdx = $this->getDocIdx(); 
 		$Month = $this->getMonth();
 		$Year = $Month->getYear();			
@@ -69,13 +69,17 @@ class Doc extends BaseDoc
 		$DCsymbol = $DocCat->getSymbol();
 		$M = $Month->getName();
 		$Y = $Year->getName();
-		$NAME = substr($File->getFirstName(),0,3).substr($File->getLastName(),0,3);
+		
+		$FirstName = strtr($File->getFirstName(), 'ĘÓĄŚŁŻŹĆŃęóąśłżźćń', 'EOASLZZCNeoaslzzcn');
+		$LastName = strtr($File->getLastName(), 'ĘÓĄŚŁŻŹĆŃęóąśłżźćń', 'EOASLZZCNeoaslzzcn');
+		$NAME = substr($FirstName,0,3).substr($LastName,0,3);
 			
 		$tmp = str_replace('#S',   $DCsymbol,   $tmp);
 		$tmp = str_replace('#i',   $DocIdx, $tmp);
 		$tmp = str_replace('#M',   $M,     $tmp);
 		$tmp = str_replace('#Y',   $Y,     $tmp);
 		$tmp = str_replace('#PROJ',$PROJ,  $tmp);
+		$tmp = str_replace('#COST',$COST,  $tmp);
 		$tmp = str_replace('#NAME',$NAME,  $tmp);
 		
 		return $this->setDocNo($tmp);
