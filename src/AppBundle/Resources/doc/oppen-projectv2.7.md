@@ -253,9 +253,11 @@ Kategorię Dokumentu można przypisać do następujących grup:
  - Umowa – nowo tworzone umowy (dokumenty) będą należały do pierwszej kategorii z tej grupy
 
 Dla każdej kategorii można zdefiniować indywidualny szablon numeracji używając następujących typów i pól.
+
 TYPY:
  - byYear|
  - byMonth|
+ 
  POLA:
  - #i - indeks wg typu
  - #PROJ - numer projektu
