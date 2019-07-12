@@ -79,7 +79,7 @@ class Doc extends BaseDoc
 		$tmp = str_replace('#M',   $M,     $tmp);
 		$tmp = str_replace('#Y',   $Y,     $tmp);
 		$tmp = str_replace('#PROJ',$PROJ,  $tmp);
-		$tmp = str_replace('#COST',$COST_SR,  $tmp);
+		$tmp = str_replace('#C',   $COST_SR,  $tmp);
 		$tmp = str_replace('#NAME',$NAME,  $tmp);
 		
 		return $this->setDocNo($tmp);
