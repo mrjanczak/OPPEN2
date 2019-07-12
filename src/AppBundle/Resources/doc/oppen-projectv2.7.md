@@ -252,6 +252,18 @@ Kategorię Dokumentu można przypisać do następujących grup:
  - Koszty – dokumenty z kategorii należącej do tej grupy mogą być przypisywane do kategorii kosztów projektu
  - Umowa – nowo tworzone umowy (dokumenty) będą należały do pierwszej kategorii z tej grupy
 
+Dla każdej kategorii można zdefiniować indywidualny szablon numeracji używając następujących typów i pól.
+TYPY:
+ - byYear|
+ - byMonth|
+ POLA:
+ - #i - indeks wg typu
+ - #PROJ - numer projektu
+ - #COST - numer kosztu
+ - #Y - rok
+ - #M - miesiąc
+ - #NAME - skrótowa nazwa kartoteki przypisanej do dokumentu (3 pierwsze litery)
+
 ### 6.4 Raporty
 
 Zakładka Ustawienia > Raporty pozwala utworzyć lub skonfigurować istniejące raporty. W celu edycji raportu należy kliknąć jego nazwę. Formularz raportu zawiera:
@@ -435,21 +447,29 @@ Definicja zapisów księgowych zawiera następujące pola:
 
 Dostępne parametry aplikacji:
  - organization_name - Nazwa organizacji
+ - organization_NIP - NIP organizacji
  - organization_KRS - KRS organizacji
  - organization_REGON - REGON organizacji
- - organization_NIP - NIP organizacji
+ - organization_create_date - Data utworzenia organizacji
+ - organization_TO - Urząd Skarbowy organizacji		
+ - TO_PDOF_bank_acc - Rachunek bankowy US - PDOF		
+
  - organization_address1 - Adres (ulica, bud., lok.) organizacji
  - organization_address2 - Adres (kod pocztowy, miejscowość) organizacji
  - organization_bank_account - Rachunek bankowy organizacji
  - organization_bank - Nazwa Banku organizacji
  - organization_email - E-mail organizacji
  - organization_phone - Telefon do organizacji
- - organization_create_date - Data utworzenia organizacji
+ 
  - organization_board1 - Prezes organizacji
  - organization_board2 - Z-ca Prezesa organizacji
  - organization_board3 - Członek Zarządu organizacji
  - default_approver_first_name - Domyślna osoba podpisująca raport - imię
  - default_approver_last_name - Domyślna osoba podpisująca raport - nazwisko
+ 
+ - default_reg_no_tmp - Domyślna ewidencja dokumentu w DK (patrz 6.3)		
+ - default_doc_no_tmp - Domyślna numeracja dokumentu (patrz 6.3)		
+ - default_contract_no_tmp - Domyślna numeracja umowy (patrz 6.3)	
  - default_tax_coef - Domyślny podatek PDOF [%]
  - default_cost_coef - Domyślne koszty uzyskania przychodu [%]
  - dec_point - Domyślny separator dziesiętny
@@ -457,5 +477,3 @@ Dostępne parametry aplikacji:
  - default_path - Domyślna ścieżka do plików .pdf
  - default_sufix - Domyślny sufix tworzonych lików .pdf
  - default_font - Domyślny font
- - organization_tax_office - Urząd Skarbowy organizacji
-
