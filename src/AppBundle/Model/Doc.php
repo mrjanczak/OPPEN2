@@ -20,7 +20,7 @@ class Doc extends BaseDoc
         $this->Bookks = new PropelObjectCollection();
     }	
     
-	public function setNewDocIdx() {
+	public function setNewDocIdx($DocIdx = 1) {
 		/*
 		$Month = $this->getMonth();
 		$Year = $Month->getYear();
