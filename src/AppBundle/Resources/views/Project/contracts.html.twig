@@ -49,7 +49,7 @@
 			<a href={{ path('oppen_contract_delete', { 'contract_id' : Contract.id}) }}> (x) </a> 	</td>		
 		</td> 
 	</tr>
-	{% set sumGross = sumGross + ContractF.gross.vars.value %}
+	{% set sumGross = sumGross + ContractF.gross.vars.value|number_format(2) %}
 	{% endfor %}
 	
 	<tr class="even"><td colspan="100%"><div class="s"></div></td></tr>
