@@ -20,7 +20,7 @@
 		{% set IDsum = IDsum + IncomeDocF.value.vars.value %}
 	{% endfor %}
 	
-	{% set Ival = IncomeF.value.vars.value %}		
+	{% set Ival = IncomeF.value.vars.value + 0.0 %}		
 	{% if Ival > 0 %} {% set ratio = IDsum/Ival*100 %}
 	{% else %}  {% set ratio = 0 %} 
 	{% endif %}	
