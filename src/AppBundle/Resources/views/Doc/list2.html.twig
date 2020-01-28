@@ -53,17 +53,21 @@
 	{% endif %}
 		</td>
 			
-		<td colspan="3"> 
+		<td > 
 			<a href={{ path('oppen_doc', { 'doc_id' : Doc.id, 'month_id'   : Doc.Month.id, 
 					'doc_cat_id' : Doc.DocCat.id, 'return' : return, 'id1' : id1, 'id2' : id2}) }}>
 				{{ Doc.DocNo }} </a> 
 				{{ Doc.desc }}
+		</td>
+		<td >		
 				{% if Doc.DocCat.AsCost == 1 %}
 					 <b> {{ (Doc.bookkingDate is not empty ? Doc.bookkingDate|date("Y/m/d") : '<span class="red">Brak daty ksieg.')|raw }}  </span></b> 
+				{% endif %}
+		</td>
+		<td >				
+				{% if Doc.DocCat.AsCost == 1 %}
 					 <b> {{ (Doc.paymentDate is not empty ? Doc.paymentDate|date("Y/m/d") : '<span class="red">Brak daty płat.')|raw }}  </span></b> / 
 				{% endif %}
-				 
-				
 		</td>
 	</tr>
 	{% if not DocList.as_doc_select and DocList.as_bookk_accept %} 
