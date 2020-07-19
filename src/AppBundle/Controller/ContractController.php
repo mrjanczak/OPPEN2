@@ -245,12 +245,14 @@ class ContractController extends Controller
 					$c = str_replace('__contract_no__',$Contract->getContractNo(), $c);
 					$c = str_replace('__contract_date__',$Contract->getContractDate()->format('d-m-Y'), $c); 
 					$c = str_replace('__contract_place__',$Contract->getContractPlace(), $c);
+					$c = str_replace('__contract_comment__',$Contract->getComment(), $c);
 					
 					$c = str_replace('__organization_name__',$Params['organization_name'], $c);
 					$c = str_replace('__organization_address1__',$Params['organization_address1'], $c);
 					$c = str_replace('__organization_address2__',$Params['organization_address2'], $c);
 					$c = str_replace('__organization_KRS__',$Params['organization_KRS'], $c);
 					$c = str_replace('__organization_REGON__',$Params['organization_REGON'], $c);	
+					
 												
 					$c = str_replace('__comment__',$comment, $c);								
 					//$c = str_replace('__instalments__',$instalments, $c);								
