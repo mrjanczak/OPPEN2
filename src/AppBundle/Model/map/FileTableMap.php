@@ -72,6 +72,7 @@ class FileTableMap extends TableMap
         $this->addColumn('province', 'Province', 'VARCHAR', false, 50, null);
         $this->addColumn('country', 'Country', 'VARCHAR', false, 50, null);
         $this->addColumn('post_office', 'PostOffice', 'VARCHAR', false, 50, null);
+        $this->addColumn('bank_tax_account', 'BankTaxAccount', 'VARCHAR', false, 100, null);
         $this->addColumn('bank_account', 'BankAccount', 'VARCHAR', false, 100, null);
         $this->addColumn('bank_IBAN', 'BankIban', 'VARCHAR', false, 100, null);
         $this->addColumn('bank_SWIFT', 'BankSwift', 'VARCHAR', false, 100, null);
