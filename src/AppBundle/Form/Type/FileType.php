@@ -88,7 +88,7 @@ class FileType extends AbstractType
 			->add('country', 'country', array('label' => 'Kraj', 'required' => false, )) 
 
             ->add('postOffice', 'text', array('label' => 'Poczta','required' => false))
-		->add('bankTaxAccount', 'text', array('label' => 'Mikrorachunek podatkowy','required' => false, 'attr' => array('size' => 30)) )
+		//->add('bankTaxAccount', 'text', array('label' => 'Mikrorachunek podatkowy','required' => false, 'attr' => array('size' => 30)) )
 		->add('bankAccount', 'text', array('label' => 'Krajowe Konto bankowe','required' => false, 'attr' => array('size' => 30)) )
 
 		->add('bankIBAN', 'text', array('label' => 'IBAN','required' => false, 'attr' => array('size' => 30)) )
