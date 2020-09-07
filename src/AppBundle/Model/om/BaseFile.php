@@ -229,6 +229,12 @@ abstract class BaseFile extends BaseObject implements Persistent
     protected $post_office;
 
     /**
+     * The value for the bank_tax_account field.
+     * @var        string
+     */
+    protected $bank_tax_account;    
+    
+    /**
      * The value for the bank_account field.
      * @var        string
      */
@@ -750,6 +756,17 @@ abstract class BaseFile extends BaseObject implements Persistent
         return $this->post_office;
     }
 
+    /**
+     * Get the [bank_tax_account] column value.
+     *
+     * @return string
+     */
+    public function getBankTaxAccount()
+    {
+
+        return $this->bank_tax_account;
+    }    
+    
     /**
      * Get the [bank_account] column value.
      *
@@ -1435,6 +1452,23 @@ abstract class BaseFile extends BaseObject implements Persistent
         return $this;
     } // setPostOffice()
 
+    /**
+     * Set the value of [bank_tax_account] column.
+     *
+     * @param  string $v new value
+     * @return File The current object (for fluent API support)
+     */
+    public function setBankTaxAccount($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->bank_tax_account !== $v) {
+            $this->bank_tax_account = $v;
+            $this->modifiedColumns[] = FilePeer::BANK_TAX_ACCOUNT;
+        }    
+    
     /**
      * Set the value of [bank_account] column.
      *
