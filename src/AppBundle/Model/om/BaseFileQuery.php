@@ -53,6 +53,7 @@ use AppBundle\Model\Project;
  * @method FileQuery orderByProvince($order = Criteria::ASC) Order by the province column
  * @method FileQuery orderByCountry($order = Criteria::ASC) Order by the country column
  * @method FileQuery orderByPostOffice($order = Criteria::ASC) Order by the post_office column
+ * @method FileQuery orderByBankTaxAccount($order = Criteria::ASC) Order by the bank_tax_account column
  * @method FileQuery orderByBankAccount($order = Criteria::ASC) Order by the bank_account column
  * @method FileQuery orderByBankIban($order = Criteria::ASC) Order by the bank_IBAN column
  * @method FileQuery orderByBankSwift($order = Criteria::ASC) Order by the bank_SWIFT column
@@ -89,6 +90,7 @@ use AppBundle\Model\Project;
  * @method FileQuery groupByProvince() Group by the province column
  * @method FileQuery groupByCountry() Group by the country column
  * @method FileQuery groupByPostOffice() Group by the post_office column
+ * @method FileQuery groupByBankTaxAccount() Group by the bank_tax_account column
  * @method FileQuery groupByBankAccount() Group by the bank_account column
  * @method FileQuery groupByBankIban() Group by the bank_IBAN column
  * @method FileQuery groupByBankSwift() Group by the bank_SWIFT column
@@ -175,6 +177,7 @@ use AppBundle\Model\Project;
  * @method File findOneByProvince(string $province) Return the first File filtered by the province column
  * @method File findOneByCountry(string $country) Return the first File filtered by the country column
  * @method File findOneByPostOffice(string $post_office) Return the first File filtered by the post_office column
+ * @method File findOneByBankTaxAccount(string $bank_tax_account) Return the first File filtered by the bank_account column
  * @method File findOneByBankAccount(string $bank_account) Return the first File filtered by the bank_account column
  * @method File findOneByBankIban(string $bank_IBAN) Return the first File filtered by the bank_IBAN column
  * @method File findOneByBankSwift(string $bank_SWIFT) Return the first File filtered by the bank_SWIFT column
@@ -211,6 +214,7 @@ use AppBundle\Model\Project;
  * @method array findByProvince(string $province) Return File objects filtered by the province column
  * @method array findByCountry(string $country) Return File objects filtered by the country column
  * @method array findByPostOffice(string $post_office) Return File objects filtered by the post_office column
+ * @method array findByBankTaxAccount(string $bank_tax_account) Return File objects filtered by the bank_tax_account column
  * @method array findByBankAccount(string $bank_account) Return File objects filtered by the bank_account column
  * @method array findByBankIban(string $bank_IBAN) Return File objects filtered by the bank_IBAN column
  * @method array findByBankSwift(string $bank_SWIFT) Return File objects filtered by the bank_SWIFT column
@@ -322,7 +326,7 @@ abstract class BaseFileQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `name`, `acc_no`, `file_cat_id`, `sub_file_id`, `first_name`, `second_name`, `last_name`, `maiden_name`, `father_name`, `mother_name`, `birth_date`, `birth_place`, `PESEL`, `ID_type`, `ID_no`, `ID_country`, `NIP`, `profession`, `street`, `house`, `flat`, `code`, `city`, `district2`, `district`, `province`, `country`, `post_office`, `bank_account`, `bank_IBAN`, `bank_SWIFT`, `bank_name`, `phone`, `email` FROM `file` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `name`, `acc_no`, `file_cat_id`, `sub_file_id`, `first_name`, `second_name`, `last_name`, `maiden_name`, `father_name`, `mother_name`, `birth_date`, `birth_place`, `PESEL`, `ID_type`, `ID_no`, `ID_country`, `NIP`, `profession`, `street`, `house`, `flat`, `code`, `city`, `district2`, `district`, `province`, `country`, `post_office`, `bank_tax_account`, `bank_account`, `bank_IBAN`, `bank_SWIFT`, `bank_name`, `phone`, `email` FROM `file` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -1322,6 +1326,35 @@ abstract class BaseFileQuery extends ModelCriteria
         return $this->addUsingAlias(FilePeer::POST_OFFICE, $postOffice, $comparison);
     }
 
+        /**
+     * Filter the query on the bank_tax_account column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByBankTaxAccount('fooValue');   // WHERE bank_tax_account = 'fooValue'
+     * $query->filterByBankTaxAccount('%fooValue%'); // WHERE bank_tax_account LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $bankTaxAccount The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return FileQuery The current query, for fluid interface
+     */
+    public function filterByBankTaxAccount($bankAccount = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($bankTaxAccount)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $bankTaxAccount)) {
+                $bankTaxAccount = str_replace('*', '%', $bankTaxAccount);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(FilePeer::BANK_TAX_ACCOUNT, $bankTaxAccount, $comparison);
+    }
+    
     /**
      * Filter the query on the bank_account column
      *
