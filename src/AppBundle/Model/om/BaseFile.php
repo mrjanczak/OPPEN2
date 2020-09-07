@@ -1468,6 +1468,8 @@ abstract class BaseFile extends BaseObject implements Persistent
             $this->bank_tax_account = $v;
             $this->modifiedColumns[] = FilePeer::BANK_TAX_ACCOUNT;
         }    
+        return $this;
+    } // setBankTaxAccount()
     
     /**
      * Set the value of [bank_account] column.
