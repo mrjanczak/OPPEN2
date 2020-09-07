@@ -1658,12 +1658,13 @@ abstract class BaseFile extends BaseObject implements Persistent
             $this->province = ($row[$startcol + 26] !== null) ? (string) $row[$startcol + 26] : null;
             $this->country = ($row[$startcol + 27] !== null) ? (string) $row[$startcol + 27] : null;
             $this->post_office = ($row[$startcol + 28] !== null) ? (string) $row[$startcol + 28] : null;
-            $this->bank_account = ($row[$startcol + 29] !== null) ? (string) $row[$startcol + 29] : null;
-            $this->bank_iban = ($row[$startcol + 30] !== null) ? (string) $row[$startcol + 30] : null;
-            $this->bank_swift = ($row[$startcol + 31] !== null) ? (string) $row[$startcol + 31] : null;
-            $this->bank_name = ($row[$startcol + 32] !== null) ? (string) $row[$startcol + 32] : null;
-            $this->phone = ($row[$startcol + 33] !== null) ? (string) $row[$startcol + 33] : null;
-            $this->email = ($row[$startcol + 34] !== null) ? (string) $row[$startcol + 34] : null;
+            $this->bank_tax_account = ($row[$startcol + 29] !== null) ? (string) $row[$startcol + 29] : null;
+            $this->bank_account = ($row[$startcol + 30] !== null) ? (string) $row[$startcol + 30] : null;
+            $this->bank_iban = ($row[$startcol + 31] !== null) ? (string) $row[$startcol + 31] : null;
+            $this->bank_swift = ($row[$startcol + 32] !== null) ? (string) $row[$startcol + 32] : null;
+            $this->bank_name = ($row[$startcol + 33] !== null) ? (string) $row[$startcol + 33] : null;
+            $this->phone = ($row[$startcol + 34] !== null) ? (string) $row[$startcol + 34] : null;
+            $this->email = ($row[$startcol + 35] !== null) ? (string) $row[$startcol + 35] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -1673,7 +1674,7 @@ abstract class BaseFile extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 35; // 35 = FilePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 36; // 36 = FilePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating File object", $e);
@@ -2295,6 +2296,9 @@ abstract class BaseFile extends BaseObject implements Persistent
                     case '`post_office`':
                         $stmt->bindValue($identifier, $this->post_office, PDO::PARAM_STR);
                         break;
+                    case '`bank_tax_account`':
+                        $stmt->bindValue($identifier, $this->bank_tax_account, PDO::PARAM_STR);
+                        break;                        
                     case '`bank_account`':
                         $stmt->bindValue($identifier, $this->bank_account, PDO::PARAM_STR);
                         break;
@@ -2625,21 +2629,24 @@ abstract class BaseFile extends BaseObject implements Persistent
                 return $this->getPostOffice();
                 break;
             case 29:
+                return $this->getBankTaxAccount();
+                break;                
+            case 30:
                 return $this->getBankAccount();
                 break;
-            case 30:
+            case 31:
                 return $this->getBankIban();
                 break;
-            case 31:
+            case 32:
                 return $this->getBankSwift();
                 break;
-            case 32:
+            case 33:
                 return $this->getBankName();
                 break;
-            case 33:
+            case 34:
                 return $this->getPhone();
                 break;
-            case 34:
+            case 35:
                 return $this->getEmail();
                 break;
             default:
@@ -2700,12 +2707,13 @@ abstract class BaseFile extends BaseObject implements Persistent
             $keys[26] => $this->getProvince(),
             $keys[27] => $this->getCountry(),
             $keys[28] => $this->getPostOffice(),
-            $keys[29] => $this->getBankAccount(),
-            $keys[30] => $this->getBankIban(),
-            $keys[31] => $this->getBankSwift(),
-            $keys[32] => $this->getBankName(),
-            $keys[33] => $this->getPhone(),
-            $keys[34] => $this->getEmail(),
+            $keys[29] => $this->getBankTaxAccount(),
+            $keys[30] => $this->getBankAccount(),
+            $keys[31] => $this->getBankIban(),
+            $keys[32] => $this->getBankSwift(),
+            $keys[33] => $this->getBankName(),
+            $keys[34] => $this->getPhone(),
+            $keys[35] => $this->getEmail(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -2868,21 +2876,24 @@ abstract class BaseFile extends BaseObject implements Persistent
                 $this->setPostOffice($value);
                 break;
             case 29:
+                $this->setBankTaxAccount($value);
+                break;                
+            case 30:
                 $this->setBankAccount($value);
                 break;
-            case 30:
+            case 31:
                 $this->setBankIban($value);
                 break;
-            case 31:
+            case 32:
                 $this->setBankSwift($value);
                 break;
-            case 32:
+            case 33:
                 $this->setBankName($value);
                 break;
-            case 33:
+            case 34:
                 $this->setPhone($value);
                 break;
-            case 34:
+            case 35:
                 $this->setEmail($value);
                 break;
         } // switch()
@@ -2938,12 +2949,13 @@ abstract class BaseFile extends BaseObject implements Persistent
         if (array_key_exists($keys[26], $arr)) $this->setProvince($arr[$keys[26]]);
         if (array_key_exists($keys[27], $arr)) $this->setCountry($arr[$keys[27]]);
         if (array_key_exists($keys[28], $arr)) $this->setPostOffice($arr[$keys[28]]);
-        if (array_key_exists($keys[29], $arr)) $this->setBankAccount($arr[$keys[29]]);
-        if (array_key_exists($keys[30], $arr)) $this->setBankIban($arr[$keys[30]]);
-        if (array_key_exists($keys[31], $arr)) $this->setBankSwift($arr[$keys[31]]);
-        if (array_key_exists($keys[32], $arr)) $this->setBankName($arr[$keys[32]]);
-        if (array_key_exists($keys[33], $arr)) $this->setPhone($arr[$keys[33]]);
-        if (array_key_exists($keys[34], $arr)) $this->setEmail($arr[$keys[34]]);
+        if (array_key_exists($keys[29], $arr)) $this->setBankTaxAccount($arr[$keys[29]]);
+        if (array_key_exists($keys[29], $arr)) $this->setBankAccount($arr[$keys[30]]);
+        if (array_key_exists($keys[30], $arr)) $this->setBankIban($arr[$keys[31]]);
+        if (array_key_exists($keys[31], $arr)) $this->setBankSwift($arr[$keys[32]]);
+        if (array_key_exists($keys[32], $arr)) $this->setBankName($arr[$keys[33]]);
+        if (array_key_exists($keys[33], $arr)) $this->setPhone($arr[$keys[34]]);
+        if (array_key_exists($keys[34], $arr)) $this->setEmail($arr[$keys[35]]);
     }
 
     /**
@@ -2984,6 +2996,7 @@ abstract class BaseFile extends BaseObject implements Persistent
         if ($this->isColumnModified(FilePeer::PROVINCE)) $criteria->add(FilePeer::PROVINCE, $this->province);
         if ($this->isColumnModified(FilePeer::COUNTRY)) $criteria->add(FilePeer::COUNTRY, $this->country);
         if ($this->isColumnModified(FilePeer::POST_OFFICE)) $criteria->add(FilePeer::POST_OFFICE, $this->post_office);
+        if ($this->isColumnModified(FilePeer::BANK_TAX_ACCOUNT)) $criteria->add(FilePeer::BANK_TAX_ACCOUNT, $this->bank_tax_account);
         if ($this->isColumnModified(FilePeer::BANK_ACCOUNT)) $criteria->add(FilePeer::BANK_ACCOUNT, $this->bank_account);
         if ($this->isColumnModified(FilePeer::BANK_IBAN)) $criteria->add(FilePeer::BANK_IBAN, $this->bank_iban);
         if ($this->isColumnModified(FilePeer::BANK_SWIFT)) $criteria->add(FilePeer::BANK_SWIFT, $this->bank_swift);
@@ -3081,6 +3094,7 @@ abstract class BaseFile extends BaseObject implements Persistent
         $copyObj->setProvince($this->getProvince());
         $copyObj->setCountry($this->getCountry());
         $copyObj->setPostOffice($this->getPostOffice());
+        $copyObj->setBankTaxAccount($this->getBankTaxAccount());
         $copyObj->setBankAccount($this->getBankAccount());
         $copyObj->setBankIban($this->getBankIban());
         $copyObj->setBankSwift($this->getBankSwift());
@@ -6027,6 +6041,7 @@ abstract class BaseFile extends BaseObject implements Persistent
         $this->province = null;
         $this->country = null;
         $this->post_office = null;
+        $this->bank_tax_account = null;
         $this->bank_account = null;
         $this->bank_iban = null;
         $this->bank_swift = null;
