@@ -33,7 +33,7 @@ Install all vendors with Composer
 Update parameters.yml file
 
 ```yaml
-# app/config/parameters.yml 
+# app/config/parameters.yml
 
 parameters:
     database_driver: pdo_pgsql
