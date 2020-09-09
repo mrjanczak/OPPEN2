@@ -44,9 +44,6 @@ class File extends BaseFile
 	}
 	
 	
-	# Global flag by request
-	$__disable_iiban_gmp_extension=false;
-
 	public function iban_checksum_string_replace($s) {
 	 $iban_replace_chars = range('A','Z');
 	 foreach (range(10,35) as $tempvalue) { $iban_replace_values[]=strval($tempvalue); }
@@ -101,7 +98,8 @@ class File extends BaseFile
 	}
 
 	public function iban_mod97_10($numeric_representation) {
-	 global $__disable_iiban_gmp_extension;
+	 # Global flag by request
+	 $__disable_iiban_gmp_extension=false;
 	 # prefer php5 gmp extension if available
 	 if(!($__disable_iiban_gmp_extension) && function_exists('gmp_intval') && $numeric_representation!='') { return gmp_intval(gmp_mod(gmp_init($numeric_representation, 10),'97')) === 1; }
 
