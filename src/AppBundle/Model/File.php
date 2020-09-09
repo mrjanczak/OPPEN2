@@ -118,7 +118,7 @@ class File extends BaseFile
 
 	public function getTaxAccount() {
 	  $IBAN = 'PL00101000712221' . $this->getPESEL() . '0';
-	  return iban_to_human_format(iban_set_checksum($IBAN));
+	  return $this->iban_to_human_format($this->iban_set_checksum($IBAN));
 	}	
 	
 	
