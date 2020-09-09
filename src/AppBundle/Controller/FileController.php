@@ -155,8 +155,8 @@ class FileController extends Controller
 			$File = FileQuery::create()->findPk($file_id); 
 			$buttons[] = 'delete';	
 			
-			if(empty($File->getBankIBAN) && !empty($File->getPESEL) ) {
-				$File->setBankIBAN($this->Luhn($File->getPESEL));
+			if(empty($File->getBankIBAN()) && !empty($File->getPESEL()) ) {
+				$File->setBankIBAN($this->Luhn($File->getPESEL()));
 			}
 			
 		}
