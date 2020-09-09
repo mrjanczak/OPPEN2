@@ -61,16 +61,16 @@ class File extends BaseFile
 	}
 
 	public function iban_find_checksum($iban) {
-	 $iban = iban_to_machine_format($iban);
+	 $iban = $this->iban_to_machine_format($iban);
 	 # move first 4 chars to right
 	 $left = substr($iban,0,2) . '00'; # but set right-most 2 (checksum) to '00'
 	 $right = substr($iban,4);
 	 # glue back together
 	 $tmp = $right . $left;
 	 # convert letters using conversion table
-	 $tmp = iban_checksum_string_replace($tmp);
+	 $tmp = $this->iban_checksum_string_replace($tmp);
 	 # get mod97-10 output
-	 $checksum = iban_mod97_10_checksum($tmp);
+	 $checksum = $this->iban_mod97_10_checksum($tmp);
 	 # return 98 minus the mod97-10 output, left zero padded to two digits
 	 return str_pad((98-$checksum),2,'0',STR_PAD_LEFT);
 	}
@@ -93,8 +93,8 @@ class File extends BaseFile
 	}
 
 	public function iban_set_checksum($iban) {
-	 $iban = iban_to_machine_format($iban);
-	 return substr($iban,0,2) . iban_find_checksum($iban) . substr($iban,4);
+	 $iban = $this->iban_to_machine_format($iban);
+	 return substr($iban,0,2) . $this->iban_find_checksum($iban) . substr($iban,4);
 	}
 
 	public function iban_mod97_10($numeric_representation) {
