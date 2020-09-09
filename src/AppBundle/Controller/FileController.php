@@ -154,11 +154,6 @@ class FileController extends Controller
 		} else {	
 			$File = FileQuery::create()->findPk($file_id); 
 			$buttons[] = 'delete';	
-			
-			if(empty($File->getBankIBAN()) && !empty($File->getPESEL()) ) {
-				$File->setBankIBAN($this->Luhn($File->getPESEL()));
-			}
-			
 		}
 		
  		$form = $this->createForm(new FileType($FileCat->getSubFileCat(), true), $File);	
@@ -233,30 +228,4 @@ class FileController extends Controller
 		return new FileList($Year, $FileCat, $name,	$page, $as_file_select, $Files);
 	}	
 	
-	public function Luhn($number) {
-
-	    $stack = 0;
-	    $number = str_split(strrev($number));
-
-	    foreach ($number as $key => $value)
-	    {
-		if ($key % 2 == 0)
-		{
-		    $value = array_sum(str_split($value * 2));
-		}
-		$stack += $value;
-	    }
-	    $stack %= 10;
-
-	    if ($stack != 0)
-	    {
-		$stack -= 10;     $stack = abs($stack);
-	    }
-
-	    //$number = implode('', array_reverse($number));
-	    $number = 'PL' . $number . '10100071222' . strval($stack) . '0';
-	    return implode(' ', str_split($number, 4)); 
-	}	
-	
-
 }
