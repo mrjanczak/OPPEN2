@@ -23,7 +23,7 @@ class AppExtension extends \Twig_Extension
             ),
              new \Twig_SimpleFilter(
                 'pl2ascii',
-                array($this, 'pl2ascii'),
+                array($this, 'pl2asciiFiletr'),
             ),           
             
         );
@@ -34,7 +34,7 @@ class AppExtension extends \Twig_Extension
         return $this->parser->toHtml($content);
     }
     
-    public function pl2ascii($content)
+    public function pl2asciiFiletr($content)
     {
         $search  = array('ą','ć','ę','ł','ń','ó','ś','ż','ź','Ą','Ć','Ę','Ł','Ń','Ó','Ś','Ż','Ź',);
         $replace = array('a','c','e','l','n','o','s','z','z','A','C','E','L','N','O','S','Z','Z',);
