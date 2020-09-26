@@ -43,6 +43,6 @@ class AppExtension extends \Twig_Extension
 
     public function getName()
     {
-        return 'app.my_extension';
+        return 'twig_extension';
     }
 }
