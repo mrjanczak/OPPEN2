@@ -17,7 +17,7 @@ services:
     app.markdown:
         class: AppBundle\Utils\Markdown
 
-    app.my_extension:
+    app.twig_extension:
         class:     AppBundle\Twig\AppExtension
         arguments: ['@app.markdown']
         public:    false
