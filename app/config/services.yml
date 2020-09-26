@@ -19,7 +19,6 @@ services:
 
     app.twig_extension:
         class:     AppBundle\Twig\AppExtension
-        arguments: ['@app.markdown']
-        public:    false
+        public:    true
         tags:
             - { name: twig.extension }
