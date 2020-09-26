@@ -38,7 +38,6 @@ class AppExtension extends \Twig_Extension
     {
         $search  = array('ą','ć','ę','ł','ń','ó','ś','ż','ź','Ą','Ć','Ę','Ł','Ń','Ó','Ś','Ż','Ź',);
         $replace = array('a','c','e','l','n','o','s','z','z','A','C','E','L','N','O','S','Z','Z',);
-        $subject = 'A';
         return str_replace($search, $replace, $content);        
     }    
 
