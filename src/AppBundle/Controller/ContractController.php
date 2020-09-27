@@ -280,6 +280,7 @@ class ContractController extends Controller
 					$contractor_phone = ($File->getPhone() == NULL )?'______________':$File->getPhone();
 					$contractor_US = ($File->getSubFile() == NULL )?'___________________________':$File->getSubFile()->getName(); 
 					$contractor_country = $File->getCountry(); 
+					$contractor_bank_account = ($File->getBankAccount() == NULL )?'___________________________':$File->getSubFile()->getName(); 
 										
 					$c = str_replace('__contractor_ID__',$contractor_ID, $c);
 					$c = str_replace('__contractor_birth_date__',$contractor_birth_date, $c);
@@ -290,6 +291,8 @@ class ContractController extends Controller
 					$c = str_replace('__contractor_email__',$contractor_email, $c);
 					$c = str_replace('__contractor_US__',$contractor_US, $c);
 					$c = str_replace('__contractor_country__',$contractor_country, $c);
+					$c = str_replace('__bank_name__',$File->getBankName(), $c);
+					$c = str_replace('__bank_account__',$contractor_bank_account, $c);					
 					
 					$c = str_replace('__project_name__' ,$Project->getName(), $c);
 					$c = str_replace('__event_desc__' ,$Contract->getEventDesc(), $c);		
@@ -307,10 +310,7 @@ class ContractController extends Controller
 						$event_role = $File->getProfession();}
 					if($event_role!='') {
 						$event_role = ' jako '.$event_role ; }
-					$c = str_replace('__event_role__' ,$event_role, $c);						
-										
-					$c = str_replace('__bank_name__',$File->getBankName(), $c);
-					$c = str_replace('__bank_account__',$File->getBankAccount(), $c);
+					$c = str_replace('__event_role__' ,$event_role, $c);																
 
 					if($Contract->getTax() == 0) 
 					{
