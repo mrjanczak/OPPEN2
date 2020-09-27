@@ -280,7 +280,7 @@ class ContractController extends Controller
 					$contractor_phone = ($File->getPhone() == NULL )?'______________':$File->getPhone();
 					$contractor_US = ($File->getSubFile() == NULL )?'___________________________':$File->getSubFile()->getName(); 
 					$contractor_country = $File->getCountry(); 
-					$contractor_bank_account = ($File->getBankAccount() == NULL )?'___________________________':$File->getSubFile()->getName(); 
+					$contractor_bank_account = ($File->getBankAccount() == NULL )?'___________________________':$File->getBankAccount(); 
 										
 					$c = str_replace('__contractor_ID__',$contractor_ID, $c);
 					$c = str_replace('__contractor_birth_date__',$contractor_birth_date, $c);
