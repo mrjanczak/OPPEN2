@@ -271,15 +271,15 @@ class ContractController extends Controller
 					//$contractor_address1 = $st.$File->getStreet().' '.$File->getHouse().$f.$File->getFlat();
 					//$contractor_address2 = $File->getCode().' '.$File->getCity().', '.$File->getCountry();
 										
-					$contractor_ID = ($File->getPesel() == NULL )?'______________':$File->getPesel(); 					
-					$contractor_birth_date = ($File->getBirthDate() == NULL )?'______________':date_format($File->getBirthDate(), 'd-m-Y');
-					$contractor_birth_place = ($File->getBirthPlace() == NULL )?'______________':$File->getBirthPlace();
-					$contractor_address1 = $File->getAddress1();
-					$contractor_address2 = $File->getAddress2();
-					$contractor_email = ($File->getEmail() == NULL )?'______________':$File->getEmail();
-					$contractor_phone = ($File->getPhone() == NULL )?'______________':$File->getPhone();
-					$contractor_US = ($File->getSubFile() == NULL )?'___________________________':$File->getSubFile()->getName(); 
+					$contractor_ID = ($File->getPesel() == NULL )?                '______________':$File->getPesel(); 					
+					$contractor_birth_date = ($File->getBirthDate() == NULL )?    '______________':date_format($File->getBirthDate(), 'd-m-Y');
+					$contractor_birth_place = ($File->getBirthPlace() == NULL )?  '______________':$File->getBirthPlace();
+					$contractor_address1 = ($File->getStreet() == NULL )?         '___________________________':$File->getAddress1();
+					$contractor_address2 = ($File->getCity() == NULL )?           '___________________________':$File->getAddress2();
 					$contractor_country = $File->getCountry(); 
+					$contractor_email = ($File->getEmail() == NULL )?             '______________':$File->getEmail();
+					$contractor_phone = ($File->getPhone() == NULL )?             '______________':$File->getPhone();
+					$contractor_US = ($File->getSubFile() == NULL )?              '___________________________':$File->getSubFile()->getName(); 
 					$contractor_bank_account = ($File->getBankAccount() == NULL )?'___________________________':$File->getBankAccount(); 
 										
 					$c = str_replace('__contractor_ID__',$contractor_ID, $c);
@@ -287,10 +287,12 @@ class ContractController extends Controller
 					$c = str_replace('__contractor_birth_place__',$contractor_birth_place, $c);
 					$c = str_replace('__contractor_address1__',$contractor_address1, $c);
 					$c = str_replace('__contractor_address2__',$contractor_address2, $c);					
-					$c = str_replace('__contractor_phone__',$contractor_phone, $c);
-					$c = str_replace('__contractor_email__',$contractor_email, $c);
-					$c = str_replace('__contractor_US__',$contractor_US, $c);
 					$c = str_replace('__contractor_country__',$contractor_country, $c);
+					$c = str_replace('__contractor_email__',$contractor_email, $c);
+					$c = str_replace('__contractor_phone__',$contractor_phone, $c);
+					$c = str_replace('__contractor_US__',$contractor_US, $c);
+					$c = str_replace('__contractor_bank_name__',$File->getBankName(), $c);
+					$c = str_replace('__contractor_bank_account__',$contractor_bank_account, $c);	
 					$c = str_replace('__bank_name__',$File->getBankName(), $c);
 					$c = str_replace('__bank_account__',$contractor_bank_account, $c);					
 					
