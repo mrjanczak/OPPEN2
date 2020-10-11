@@ -415,7 +415,14 @@ class ProjectController extends Controller
 				
 				$msg = $this->generateTransfers($form, $msg, $TransferTemplates, $Project, $Params);
 				
-				$filename = $Project->getName()."_transfers.csv"; 
+				$templates = '';
+				foreach($TransferTemplates as $Symbol => $Template) {
+					if($form->get($Symbol)->getData()) {
+						$template .= $Symbol; 
+					}
+				}
+				
+				$filename = $Project->getName()."_".$templates.".csv"; 
 				$filename = str_replace(' ','_',$filename);
 				
 				$response = new Response();
