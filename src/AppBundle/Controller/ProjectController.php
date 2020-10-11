@@ -279,7 +279,7 @@ class ProjectController extends Controller
 		$form = $this->createForm(new ProjectType($tab_id, $Year, 
 			$securityContext, $disable_accepted_docs), $Project); 
 		 				
-        if($handleRequest) {
+        	if($handleRequest) {
 			$form->handleRequest($request); }
 		
 		$msg = array('errors' => array(), 'warnings' => array());
@@ -441,7 +441,7 @@ class ProjectController extends Controller
 			// Print Contracts
 			if (($tab_id == 4) && ($form->get('printContracts')->isClicked() )) {
 				return $this->render('AppBundle:Template:page.html.twig', 
-					array('pages' => ContractController::printContracts($form)));
+					array('project' => $Project, 'pages' => ContractController::printContracts($form)));
 			}
 			
  		}
