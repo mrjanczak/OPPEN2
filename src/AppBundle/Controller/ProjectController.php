@@ -418,7 +418,7 @@ class ProjectController extends Controller
 				$templates = '';
 				foreach($TransferTemplates as $Symbol => $Template) {
 					if($form->get($Symbol)->getData()) {
-						$template .= $Symbol; 
+						$templates .= $Symbol; 
 					}
 				}
 				
