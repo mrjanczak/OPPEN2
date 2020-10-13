@@ -92,7 +92,11 @@ class ContractController extends Controller
 				$ContractDate =  $Contract->getContractDate();
 				$File = $Contract->getFile();
 				if(!is_null($File)) { 
-					$NAME = substr($File->getFirstName(),0,3).substr($File->getLastName(),0,3); }
+					$NAME = strtoupper(substr($File->getFirstName(),0,3).substr($File->getLastName(),0,3)); 
+					$pl  = array('Ą','Ć','Ę','Ł','Ó','Ś','Ż','Ź');
+					$utf = array('A','C','E','L','O','S','Z','Z');
+					$NAME = str_replace($NAME,$pl, $utf); 
+				}
 				else {$NAME='';}
 				$Contract->setContractNo('UoD '.$ContractDate->format('Y-m-d').'/'.$NAME);
 				/*	
