@@ -100,7 +100,7 @@
 		<td> {{ form_widget(CostDocF.select, {'attr': {'class': 'item'}}) }} </td>
 		<td class="w300"><a href={{ path('oppen_doc', { 'doc_id' : Doc.id, 'month_id'   : Doc.Month.id, 'doc_cat_id' : Doc.DocCat.id, 
 				'return' : 'project', 'id1' : project_id, 'id2' : tab_id}) }}>
-				{{ Doc.DocNo }} </a> {{ Doc.desc }}  
+				{{ Doc.DocCat.symbol}} {{ Doc.DocNo }} </a> {{ Doc.desc }}  
 				{% if Doc.DocCat.symbol in ['WB','RK'] %} 
 					</br> {{ form_widget(CostDocF.desc, {'attr' : {'class' : 'desc300'}}) }}
 				{% endif %}
