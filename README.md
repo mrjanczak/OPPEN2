@@ -4,8 +4,7 @@ Getting started
 The OppenProject is an application for NGO to manage projects. 
 
 ## Manual
-[**Pdf file with detailed description**][6]
-[6]: https://github.com/mrjanczak/OPPEN2/blob/master/src/AppBundle/Resources/doc/manual.pdf
+https://github.com/mrjanczak/OPPEN2/blob/master/src/AppBundle/Resources/doc/manual.pdf
 
 ## Prerequisites
 
