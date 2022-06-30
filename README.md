@@ -3,6 +3,10 @@ Getting started
 
 The OppenProject is an application for NGO to manage projects. 
 
+## Manual
+[**Pdf file with detailed description**][1]
+[1]: https://github.com/mrjanczak/OPPEN2/blob/master/src/AppBundle/Resources/doc/manual.pdf
+
 ## Prerequisites
 
 This app is tested using Symfony2 versions 2.4+. It uses follwing bundles and assets:
